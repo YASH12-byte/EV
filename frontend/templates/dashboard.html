@@ -1,0 +1,282 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · EVForecast{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard-live.css') }}" />
+{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+      <div>
+        <div class="chip mb-2">Analytics Dashboard</div>
+        <h1 class="h2 mb-1">EV Market Growth Overview</h1>
+        <p class="text-muted-2 mb-0">
+          Real DataSet.zip metrics · Full state names · Saved models (no retrain on refresh)
+        </p>
+      </div>
+      <div class="d-flex flex-wrap align-items-center gap-2">
+        <select id="regionSelect" class="form-select" style="min-width:220px" aria-label="State or region"></select>
+        <button type="button" class="btn btn-ghost" id="resetFilters">Reset Filters</button>
+        <button type="button" class="btn btn-glow" id="refreshDash">
+          <span id="refreshLabel">Refresh</span>
+          <span id="refreshSpinner" class="dash-spinner d-none" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
+
+    <div id="dashToast" class="dash-toast d-none" role="status" aria-live="polite"></div>
+    <p class="small text-muted-2 mb-3">Last refreshed: <span id="lastRefreshed">—</span></p>
+
+    <div class="row g-3 mb-3">
+      <div class="col-md-4 col-xl">
+        <div class="glass kpi"><div class="label">Total EV Registrations</div><div class="value" id="kpiRegs">—</div></div>
+      </div>
+      <div class="col-md-4 col-xl">
+        <div class="glass kpi"><div class="label">Total EV Transactions</div><div class="value" id="kpiTx">—</div></div>
+      </div>
+      <div class="col-md-4 col-xl">
+        <div class="glass kpi"><div class="label">Total Revenue</div><div class="value" id="kpiRev">—</div></div>
+      </div>
+      <div class="col-md-4 col-xl">
+        <div class="glass kpi"><div class="label">Latest Year Growth</div><div class="value" id="kpiYoy">—</div></div>
+      </div>
+      <div class="col-md-4 col-xl">
+        <div class="glass kpi"><div class="label">Forecast Peak</div><div class="value" id="kpiPeak">—</div></div>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div class="col-lg-8">
+        <div class="glass chart-box">
+          <h2 class="h6">EV Registration Trend + Forecast</h2>
+          <div id="forecastPlot" style="height:360px"></div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="glass chart-box">
+          <h2 class="h6">Top Factors Influencing Prediction</h2>
+          <canvas id="impChart" height="280"></canvas>
+          <p class="small text-muted-2 mt-2 mb-0" id="xaiMethod"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div class="col-lg-6">
+        <div class="glass chart-box"><h2 class="h6">EV Transaction Trend</h2><canvas id="txChart" height="220"></canvas></div>
+      </div>
+      <div class="col-lg-6">
+        <div class="glass chart-box"><h2 class="h6">Revenue Trend</h2><canvas id="revChart" height="220"></canvas></div>
+      </div>
+      <div class="col-lg-6">
+        <div class="glass chart-box"><h2 class="h6">Top States (Registrations)</h2><canvas id="stateChart" height="240"></canvas></div>
+      </div>
+      <div class="col-lg-6">
+        <div class="glass chart-box"><h2 class="h6">Vehicle Type Distribution</h2><canvas id="vtypeChart" height="240"></canvas></div>
+      </div>
+      <div class="col-lg-4">
+        <div class="glass chart-box"><h2 class="h6">Fuel Type</h2><canvas id="fuelChart" height="220"></canvas></div>
+      </div>
+      <div class="col-lg-4">
+        <div class="glass chart-box"><h2 class="h6">Emission Standard</h2><canvas id="emisChart" height="220"></canvas></div>
+      </div>
+      <div class="col-lg-4">
+        <div class="glass chart-box"><h2 class="h6">Top Vehicle Makers</h2><canvas id="makerChart" height="220"></canvas></div>
+      </div>
+      <div class="col-12">
+        <div class="glass chart-box">
+          <h2 class="h6">Model Comparison (test metrics from real training)</h2>
+          <canvas id="rmseChart" height="160"></canvas>
+          <p class="small text-muted-2 mt-2 mb-0" id="bestModelNote"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+const charts = {};
+let preservedRegion = "ALL";
+
+function fmt(n) {
+  if (n == null || Number.isNaN(Number(n))) return "—";
+  const v = Number(n);
+  if (Math.abs(v) >= 1e7) return (v / 1e7).toFixed(2) + " Cr";
+  if (Math.abs(v) >= 1e5) return (v / 1e5).toFixed(2) + " L";
+  return Math.round(v).toLocaleString("en-IN");
+}
+
+function showToast(msg, ok = true) {
+  const el = document.getElementById("dashToast");
+  el.textContent = msg;
+  el.classList.remove("d-none", "is-error", "is-ok");
+  el.classList.add(ok ? "is-ok" : "is-error");
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => el.classList.add("d-none"), 4200);
+}
+
+function setLoading(on) {
+  document.getElementById("refreshSpinner").classList.toggle("d-none", !on);
+  document.getElementById("refreshLabel").textContent = on ? "Refreshing…" : "Refresh";
+  document.getElementById("refreshDash").disabled = on;
+}
+
+function destroyChart(key) {
+  if (charts[key]) { charts[key].destroy(); charts[key] = null; }
+}
+
+function chartOpts() {
+  return {
+    plugins: { legend: { labels: { color: "#cfe3ec" } } },
+    scales: {
+      x: { ticks: { color: "#8fa3b0", maxTicksLimit: 8 }, grid: { color: "rgba(255,255,255,0.04)" } },
+      y: { ticks: { color: "#8fa3b0" }, grid: { color: "rgba(255,255,255,0.04)" } }
+    }
+  };
+}
+
+function fillRegions(regions, selected) {
+  const sel = document.getElementById("regionSelect");
+  const want = selected || preservedRegion || "ALL";
+  sel.innerHTML = "";
+  (regions || []).forEach(r => {
+    const o = document.createElement("option");
+    o.value = r.code;
+    o.textContent = r.name;
+    sel.appendChild(o);
+  });
+  const codes = new Set((regions || []).map(r => r.code));
+  if (codes.has(want)) sel.value = want;
+  else if (codes.has("ALL")) sel.value = "ALL";
+  preservedRegion = sel.value;
+}
+
+function lineChart(key, canvasId, labels, values, label, color) {
+  destroyChart(key);
+  charts[key] = new Chart(document.getElementById(canvasId), {
+    type: "line",
+    data: {
+      labels,
+      datasets: [{
+        label,
+        data: values,
+        borderColor: color,
+        backgroundColor: color + "22",
+        fill: true,
+        tension: 0.3,
+        pointRadius: 0
+      }]
+    },
+    options: chartOpts()
+  });
+}
+
+function barChart(key, canvasId, labels, values, color, horizontal = false) {
+  destroyChart(key);
+  charts[key] = new Chart(document.getElementById(canvasId), {
+    type: "bar",
+    data: { labels, datasets: [{ data: values, backgroundColor: color }] },
+    options: {
+      indexAxis: horizontal ? "y" : "x",
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: "#8fa3b0", maxRotation: 40 }, grid: { color: "rgba(255,255,255,0.04)" } },
+        y: { ticks: { color: "#8fa3b0" }, grid: horizontal ? { display: false } : { color: "rgba(255,255,255,0.04)" } }
+      }
+    }
+  });
+}
+
+async function loadDashboard(opts = {}) {
+  const { silent = false } = opts;
+  if (!silent) setLoading(true);
+  try {
+    const region = document.getElementById("regionSelect").value || preservedRegion || "ALL";
+    preservedRegion = region;
+    let snap;
+    try {
+      snap = await EVForecast.API.snapshot(region);
+    } catch (e) {
+      // Fallback if server was started before snapshot route existed
+      if (e.status === 404) {
+        throw new Error(
+          "Dashboard API missing (404). Stop the old Flask process and restart with: python run.py"
+        );
+      }
+      throw e;
+    }
+    if (!snap.ok) throw new Error(snap.message || "Snapshot failed");
+
+    fillRegions(snap.regions, snap.region?.code || region);
+
+    const k = snap.kpis || {};
+    document.getElementById("kpiRegs").textContent = fmt(k.total_registrations);
+    document.getElementById("kpiTx").textContent = fmt(k.total_transactions);
+    document.getElementById("kpiRev").textContent = fmt(k.total_revenue);
+    document.getElementById("kpiYoy").textContent =
+      k.yoy_growth_pct == null ? "—" : `${Number(k.yoy_growth_pct).toFixed(1)}% (${k.latest_year})`;
+    document.getElementById("kpiPeak").textContent = fmt(k.forecast_peak);
+    document.getElementById("lastRefreshed").textContent = new Date(snap.refreshed_at).toLocaleString();
+    document.getElementById("bestModelNote").textContent = k.best_model
+      ? `Best by RMSE on held-out test: ${k.best_model} (CNN-LSTM remains the proposed research model).`
+      : "";
+
+    const fc = snap.forecast;
+    const histX = fc?.history?.dates || snap.registration_trend?.dates || [];
+    const histY = fc?.history?.ev_sales || snap.registration_trend?.values || [];
+    const futX = fc?.forecast?.dates || [];
+    const futY = fc?.forecast?.ev_sales || [];
+    Plotly.newPlot("forecastPlot", [
+      { x: histX, y: histY, name: "History", type: "scatter", mode: "lines", line: { color: "#38bdf8", width: 2 } },
+      { x: futX, y: futY, name: "Forecast", type: "scatter", mode: "lines+markers", line: { color: "#2dd4bf", width: 3, dash: "dot" } }
+    ], {
+      paper_bgcolor: "transparent", plot_bgcolor: "transparent",
+      font: { color: "#cfe3ec", family: "Outfit" },
+      margin: { t: 20, r: 10, b: 40, l: 50 },
+      legend: { orientation: "h" },
+      xaxis: { gridcolor: "rgba(255,255,255,0.05)" },
+      yaxis: { gridcolor: "rgba(255,255,255,0.05)" }
+    }, { responsive: true, displayModeBar: false });
+
+    const ranking = (snap.xai?.ranking || []).slice(0, 8);
+    barChart("imp", "impChart", ranking.map(x => x.label || x.feature), ranking.map(x => x.importance), "#2dd4bf", true);
+    document.getElementById("xaiMethod").textContent = snap.xai?.method
+      ? `Method: ${snap.xai.method} · only features present in the trained model`
+      : "";
+
+    lineChart("tx", "txChart", snap.transaction_trend?.dates || [], snap.transaction_trend?.values || [], "EV Transactions", "#38bdf8");
+    lineChart("rev", "revChart", snap.revenue_trend?.dates || [], snap.revenue_trend?.values || [], "Revenue", "#f5b942");
+    barChart("st", "stateChart", (snap.top_states || []).map(s => s.name), (snap.top_states || []).map(s => s.registrations), "#38bdf8", true);
+    barChart("vt", "vtypeChart", (snap.vehicle_types || []).map(s => s.name), (snap.vehicle_types || []).map(s => s.registrations), "#2dd4bf");
+    barChart("fuel", "fuelChart", (snap.fuel_types || []).map(s => s.name), (snap.fuel_types || []).map(s => s.count), "#a78bfa");
+    barChart("emis", "emisChart", (snap.emission_standards || []).map(s => s.name), (snap.emission_standards || []).map(s => s.count), "#fb7185");
+    barChart("mk", "makerChart", (snap.makers || []).map(s => s.name), (snap.makers || []).map(s => s.registrations), "#34d399", true);
+
+    const models = snap.model_comparison || [];
+    barChart("rmse", "rmseChart", models.map(m => m.model), models.map(m => m.RMSE), "#38bdf8");
+
+    if (!silent) showToast("Dashboard refreshed from latest processed data.", true);
+  } catch (err) {
+    console.error(err);
+    showToast(err.message || "Refresh failed. Check that processed data exists.", false);
+  } finally {
+    if (!silent) setLoading(false);
+  }
+}
+
+document.getElementById("refreshDash").addEventListener("click", () => loadDashboard());
+document.getElementById("regionSelect").addEventListener("change", () => {
+  preservedRegion = document.getElementById("regionSelect").value;
+  loadDashboard({ silent: true });
+});
+document.getElementById("resetFilters").addEventListener("click", () => {
+  preservedRegion = "ALL";
+  const sel = document.getElementById("regionSelect");
+  if ([...sel.options].some(o => o.value === "ALL")) sel.value = "ALL";
+  loadDashboard();
+});
+
+loadDashboard().catch(console.error);
+</script>
+{% endblock %}

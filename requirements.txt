@@ -1,0 +1,45 @@
+# Core
+flask==3.0.3
+flask-cors==4.0.1
+flask-jwt-extended==4.6.0
+flask-sqlalchemy==3.1.1
+werkzeug==3.0.3
+python-dotenv==1.0.1
+gunicorn==22.0.0
+
+# Data science
+numpy==1.26.4
+pandas==2.2.2
+scipy==1.13.1
+scikit-learn==1.5.1
+joblib==1.4.2
+
+# Deep learning
+tensorflow==2.16.1
+keras==3.4.1
+
+# Classical / boosting models
+statsmodels==0.14.2
+prophet==1.1.5
+xgboost==2.1.0
+lightgbm==4.4.0
+catboost==1.2.5
+
+# Explainability
+shap==0.46.0
+lime==0.2.0.1
+
+# Visualization / API helpers
+matplotlib==3.9.1
+plotly==5.22.0
+seaborn==0.13.2
+requests==2.32.3
+
+# Federated learning (optional / demo)
+flwr==1.9.0
+
+# Utilities
+tqdm==4.66.4
+openpyxl==3.1.5
+pyyaml==6.0.1
+networkx==3.3

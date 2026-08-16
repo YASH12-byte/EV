@@ -1,0 +1,208 @@
+/* Live analytics panel on Dashboard */
+.live-panel {
+  padding: 18px;
+}
+
+.live-panel-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.live-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.8);
+  animation: livePulse 1.4s ease-in-out infinite;
+}
+
+.live-panel-bar em {
+  margin-left: auto;
+  font-style: normal;
+  font-size: 0.72rem;
+  color: var(--muted, #8fa3b0);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.live-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.live-kpi {
+  background: rgba(8, 18, 35, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.live-kpi small {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--muted, #8fa3b0);
+  margin-bottom: 4px;
+}
+
+.live-kpi strong {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.live-spark {
+  margin-top: 6px;
+  height: 40px;
+}
+
+.live-meter,
+.live-batt {
+  margin-top: 10px;
+  height: 6px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.live-meter i,
+.live-batt i {
+  display: block;
+  height: 100%;
+  width: 0%;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #2563EB, #06B6D4);
+  transition: width 0.8s ease;
+}
+
+.live-batt i {
+  background: linear-gradient(90deg, #10B981, #06B6D4);
+}
+
+.live-grid-pulse {
+  margin-top: 12px;
+  height: 6px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, transparent, #10B981, transparent);
+  background-size: 200% 100%;
+  animation: liveGridPulse 2s linear infinite;
+}
+
+.live-chart-box {
+  background: rgba(8, 18, 35, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 12px;
+  height: 100%;
+}
+
+.live-chart-box h3 {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--muted, #8fa3b0);
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.live-map {
+  position: relative;
+  height: 140px;
+  border-radius: 10px;
+  background:
+    radial-gradient(circle at 22% 40%, rgba(37, 99, 235, 0.7) 0 3px, transparent 4px),
+    radial-gradient(circle at 48% 28%, rgba(6, 182, 212, 0.7) 0 3px, transparent 4px),
+    radial-gradient(circle at 70% 55%, rgba(16, 185, 129, 0.7) 0 3px, transparent 4px),
+    radial-gradient(circle at 35% 72%, rgba(37, 99, 235, 0.6) 0 2px, transparent 3px),
+    radial-gradient(circle at 82% 35%, rgba(6, 182, 212, 0.65) 0 2px, transparent 3px),
+    linear-gradient(145deg, rgba(37, 99, 235, 0.08), rgba(6, 182, 212, 0.05));
+  overflow: hidden;
+}
+
+.live-map::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 40%, rgba(6, 182, 212, 0.15) 50%, transparent 60%);
+  animation: liveMapSweep 3.5s ease-in-out infinite;
+}
+
+.live-cards {
+  list-style: none;
+  margin: 0;
+  padding: 8px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.live-cards li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--muted, #8fa3b0);
+}
+
+.live-cards b {
+  color: #06B6D4;
+  font-weight: 600;
+}
+
+@keyframes livePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.85); }
+}
+
+@keyframes liveGridPulse {
+  to { background-position: -200% 0; }
+}
+
+@keyframes liveMapSweep {
+  from { transform: translateX(-40%); }
+  to { transform: translateX(40%); }
+}
+
+@media (max-width: 992px) {
+  .live-kpis { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 576px) {
+  .live-kpis { grid-template-columns: 1fr; }
+  .live-panel-bar em { display: none; }
+}
+
+/* Dashboard refresh feedback */
+.dash-toast {
+  padding: 10px 14px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+}
+.dash-toast.is-ok {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #6ee7b7;
+}
+.dash-toast.is-error {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #fca5a5;
+}
+.dash-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-left: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: dashSpin 0.7s linear infinite;
+  vertical-align: -2px;
+}
+@keyframes dashSpin {
+  to { transform: rotate(360deg); }
+}

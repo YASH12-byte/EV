@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}About · EVForecast{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container" style="max-width:900px">
+    <h1 class="h2">About the Project</h1>
+    <p class="text-muted-2">Predictive Analytics for Electric Vehicle Market Growth using Hybrid Machine Learning and Time-Series.</p>
+    <div class="glass p-4 mb-3">
+      <h2 class="h5">Problem Statement</h2>
+      <p class="mb-0">Existing EV market forecasting systems mainly rely on traditional statistical models or standalone ML algorithms that fail to capture complex spatial-temporal relationships, nonlinear market behavior, and dynamic policy impacts. This project develops a hybrid forecasting framework that is accurate, interpretable, scalable, and privacy-preserving.</p>
+    </div>
+    <div class="glass p-4 mb-3">
+      <h2 class="h5">Objectives</h2>
+      <ol class="mb-0">
+        <li>Hybrid CNN-LSTM-Attention deep forecasting</li>
+        <li>Robust preprocessing, denoising, and feature engineering</li>
+        <li>Explainable AI with SHAP / LIME / attention maps</li>
+        <li>Federated learning for cross-city privacy</li>
+        <li>Physics-informed battery and grid constraints</li>
+        <li>Rigorous comparison vs classical and ML baselines</li>
+      </ol>
+    </div>
+    <div class="glass p-4">
+      <h2 class="h5">Stakeholders</h2>
+      <p class="mb-0">Governments, OEMs, investors, charging providers, and utilities can use the platform for capacity planning, policy evaluation, and investment decisions.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

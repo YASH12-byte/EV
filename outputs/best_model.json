@@ -1,0 +1,8 @@
+{
+  "best_by_rmse": "Naive",
+  "rmse": 116297.02335773419,
+  "mae": 42195.55405405405,
+  "mape": 34.534361895986365,
+  "r2": 0.947105034378298,
+  "note": "CNN-LSTM remains the proposed research model even if another model wins on RMSE."
+}

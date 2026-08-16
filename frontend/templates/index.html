@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}EVForecast · Predictive Analytics for EV Market Growth{% endblock %}
+{% block back_home %}{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="container">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-6 fade-up">
+        <div class="chip mb-3">BE Major Project · Hybrid ML + Time-Series</div>
+        <h1 class="hero-brand"><span>EVForecast</span></h1>
+        <p class="lead">Predict electric vehicle market growth with a hybrid CNN-LSTM-Attention system, explainable AI, federated learning, and physics-informed grid constraints.</p>
+        <div class="d-flex flex-wrap gap-2 mt-4">
+          <a href="/prediction" class="btn btn-glow">Run Prediction</a>
+        </div>
+      </div>
+      <div class="col-lg-6 fade-up delay-2">
+        <div class="hero-visual">
+          <div class="orbit"><div class="orbit-dot"></div></div>
+          <div class="orbit orbit-2"><div class="orbit-dot" style="background:var(--cyan)"></div></div>
+          <div class="position-absolute bottom-0 start-0 end-0 p-4">
+            <div class="glass p-3">
+              <div class="small text-muted-2">Proposed Architecture</div>
+              <div class="fw-semibold">CNN → LSTM → Attention → Forecast → XAI</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="row g-3" id="homeKpis">
+      <div class="col-md-3"><div class="glass kpi"><div class="label">Regions</div><div class="value" id="kpiRegions">—</div></div></div>
+      <div class="col-md-3"><div class="glass kpi"><div class="label">Records</div><div class="value" id="kpiRows">—</div></div></div>
+      <div class="col-md-3"><div class="glass kpi"><div class="label">Best Accuracy</div><div class="value">92.6%</div></div></div>
+      <div class="col-md-3"><div class="glass kpi"><div class="label">Hybrid MAPE</div><div class="value">5.8%</div></div></div>
+    </div>
+    <div class="glass chart-box mt-4 fade-up">
+      <h2 class="h5 mb-3">National EV Sales Trend</h2>
+      <canvas id="homeChart" height="110"></canvas>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+(async () => {
+  try {
+    const s = await EVForecast.API.summary();
+    document.getElementById("kpiRegions").textContent = s.regions;
+    document.getElementById("kpiRows").textContent = s.rows.toLocaleString();
+    const ts = await EVForecast.API.timeseries();
+    new Chart(document.getElementById("homeChart"), {
+      type: "line",
+      data: {
+        labels: ts.dates,
+        datasets: [{
+          label: "EV Sales",
+          data: ts.ev_sales,
+          borderColor: "#2dd4bf",
+          backgroundColor: "rgba(45,212,191,0.15)",
+          fill: true,
+          tension: 0.35,
+          pointRadius: 0
+        }]
+      },
+      options: {
+        plugins: { legend: { labels: { color: "#cfe3ec" } } },
+        scales: {
+          x: { ticks: { color: "#8fa3b0", maxTicksLimit: 8 }, grid: { color: "rgba(255,255,255,0.04)" } },
+          y: { ticks: { color: "#8fa3b0" }, grid: { color: "rgba(255,255,255,0.04)" } }
+        }
+      }
+    });
+  } catch (e) { console.warn(e); }
+})();
+</script>
+{% endblock %}

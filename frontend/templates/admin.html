@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Admin · EVForecast{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <h1 class="h2 mb-3">Admin Dashboard</h1>
+    <div id="adminGate" class="glass p-4">Checking access…</div>
+    <div id="adminApp" class="d-none">
+      <div class="row g-3 mb-3">
+        <div class="col-md-3"><div class="glass kpi"><div class="label">Users</div><div class="value" id="aUsers">0</div></div></div>
+        <div class="col-md-3"><div class="glass kpi"><div class="label">Predictions</div><div class="value" id="aPreds">0</div></div></div>
+        <div class="col-md-3"><div class="glass kpi"><div class="label">Admins</div><div class="value" id="aAdmins">0</div></div></div>
+        <div class="col-md-3"><div class="glass kpi"><div class="label">Contact messages</div><div class="value" id="aContacts">0</div></div></div>
+      </div>
+      <div class="row g-3">
+        <div class="col-lg-6"><div class="glass p-3 table-responsive"><h2 class="h6">Users</h2><table class="table" id="usersTable"><thead><tr><th>Name</th><th>Email</th><th>Role</th></tr></thead><tbody></tbody></table></div></div>
+        <div class="col-lg-6"><div class="glass p-3 table-responsive"><h2 class="h6">Recent Predictions</h2><table class="table" id="predTable"><thead><tr><th>Region</th><th>Value</th><th>Model</th></tr></thead><tbody></tbody></table></div></div>
+        <div class="col-12"><div class="glass p-3 table-responsive">
+          <h2 class="h6">Contact messages</h2>
+          <table class="table" id="contactTable">
+            <thead><tr><th>When</th><th>Name</th><th>Email</th><th>Subject</th><th>Message</th><th>Status</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+(async () => {
+  const gate = document.getElementById("adminGate");
+  const user = EVForecast.currentUser();
+  if (!user) { gate.innerHTML = 'Please <a href="/login">login</a> as admin.'; return; }
+  try {
+    const stats = await EVForecast.API.adminStats();
+    document.getElementById("adminApp").classList.remove("d-none");
+    gate.classList.add("d-none");
+    document.getElementById("aUsers").textContent = stats.users;
+    document.getElementById("aPreds").textContent = stats.predictions;
+    document.getElementById("aAdmins").textContent = stats.admins;
+    document.getElementById("aContacts").textContent = stats.contacts ?? 0;
+    const users = await EVForecast.API.adminUsers();
+    document.querySelector("#usersTable tbody").innerHTML = users.users.map(u =>
+      `<tr><td>${u.name}</td><td>${u.email}</td><td>${u.role}</td></tr>`).join("");
+    const preds = await EVForecast.API.adminPredictions();
+    document.querySelector("#predTable tbody").innerHTML = preds.predictions.map(p =>
+      `<tr><td>${p.region}</td><td>${p.prediction}</td><td>${p.model_name}</td></tr>`).join("");
+    const contacts = await EVForecast.API.adminContacts();
+    document.querySelector("#contactTable tbody").innerHTML = (contacts.contacts || []).map(c =>
+      `<tr>
+        <td class="small">${c.created_at ? new Date(c.created_at).toLocaleString() : "—"}</td>
+        <td>${c.name}</td>
+        <td>${c.email}</td>
+        <td>${c.subject || "—"}</td>
+        <td class="small" style="max-width:280px;white-space:pre-wrap">${(c.message || "").replace(/</g,"&lt;")}</td>
+        <td>
+          <select class="form-select form-select-sm contact-status" data-id="${c.id}">
+            ${["new","read","replied","archived"].map(s =>
+              `<option value="${s}" ${c.status===s?"selected":""}>${s}</option>`).join("")}
+          </select>
+        </td>
+      </tr>`).join("") || `<tr><td colspan="6" class="text-muted-2">No messages yet.</td></tr>`;
+
+    document.querySelectorAll(".contact-status").forEach(sel => {
+      sel.addEventListener("change", async () => {
+        try {
+          await EVForecast.API.adminContactStatus(sel.dataset.id, sel.value);
+        } catch (e) {
+          alert(e.message || "Could not update status");
+        }
+      });
+    });
+  } catch (e) {
+    gate.innerHTML = "Admin access required. Login with admin@evforecast.edu / Admin@123";
+  }
+})();
+</script>
+{% endblock %}

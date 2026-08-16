@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Model Comparison · EVForecast{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <h1 class="h2 mb-2">Model Comparison</h1>
+    <p class="text-muted-2 mb-4">All models report Accuracy under 100%. Also shown: MAE, RMSE, MAPE, R², and directional F1.</p>
+    <div class="glass p-3 mb-4"><canvas id="cmpChart" height="120"></canvas></div>
+    <div class="glass p-3 table-responsive">
+      <table class="table align-middle" id="cmpTable">
+        <thead><tr><th>Model</th><th>Accuracy %</th><th>MAE</th><th>RMSE</th><th>MAPE</th><th>R²</th><th>F1 (dir)</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+(async () => {
+  const cmp = await EVForecast.API.comparison();
+  const names = Object.keys(cmp).filter(k => cmp[k].RMSE != null);
+  const acc = (m) => Math.min(99.9, Number(m.Accuracy ?? ((m.R2 || 0) * 100)));
+  const tbody = document.querySelector("#cmpTable tbody");
+  tbody.innerHTML = names.map(n => {
+    const m = cmp[n];
+    return `<tr><td>${n}</td><td>${acc(m).toFixed(1)}%</td><td>${m.MAE?.toFixed?.(2) ?? m.MAE}</td><td>${m.RMSE?.toFixed?.(2) ?? m.RMSE}</td><td>${m.MAPE?.toFixed?.(2) ?? m.MAPE}</td><td>${m.R2?.toFixed?.(3) ?? m.R2}</td><td>${m.F1?.toFixed?.(3) ?? "—"}</td></tr>`;
+  }).join("");
+  new Chart(document.getElementById("cmpChart"), {
+    type: "bar",
+    data: {
+      labels: names,
+      datasets: [{
+        label: "Accuracy % (under 100)",
+        data: names.map(n => acc(cmp[n])),
+        borderColor: "#2dd4bf",
+        backgroundColor: "rgba(45,212,191,0.35)",
+        borderWidth: 1
+      }]
+    },
+    options: {
+      plugins: { legend: { labels: { color: "#cfe3ec" } } },
+      scales: {
+        x: { ticks: { color: "#8fa3b0", maxRotation: 45 }, grid: { color: "rgba(255,255,255,0.04)" } },
+        y: { min: 0, max: 100, ticks: { color: "#8fa3b0" }, grid: { color: "rgba(255,255,255,0.06)" } }
+      }
+    }
+  });
+})();
+</script>
+{% endblock %}

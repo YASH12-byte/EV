@@ -1,0 +1,37 @@
+{
+  "method": "shap",
+  "ranking": [
+    {
+      "feature": "rolling_mean_3",
+      "importance": 130481.92810631268
+    },
+    {
+      "feature": "lag_1",
+      "importance": 73171.89220763586
+    },
+    {
+      "feature": "yoy_growth",
+      "importance": 7074.871450695038
+    },
+    {
+      "feature": "lag_2",
+      "importance": 7041.745816619784
+    },
+    {
+      "feature": "Year",
+      "importance": 2701.8966230563174
+    },
+    {
+      "feature": "VehicleType_enc",
+      "importance": 1785.9452730124658
+    },
+    {
+      "feature": "lag_3",
+      "importance": 1446.1316076609003
+    },
+    {
+      "feature": "State_enc",
+      "importance": 339.93481879782877
+    }
+  ]
+}

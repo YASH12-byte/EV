@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% block title %}Forecast · EVForecast{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-5">
+        <div class="glass p-4">
+          <div class="chip mb-2">Forecast</div>
+          <h1 class="h3">EV Market Forecast</h1>
+          <p class="text-muted-2">
+            Select target, state (full name), and horizon. Predictions use saved models / processed series — no inventing columns.
+          </p>
+          <form id="predForm" class="row g-3">
+            <div class="col-12">
+              <label class="form-label">Forecast Target</label>
+              <select class="form-select" name="target" id="predTarget">
+                <option value="registrations">EV Registrations</option>
+                <option value="transactions">EV Transactions</option>
+                <option value="revenue">EV Revenue</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label">State / Region</label>
+              <select class="form-select" name="region" id="predRegion"></select>
+            </div>
+            <div class="col-12" id="vehicleTypeWrap">
+              <label class="form-label">Vehicle Type</label>
+              <select class="form-select" name="vehicle_type" id="predVehicle">
+                <option value="All">All</option>
+                <option value="Transport">Transport</option>
+                <option value="Non Transport">Non Transport</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label" id="horizonLabel">Forecast Horizon (years)</label>
+              <select class="form-select" name="horizon" id="predHorizon">
+                <option value="1">Next 1</option>
+                <option value="3" selected>Next 3</option>
+                <option value="5">Next 5</option>
+                <option value="6">Next 6</option>
+                <option value="12">Next 12</option>
+              </select>
+            </div>
+            <div class="col-12"><button class="btn btn-glow w-100" type="submit">Generate Forecast</button></div>
+          </form>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="glass p-4 h-100">
+          <h2 class="h5">Predicted EV Growth</h2>
+          <div id="predResult" class="text-muted-2">Choose options and generate a forecast.</div>
+          <div id="forecastPlot" class="mt-3" style="height:280px"></div>
+          <div class="mt-4">
+            <h3 class="h6">Why?</h3>
+            <p class="small text-muted-2 mb-2">Top influencing features from SHAP / trained-model importance (actual features only):</p>
+            <ul id="driverList" class="list-unstyled"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+function syncHorizonUI() {
+  const t = document.getElementById("predTarget").value;
+  const label = document.getElementById("horizonLabel");
+  const wrap = document.getElementById("vehicleTypeWrap");
+  if (t === "registrations") {
+    label.textContent = "Forecast Horizon (years)";
+    wrap.classList.remove("d-none");
+  } else {
+    label.textContent = "Forecast Horizon (months)";
+    wrap.classList.add("d-none");
+  }
+}
+
+document.getElementById("predTarget").addEventListener("change", syncHorizonUI);
+syncHorizonUI();
+
+(async () => {
+  const regs = await EVForecast.API.regions();
+  const sel = document.getElementById("predRegion");
+  (regs.regions || []).forEach(r => {
+    const o = document.createElement("option");
+    // Support both {code,name} and legacy string
+    if (typeof r === "string") {
+      o.value = r;
+      o.textContent = r;
+    } else {
+      o.value = r.code;
+      o.textContent = r.name;
+    }
+    sel.appendChild(o);
+  });
+})();
+
+document.getElementById("predForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const target = document.getElementById("predTarget").value;
+  const region = document.getElementById("predRegion").value;
+  const vehicle = document.getElementById("predVehicle").value;
+  const horizon = parseInt(document.getElementById("predHorizon").value, 10);
+  const out = await EVForecast.API.forecast(region, horizon, target, vehicle);
+  if (!out.ok) {
+    document.getElementById("predResult").innerHTML = `<div class="text-danger">${out.message || "Forecast failed"}</div>`;
+    return;
+  }
+
+  const unit =
+    target === "revenue" ? "revenue units" :
+    target === "transactions" ? "EV transactions" : "EV registrations";
+  const points = (out.forecast?.points || []).map(p => {
+    const period = p.period || p.year;
+    return `<li class="mb-1"><strong>${period}</strong> → ${Number(p.value).toLocaleString("en-IN")} ${unit}</li>`;
+  }).join("");
+
+  document.getElementById("predResult").innerHTML = `
+    <div class="mb-2"><span class="chip">${out.region_name || out.region}</span>
+    <span class="chip">${out.target || target}</span>
+    <span class="chip">${out.model || ""}</span></div>
+    <ul class="mb-0">${points}</ul>
+    <p class="small text-muted-2 mt-2 mb-0">${out.note || ""}</p>`;
+
+  Plotly.newPlot("forecastPlot", [
+    { x: out.history.dates, y: out.history.ev_sales || out.history.values, name: "Historical", type: "scatter", mode: "lines", line: { color: "#38bdf8" } },
+    { x: out.forecast.dates, y: out.forecast.ev_sales || out.forecast.values, name: "Forecast", type: "scatter", mode: "lines+markers", line: { color: "#2dd4bf", dash: "dot" } }
+  ], {
+    paper_bgcolor: "transparent", plot_bgcolor: "transparent",
+    font: { color: "#cfe3ec", family: "Outfit" },
+    margin: { t: 10, r: 10, b: 40, l: 50 },
+    legend: { orientation: "h" },
+    xaxis: { gridcolor: "rgba(255,255,255,0.05)" },
+    yaxis: { gridcolor: "rgba(255,255,255,0.05)" }
+  }, { responsive: true, displayModeBar: false });
+
+  const drivers = out.top_factors || [];
+  document.getElementById("driverList").innerHTML = drivers.length
+    ? drivers.map((d, i) =>
+        `<li class="mb-2"><strong>${i + 1}. ${d.label || d.feature}</strong></li>`
+      ).join("")
+    : `<li class="text-muted-2">No SHAP ranking file yet — run python src/xai_shap.py</li>`;
+});
+</script>
+{% endblock %}

@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block title %}Register · EVForecast{% endblock %}
+{% block body_class %}auth-body{% endblock %}
+{% block navbar %}{% endblock %}
+{% block back_home %}{% endblock %}
+{% block footer %}{% endblock %}
+{% block content %}
+<div class="auth-shell">
+  <aside class="auth-aside" id="regAside">
+    <a class="brand mb-auto text-decoration-none" href="/home">
+      <span class="brand-mark"></span>
+      <span style="color:#fff">EV<span class="accent">Forecast</span></span>
+    </a>
+    <h2 class="display-6 fw-bold mt-5">Join the forecasting workspace.</h2>
+    <p class="text-muted-2 mb-0">Create your account to run regional forecasts and explore explainable AI insights.</p>
+  </aside>
+  <section class="auth-panel">
+    <div class="glass auth-card">
+      <div class="chip mb-3">Get started</div>
+      <h1>Create account</h1>
+      <p class="text-muted-2 mb-4">Fill in your details to register.</p>
+      <form id="registerForm" novalidate>
+        <div class="mb-3">
+          <label class="form-label">Full name</label>
+          <input type="text" class="form-control" name="name" required placeholder="Your name" autocomplete="name" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control" name="email" id="regEmail" required placeholder="you@institute.edu" autocomplete="email" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Organization</label>
+          <input type="text" class="form-control" name="organization" placeholder="College / Company" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <div class="password-field">
+            <input type="password" class="form-control" name="password" id="regPassword" required minlength="6" placeholder="Min 6 characters" autocomplete="new-password" />
+            <button type="button" class="password-toggle" id="regTogglePass" aria-label="Show password">
+              <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Re-enter password</label>
+          <div class="password-field">
+            <input type="password" class="form-control" name="password_confirm" id="regPasswordConfirm" required minlength="6" placeholder="Confirm password" autocomplete="new-password" />
+            <button type="button" class="password-toggle" id="regTogglePassConfirm" aria-label="Show password">
+              <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
+        </div>
+        <button class="btn btn-glow w-100" type="submit">Create account</button>
+        <div class="auth-error" id="regError"></div>
+      </form>
+      <p class="auth-switch mt-4 mb-0">Already registered? <a href="/login">Sign in</a></p>
+    </div>
+  </section>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+(() => {
+  const EMAIL_RE = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  EVForecast.spawnParticles("#regAside", 22);
+
+  function wireToggle(inputId, btnId) {
+    const pass = document.getElementById(inputId);
+    const toggle = document.getElementById(btnId);
+    toggle.addEventListener("click", () => {
+      const shown = pass.type === "text";
+      pass.type = shown ? "password" : "text";
+      toggle.classList.toggle("is-shown", !shown);
+      toggle.setAttribute("aria-label", shown ? "Show password" : "Hide password");
+    });
+  }
+  wireToggle("regPassword", "regTogglePass");
+  wireToggle("regPasswordConfirm", "regTogglePassConfirm");
+
+  document.getElementById("registerForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const err = document.getElementById("regError");
+    err.classList.remove("show");
+    const fd = new FormData(e.target);
+    const email = String(fd.get("email") || "").trim().toLowerCase();
+    const password = String(fd.get("password") || "");
+    const passwordConfirm = String(fd.get("password_confirm") || "");
+    const name = String(fd.get("name") || "").trim();
+
+    if (!name) {
+      err.textContent = "Please enter your full name.";
+      err.classList.add("show");
+      return;
+    }
+    if (!EMAIL_RE.test(email)) {
+      err.textContent = "Please enter a valid email address.";
+      err.classList.add("show");
+      return;
+    }
+    if (password.length < 6) {
+      err.textContent = "Password must be at least 6 characters.";
+      err.classList.add("show");
+      return;
+    }
+    if (password !== passwordConfirm) {
+      err.textContent = "Passwords do not match. Please re-enter.";
+      err.classList.add("show");
+      return;
+    }
+
+    try {
+      const data = await EVForecast.API.register({
+        name,
+        email,
+        organization: fd.get("organization"),
+        password
+      });
+      EVForecast.saveSession(data.token, data.user);
+      location.href = "/dashboard";
+    } catch (ex) {
+      err.textContent = ex.data?.message || ex.message;
+      err.classList.add("show");
+    }
+  });
+})();
+</script>
+{% endblock %}

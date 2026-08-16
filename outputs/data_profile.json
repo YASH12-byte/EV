@@ -1,0 +1,4895 @@
+{
+  "dataset_root": "C:\\Users\\yash\\EV-Market-Growth-Prediction\\data\\raw\\DataSet\\DataSet",
+  "file_count": 59,
+  "files": [
+    {
+      "file": "Register/dashboardcount_all_states.csv",
+      "rows": 37,
+      "columns": 3,
+      "column_names": [
+        "State",
+        "Vehicle_Type",
+        "Total_EV_Registrations"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Vehicle_Type": "str",
+        "Total_EV_Registrations": "str"
+      },
+      "missing_values": {
+        "State": 0,
+        "Vehicle_Type": 0,
+        "Total_EV_Registrations": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [],
+      "categorical_columns": [
+        "State",
+        "Vehicle_Type",
+        "Total_EV_Registrations"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "LD",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [
+        "Transport"
+      ],
+      "possible_targets": [
+        "Total_EV_Registrations"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Vehicle_Type": "Transport",
+          "Total_EV_Registrations": "{'totalTransactions': '324'}"
+        },
+        {
+          "State": "AP",
+          "Vehicle_Type": "Transport",
+          "Total_EV_Registrations": "{'totalTransactions': '22,387'}"
+        }
+      ]
+    },
+    {
+      "file": "Register/ev_data.csv",
+      "rows": 1,
+      "columns": 2,
+      "column_names": [
+        "data",
+        "labels"
+      ],
+      "dtypes": {
+        "data": "str",
+        "labels": "str"
+      },
+      "missing_values": {
+        "data": 0,
+        "labels": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [],
+      "categorical_columns": [
+        "data",
+        "labels"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [],
+      "unique_vehicle_types": [],
+      "possible_targets": [],
+      "sample_head": [
+        {
+          "data": "[1, 71, 18, 9, 33, 108, 84]",
+          "labels": "[2020, 2021, 2022, 2023, 2024, 2025, 2026]"
+        }
+      ]
+    },
+    {
+      "file": "Register/ev_emission_distribution.csv",
+      "rows": 571,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "VehicleType",
+        "EmissionStandard",
+        "RegistrationCount"
+      ],
+      "dtypes": {
+        "State": "str",
+        "VehicleType": "str",
+        "EmissionStandard": "str",
+        "RegistrationCount": "float64"
+      },
+      "missing_values": {
+        "State": 0,
+        "VehicleType": 0,
+        "EmissionStandard": 0,
+        "RegistrationCount": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "RegistrationCount"
+      ],
+      "categorical_columns": [
+        "State",
+        "VehicleType",
+        "EmissionStandard"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "LD",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [
+        "Non Transport",
+        "Transport"
+      ],
+      "possible_targets": [
+        "RegistrationCount"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "VehicleType": "Transport",
+          "EmissionStandard": "NOT AVAILABLE",
+          "RegistrationCount": "258.0"
+        },
+        {
+          "State": "AN",
+          "VehicleType": "Transport",
+          "EmissionStandard": "BHARAT STAGE VI",
+          "RegistrationCount": "66.0"
+        }
+      ]
+    },
+    {
+      "file": "Register/ev_vehicle_class_distribution.csv",
+      "rows": 1248,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "VehicleType",
+        "VehicleClass",
+        "RegistrationCount"
+      ],
+      "dtypes": {
+        "State": "str",
+        "VehicleType": "str",
+        "VehicleClass": "str",
+        "RegistrationCount": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "VehicleType": 0,
+        "VehicleClass": 0,
+        "RegistrationCount": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "RegistrationCount"
+      ],
+      "categorical_columns": [
+        "State",
+        "VehicleType",
+        "VehicleClass"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "LD",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [
+        "Non Transport",
+        "Transport"
+      ],
+      "possible_targets": [
+        "RegistrationCount"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "VehicleType": "Transport",
+          "VehicleClass": "Motor Cycle/Scooter-Used For Hire",
+          "RegistrationCount": "117"
+        },
+        {
+          "State": "AN",
+          "VehicleType": "Transport",
+          "VehicleClass": "Motor Cab",
+          "RegistrationCount": "106"
+        }
+      ]
+    },
+    {
+      "file": "Register/ev_yearwise_registration.csv",
+      "rows": 1067,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "VehicleType",
+        "Year",
+        "Registrations"
+      ],
+      "dtypes": {
+        "State": "str",
+        "VehicleType": "str",
+        "Year": "int64",
+        "Registrations": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "VehicleType": 0,
+        "Year": 0,
+        "Registrations": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "Registrations"
+      ],
+      "categorical_columns": [
+        "State",
+        "VehicleType"
+      ],
+      "min_year": 2011,
+      "max_year": 2026,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "LD",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [
+        "Non Transport",
+        "Transport"
+      ],
+      "possible_targets": [
+        "Registrations"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "VehicleType": "Transport",
+          "Year": "2020",
+          "Registrations": "1"
+        },
+        {
+          "State": "AN",
+          "VehicleType": "Transport",
+          "Year": "2021",
+          "Registrations": "71"
+        }
+      ]
+    },
+    {
+      "file": "Register/fuel_type_ev_data.csv",
+      "rows": 230,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "VehicleType",
+        "FuelType",
+        "Count"
+      ],
+      "dtypes": {
+        "State": "str",
+        "VehicleType": "str",
+        "FuelType": "str",
+        "Count": "float64"
+      },
+      "missing_values": {
+        "State": 0,
+        "VehicleType": 0,
+        "FuelType": 0,
+        "Count": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Count"
+      ],
+      "categorical_columns": [
+        "State",
+        "VehicleType",
+        "FuelType"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "LD",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [
+        "Non Transport",
+        "Transport"
+      ],
+      "possible_targets": [
+        "Count"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "VehicleType": "Transport",
+          "FuelType": "ELECTRIC(BOV)",
+          "Count": "142.0"
+        },
+        {
+          "State": "AN",
+          "VehicleType": "Transport",
+          "FuelType": "PURE EV",
+          "Count": "116.0"
+        }
+      ]
+    },
+    {
+      "file": "Register/registration_2010-2026.csv",
+      "rows": 74,
+      "columns": 4,
+      "column_names": [
+        "data",
+        "labels",
+        "State",
+        "VehicleType"
+      ],
+      "dtypes": {
+        "data": "str",
+        "labels": "str",
+        "State": "str",
+        "VehicleType": "str"
+      },
+      "missing_values": {
+        "data": 0,
+        "labels": 0,
+        "State": 0,
+        "VehicleType": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [],
+      "categorical_columns": [
+        "data",
+        "labels",
+        "State",
+        "VehicleType"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CH",
+        "CT",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "LD",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [
+        "Non Transport",
+        "Transport"
+      ],
+      "possible_targets": [],
+      "sample_head": [
+        {
+          "data": "[1, 71, 18, 9, 33, 108, 84]",
+          "labels": "[2020, 2021, 2022, 2023, 2024, 2025, 2026]",
+          "State": "AN",
+          "VehicleType": "Transport"
+        },
+        {
+          "data": "[1, 0, 20, 2, 36, 92, 23, 26, 79, 201, 148]",
+          "labels": "[2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]",
+          "State": "AN",
+          "VehicleType": "Non Transport"
+        }
+      ]
+    },
+    {
+      "file": "Register/status_distribution_all_states.xlsx",
+      "error": "unreadable"
+    },
+    {
+      "file": "Register/top5_states_all_filters.csv",
+      "rows": 162,
+      "columns": 3,
+      "column_names": [
+        "Filter_State",
+        "Top_State",
+        "EV_Registrations"
+      ],
+      "dtypes": {
+        "Filter_State": "str",
+        "Top_State": "str",
+        "EV_Registrations": "int64"
+      },
+      "missing_values": {
+        "Filter_State": 0,
+        "Top_State": 0,
+        "EV_Registrations": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "EV_Registrations"
+      ],
+      "categorical_columns": [
+        "Filter_State",
+        "Top_State"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "LD",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Registrations"
+      ],
+      "sample_head": [
+        {
+          "Filter_State": "AN",
+          "Top_State": "Port Blair Dto",
+          "EV_Registrations": "324"
+        },
+        {
+          "Filter_State": "AP",
+          "Top_State": "Vijayawada Rta",
+          "EV_Registrations": "2703"
+        }
+      ]
+    },
+    {
+      "file": "Register/top5_vehicle_makers_all_states.csv",
+      "rows": 178,
+      "columns": 3,
+      "column_names": [
+        "State",
+        "Vehicle_Maker",
+        "EV_Registrations"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Vehicle_Maker": "str",
+        "EV_Registrations": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Vehicle_Maker": 0,
+        "EV_Registrations": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "EV_Registrations"
+      ],
+      "categorical_columns": [
+        "State",
+        "Vehicle_Maker"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "LD",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Registrations"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Vehicle_Maker": "Bajaj Auto Ltd",
+          "EV_Registrations": "52"
+        },
+        {
+          "State": "AN",
+          "Vehicle_Maker": "Toyota Kirloskar Motor Pvt Ltd",
+          "EV_Registrations": "50"
+        }
+      ]
+    },
+    {
+      "file": "Register/vehicle_status_distribution.csv",
+      "error": "unreadable"
+    },
+    {
+      "file": "Revenue/Revenue_fee_line_chart(2010-2026)/EV_Revenue_Line_Chart(2010_11).csv",
+      "rows": 864,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "Revenue"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "Revenue": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "Revenue": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "Revenue"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2010,
+      "max_year": 2011,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "Revenue"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2011",
+          "Month": "Jan",
+          "Revenue": "142384"
+        },
+        {
+          "State": "AN",
+          "Year": "2011",
+          "Month": "Feb",
+          "Revenue": "171401"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Revenue_fee_line_chart(2010-2026)/EV_Revenue_Line_Chart(2011_12).csv",
+      "rows": 864,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "Revenue"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "Revenue": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "Revenue": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "Revenue"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2011,
+      "max_year": 2012,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "Revenue"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2012",
+          "Month": "Jan",
+          "Revenue": "166466"
+        },
+        {
+          "State": "AN",
+          "Year": "2012",
+          "Month": "Feb",
+          "Revenue": "184545"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Revenue_fee_line_chart(2010-2026)/EV_Revenue_Line_Chart(2012_13).csv",
+      "rows": 864,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "Revenue"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "Revenue": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "Revenue": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "Revenue"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2012,
+      "max_year": 2013,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "Revenue"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2013",
+          "Month": "Jan",
+          "Revenue": "163000"
+        },
+        {
+          "State": "AN",
+          "Year": "2013",
+          "Month": "Feb",
+          "Revenue": "168470"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Revenue_fee_line_chart(2010-2026)/EV_Revenue_Line_Chart(2013_14).csv",
+      "rows": 864,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "Revenue"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "Revenue": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "Revenue": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "Revenue"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2013,
+      "max_year": 2014,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "Revenue"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2014",
+          "Month": "Jan",
+          "Revenue": "157246"
+        },
+        {
+          "State": "AN",
+          "Year": "2014",
+          "Month": "Feb",
+          "Revenue": "183167"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Revenue_fee_line_chart(2010-2026)/EV_Revenue_Line_Chart(2014_15).csv",
+      "rows": 864,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "Revenue"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "Revenue": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "Revenue": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "Revenue"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2014,
+      "max_year": 2015,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "Revenue"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2015",
+          "Month": "Jan",
+          "Revenue": "224710"
+        },
+        {
+          "State": "AN",
+          "Year": "2015",
+          "Month": "Feb",
+          "Revenue": "338343"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Revenue_fee_line_chart(2010-2026)/EV_Revenue_Line_Chart(2015_16).csv",
+      "rows": 864,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "Revenue"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "Revenue": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "Revenue": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "Revenue"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2015,
+      "max_year": 2016,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "Revenue"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2016",
+          "Month": "Jan",
+          "Revenue": "210750"
+        },
+        {
+          "State": "AN",
+          "Year": "2016",
+          "Month": "Feb",
+          "Revenue": "284784"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Revenue_fee_line_chart(2010-2026)/EV_Revenue_Line_Chart(2016_17).csv",
+      "rows": 864,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "Revenue"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "Revenue": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "Revenue": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "Revenue"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2016,
+      "max_year": 2017,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "Revenue"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2017",
+          "Month": "Jan",
+          "Revenue": "305072"
+        },
+        {
+          "State": "AN",
+          "Year": "2017",
+          "Month": "Feb",
+          "Revenue": "337671"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Revenue_fee_line_chart(2010-2026)/EV_Revenue_Line_Chart(2017_18).csv",
+      "rows": 864,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "Revenue"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "Revenue": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "Revenue": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "Revenue"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2017,
+      "max_year": 2018,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "Revenue"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2018",
+          "Month": "Jan",
+          "Revenue": "724505"
+        },
+        {
+          "State": "AN",
+          "Year": "2018",
+          "Month": "Feb",
+          "Revenue": "792519"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Revenue_fee_line_chart(2010-2026)/EV_Revenue_Line_Chart(2018_19).csv",
+      "rows": 864,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "Revenue"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "Revenue": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "Revenue": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "Revenue"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2018,
+      "max_year": 2019,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "Revenue"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2019",
+          "Month": "Jan",
+          "Revenue": "1539911"
+        },
+        {
+          "State": "AN",
+          "Year": "2019",
+          "Month": "Feb",
+          "Revenue": "1489077"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Revenue_fee_line_chart(2010-2026)/EV_Revenue_Line_Chart(2019_20).csv",
+      "rows": 864,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "Revenue"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "Revenue": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "Revenue": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "Revenue"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2019,
+      "max_year": 2020,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "Revenue"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2019",
+          "Month": "Jan",
+          "Revenue": "1539911"
+        },
+        {
+          "State": "AN",
+          "Year": "2019",
+          "Month": "Feb",
+          "Revenue": "1489077"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Revenue_fee_line_chart(2010-2026)/EV_Revenue_Line_Chart(2020_21).csv",
+      "rows": 864,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "Revenue"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "Revenue": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "Revenue": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "Revenue"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2020,
+      "max_year": 2021,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "Revenue"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2021",
+          "Month": "Jan",
+          "Revenue": "765188"
+        },
+        {
+          "State": "AN",
+          "Year": "2021",
+          "Month": "Feb",
+          "Revenue": "800579"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Revenue_fee_line_chart(2010-2026)/EV_Revenue_Line_Chart(2021_22).csv",
+      "rows": 864,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "Revenue"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "Revenue": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "Revenue": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "Revenue"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2021,
+      "max_year": 2022,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "Revenue"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2022",
+          "Month": "Jan",
+          "Revenue": "2838711"
+        },
+        {
+          "State": "AN",
+          "Year": "2022",
+          "Month": "Feb",
+          "Revenue": "1198099"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Revenue_fee_line_chart(2010-2026)/EV_Revenue_Line_Chart(2022_23).csv",
+      "rows": 864,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "Revenue"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "Revenue": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "Revenue": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "Revenue"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2022,
+      "max_year": 2023,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "Revenue"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2023",
+          "Month": "Jan",
+          "Revenue": "3555394"
+        },
+        {
+          "State": "AN",
+          "Year": "2023",
+          "Month": "Feb",
+          "Revenue": "2995429"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Revenue_fee_line_chart(2010-2026)/EV_Revenue_Line_Chart(2023_24).csv",
+      "rows": 871,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "Revenue"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "Revenue": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "Revenue": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "Revenue"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2023,
+      "max_year": 2024,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "LD",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "Revenue"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2024",
+          "Month": "Jan",
+          "Revenue": "3839126"
+        },
+        {
+          "State": "AN",
+          "Year": "2024",
+          "Month": "Feb",
+          "Revenue": "4273945"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Revenue_fee_line_chart(2010-2026)/EV_Revenue_Line_Chart(2024_25).csv",
+      "rows": 883,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "Revenue"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "Revenue": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "Revenue": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "Revenue"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2024,
+      "max_year": 2025,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "LD",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "Revenue"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2025",
+          "Month": "Jan",
+          "Revenue": "4210775"
+        },
+        {
+          "State": "AN",
+          "Year": "2025",
+          "Month": "Feb",
+          "Revenue": "3533880"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Revenue_fee_line_chart(2010-2026)/EV_Revenue_Line_Chart(2025-26).csv",
+      "rows": 740,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "Revenue"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "Revenue": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "Revenue": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "Revenue"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2025,
+      "max_year": 2026,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "LD",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "Revenue"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2026",
+          "Month": "Jan",
+          "Revenue": "4374761"
+        },
+        {
+          "State": "AN",
+          "Year": "2026",
+          "Month": "Feb",
+          "Revenue": "4529637"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/top_transaction_rto(2010-26)/EV_Top5_Transaction_State_RTO(2010-11).csv",
+      "rows": 19,
+      "columns": 3,
+      "column_names": [
+        "State",
+        "RTO_or_State",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "RTO_or_State": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "RTO_or_State": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "RTO_or_State"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AS",
+        "DL",
+        "DN",
+        "GJ",
+        "OD",
+        "TS"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AS",
+          "RTO_or_State": "KAMRUP(AS-1)",
+          "EV_Transactions": "2138"
+        },
+        {
+          "State": "AS",
+          "RTO_or_State": "NALBARI(AS-14)",
+          "EV_Transactions": "591"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/top_transaction_rto(2010-26)/EV_Top5_Transaction_State_RTO(2011-12).csv",
+      "rows": 23,
+      "columns": 3,
+      "column_names": [
+        "State",
+        "RTO_or_State",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "RTO_or_State": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "RTO_or_State": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "RTO_or_State"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AS",
+        "DL",
+        "DN",
+        "GJ",
+        "OD",
+        "TS"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AS",
+          "RTO_or_State": "KAMRUP(AS-1)",
+          "EV_Transactions": "3719"
+        },
+        {
+          "State": "AS",
+          "RTO_or_State": "NALBARI(AS-14)",
+          "EV_Transactions": "657"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/top_transaction_rto(2010-26)/EV_Top5_Transaction_State_RTO(2012-13).csv",
+      "rows": 32,
+      "columns": 3,
+      "column_names": [
+        "State",
+        "RTO_or_State",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "RTO_or_State": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "RTO_or_State": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "RTO_or_State"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AS",
+        "DL",
+        "DN",
+        "GJ",
+        "HR",
+        "OD",
+        "RJ",
+        "TS"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AS",
+          "RTO_or_State": "KAMRUP(AS-1)",
+          "EV_Transactions": "5908"
+        },
+        {
+          "State": "AS",
+          "RTO_or_State": "NALBARI(AS-14)",
+          "EV_Transactions": "717"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/top_transaction_rto(2010-26)/EV_Top5_Transaction_State_RTO(2013-14).csv",
+      "rows": 36,
+      "columns": 3,
+      "column_names": [
+        "State",
+        "RTO_or_State",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "RTO_or_State": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "RTO_or_State": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "RTO_or_State"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AS",
+        "DL",
+        "DN",
+        "GJ",
+        "HP",
+        "HR",
+        "OD",
+        "RJ",
+        "TS"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AS",
+          "RTO_or_State": "KAMRUP(AS-1)",
+          "EV_Transactions": "10607"
+        },
+        {
+          "State": "AS",
+          "RTO_or_State": "TINSUKIA(AS-23)",
+          "EV_Transactions": "8441"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/top_transaction_rto(2010-26)/EV_Top5_Transaction_State_RTO(2014-15).csv",
+      "rows": 46,
+      "columns": 3,
+      "column_names": [
+        "State",
+        "RTO_or_State",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "RTO_or_State": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "RTO_or_State": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "RTO_or_State"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AS",
+        "DL",
+        "DN",
+        "GJ",
+        "HP",
+        "HR",
+        "JK",
+        "ML",
+        "OD",
+        "RJ",
+        "TS",
+        "UK",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AS",
+          "RTO_or_State": "TINSUKIA(AS-23)",
+          "EV_Transactions": "21506"
+        },
+        {
+          "State": "AS",
+          "RTO_or_State": "KAMRUP(AS-1)",
+          "EV_Transactions": "19136"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/top_transaction_rto(2010-26)/EV_Top5_Transaction_State_RTO(2015-16).csv",
+      "rows": 66,
+      "columns": 3,
+      "column_names": [
+        "State",
+        "RTO_or_State",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "RTO_or_State": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "RTO_or_State": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "RTO_or_State"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AS",
+        "DL",
+        "DN",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "MH",
+        "ML",
+        "OD",
+        "RJ",
+        "SK",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AS",
+          "RTO_or_State": "KAMRUP(AS-1)",
+          "EV_Transactions": "162813"
+        },
+        {
+          "State": "AS",
+          "RTO_or_State": "TINSUKIA(AS-23)",
+          "EV_Transactions": "26621"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/top_transaction_rto(2010-26)/EV_Top5_Transaction_State_RTO(2016-17).csv",
+      "rows": 119,
+      "columns": 3,
+      "column_names": [
+        "State",
+        "RTO_or_State",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "RTO_or_State": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "RTO_or_State": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "RTO_or_State"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AR",
+        "AS",
+        "BR",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "MH",
+        "ML",
+        "MN",
+        "MZ",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AR",
+          "RTO_or_State": "ITANAGAR CAPITAL REGION(AR-1)",
+          "EV_Transactions": "2017"
+        },
+        {
+          "State": "AS",
+          "RTO_or_State": "KAMRUP(AS-1)",
+          "EV_Transactions": "473552"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/top_transaction_rto(2010-26)/EV_Top5_Transaction_State_RTO(2017-18).csv",
+      "rows": 151,
+      "columns": 3,
+      "column_names": [
+        "State",
+        "RTO_or_State",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "RTO_or_State": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "RTO_or_State": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "RTO_or_State"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AR",
+          "RTO_or_State": "ITANAGAR CAPITAL REGION(AR-1)",
+          "EV_Transactions": "19142"
+        },
+        {
+          "State": "AR",
+          "RTO_or_State": "EAST SIANG(AR-9)",
+          "EV_Transactions": "2762"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/top_transaction_rto(2010-26)/EV_Top5_Transaction_State_RTO(2018-19).csv",
+      "rows": 156,
+      "columns": 3,
+      "column_names": [
+        "State",
+        "RTO_or_State",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "RTO_or_State": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "RTO_or_State": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "RTO_or_State"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AR",
+          "RTO_or_State": "ITANAGAR CAPITAL REGION(AR-1)",
+          "EV_Transactions": "41870"
+        },
+        {
+          "State": "AR",
+          "RTO_or_State": "EAST SIANG(AR-9)",
+          "EV_Transactions": "8204"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/top_transaction_rto(2010-26)/EV_Top5_Transaction_State_RTO(2019-20).csv",
+      "rows": 157,
+      "columns": 3,
+      "column_names": [
+        "State",
+        "RTO_or_State",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "RTO_or_State": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "RTO_or_State": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "RTO_or_State"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AN",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "RTO_or_State": "Port Blair DTO(AN-1)",
+          "EV_Transactions": "5358"
+        },
+        {
+          "State": "AR",
+          "RTO_or_State": "ITANAGAR CAPITAL REGION(AR-1)",
+          "EV_Transactions": "57229"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/top_transaction_rto(2010-26)/EV_Top5_Transaction_State_RTO(2020-21).csv",
+      "rows": 162,
+      "columns": 3,
+      "column_names": [
+        "State",
+        "RTO_or_State",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "RTO_or_State": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "RTO_or_State": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "RTO_or_State"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AN",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "RTO_or_State": "Port Blair DTO(AN-1)",
+          "EV_Transactions": "26065"
+        },
+        {
+          "State": "AN",
+          "RTO_or_State": "Ferrargunj(AN-200)",
+          "EV_Transactions": "49"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/top_transaction_rto(2010-26)/EV_Top5_Transaction_State_RTO(2021-22).csv",
+      "rows": 172,
+      "columns": 3,
+      "column_names": [
+        "State",
+        "RTO_or_State",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "RTO_or_State": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "RTO_or_State": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "RTO_or_State"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "RTO_or_State": "Port Blair DTO(AN-1)",
+          "EV_Transactions": "51281"
+        },
+        {
+          "State": "AN",
+          "RTO_or_State": "Diglipur(AN-204)",
+          "EV_Transactions": "189"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/top_transaction_rto(2010-26)/EV_Top5_Transaction_State_RTO(2022-23).csv",
+      "rows": 167,
+      "columns": 3,
+      "column_names": [
+        "State",
+        "RTO_or_State",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "RTO_or_State": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "RTO_or_State": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "RTO_or_State"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "RTO_or_State": "Port Blair DTO(AN-1)",
+          "EV_Transactions": "81022"
+        },
+        {
+          "State": "AN",
+          "RTO_or_State": "Ferrargunj(AN-200)",
+          "EV_Transactions": "267"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/top_transaction_rto(2010-26)/EV_Top5_Transaction_State_RTO(2023-24).csv",
+      "rows": 175,
+      "columns": 3,
+      "column_names": [
+        "State",
+        "RTO_or_State",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "RTO_or_State": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "RTO_or_State": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "RTO_or_State"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "LD",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "RTO_or_State": "Port Blair DTO(AN-1)",
+          "EV_Transactions": "110943"
+        },
+        {
+          "State": "AN",
+          "RTO_or_State": "Ferrargunj(AN-200)",
+          "EV_Transactions": "429"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/top_transaction_rto(2010-26)/EV_Top5_Transaction_State_RTO(2024-25).csv",
+      "rows": 177,
+      "columns": 3,
+      "column_names": [
+        "State",
+        "RTO_or_State",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "RTO_or_State": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "RTO_or_State": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "RTO_or_State"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "LD",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "RTO_or_State": "Port Blair DTO(AN-1)",
+          "EV_Transactions": "145358"
+        },
+        {
+          "State": "AN",
+          "RTO_or_State": "Ferrargunj(AN-200)",
+          "EV_Transactions": "691"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/top_transaction_rto(2010-26)/EV_Top5_Transaction_State_RTO(2025-26).csv",
+      "rows": 177,
+      "columns": 3,
+      "column_names": [
+        "State",
+        "RTO_or_State",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "RTO_or_State": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "RTO_or_State": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "RTO_or_State"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "LD",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "RTO_or_State": "Port Blair DTO(AN-1)",
+          "EV_Transactions": "169912"
+        },
+        {
+          "State": "AN",
+          "RTO_or_State": "Ferrargunj(AN-200)",
+          "EV_Transactions": "890"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Transaction_data(2010_2026)/EV_Transaction_Line_Chart(2010-11).csv",
+      "rows": 992,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2010,
+      "max_year": 2011,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2011",
+          "Month": "Jan",
+          "EV_Transactions": "628"
+        },
+        {
+          "State": "AN",
+          "Year": "2011",
+          "Month": "Feb",
+          "EV_Transactions": "765"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Transaction_data(2010_2026)/EV_Transaction_Line_Chart(2011-12).csv",
+      "rows": 1006,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2011,
+      "max_year": 2012,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2012",
+          "Month": "Jan",
+          "EV_Transactions": "776"
+        },
+        {
+          "State": "AN",
+          "Year": "2012",
+          "Month": "Feb",
+          "EV_Transactions": "860"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Transaction_data(2010_2026)/EV_Transaction_Line_Chart(2012-13).csv",
+      "rows": 999,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2012,
+      "max_year": 2013,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2013",
+          "Month": "Jan",
+          "EV_Transactions": "787"
+        },
+        {
+          "State": "AN",
+          "Year": "2013",
+          "Month": "Feb",
+          "EV_Transactions": "817"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Transaction_data(2010_2026)/EV_Transaction_Line_Chart(2013-14).csv",
+      "rows": 1032,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2013,
+      "max_year": 2014,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2014",
+          "Month": "Jan",
+          "EV_Transactions": "745"
+        },
+        {
+          "State": "AN",
+          "Year": "2014",
+          "Month": "Feb",
+          "EV_Transactions": "855"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Transaction_data(2010_2026)/EV_Transaction_Line_Chart(2014-15).csv",
+      "rows": 1046,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2014,
+      "max_year": 2015,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2015",
+          "Month": "Jan",
+          "EV_Transactions": "891"
+        },
+        {
+          "State": "AN",
+          "Year": "2015",
+          "Month": "Feb",
+          "EV_Transactions": "1152"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Transaction_data(2010_2026)/EV_Transaction_Line_Chart(2015-16).csv",
+      "rows": 1132,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2015,
+      "max_year": 2016,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2016",
+          "Month": "Jan",
+          "EV_Transactions": "980"
+        },
+        {
+          "State": "AN",
+          "Year": "2016",
+          "Month": "Feb",
+          "EV_Transactions": "1222"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Transaction_data(2010_2026)/EV_Transaction_Line_Chart(2016-17).csv",
+      "rows": 1297,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2016,
+      "max_year": 2017,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2017",
+          "Month": "Jan",
+          "EV_Transactions": "1338"
+        },
+        {
+          "State": "AN",
+          "Year": "2017",
+          "Month": "Feb",
+          "EV_Transactions": "1601"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Transaction_data(2010_2026)/EV_Transaction_Line_Chart(2017-18).csv",
+      "rows": 1514,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2017,
+      "max_year": 2018,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2018",
+          "Month": "Jan",
+          "EV_Transactions": "1535"
+        },
+        {
+          "State": "AN",
+          "Year": "2018",
+          "Month": "Feb",
+          "EV_Transactions": "1680"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Transaction_data(2010_2026)/EV_Transaction_Line_Chart(2018-19).csv",
+      "rows": 1634,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2018,
+      "max_year": 2019,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2019",
+          "Month": "Jan",
+          "EV_Transactions": "1669"
+        },
+        {
+          "State": "AN",
+          "Year": "2019",
+          "Month": "Feb",
+          "EV_Transactions": "1613"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Transaction_data(2010_2026)/EV_Transaction_Line_Chart(2019-20).csv",
+      "rows": 1660,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2019,
+      "max_year": 2020,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2019",
+          "Month": "Jan",
+          "EV_Transactions": "1669"
+        },
+        {
+          "State": "AN",
+          "Year": "2019",
+          "Month": "Feb",
+          "EV_Transactions": "1613"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Transaction_data(2010_2026)/EV_Transaction_Line_Chart(2020-21).csv",
+      "rows": 1673,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2020,
+      "max_year": 2021,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2021",
+          "Month": "Jan",
+          "EV_Transactions": "1523"
+        },
+        {
+          "State": "AN",
+          "Year": "2021",
+          "Month": "Feb",
+          "EV_Transactions": "1721"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Transaction_data(2010_2026)/EV_Transaction_Line_Chart(2021-22).csv",
+      "rows": 1697,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2021,
+      "max_year": 2022,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2022",
+          "Month": "Jan",
+          "EV_Transactions": "2437"
+        },
+        {
+          "State": "AN",
+          "Year": "2022",
+          "Month": "Feb",
+          "EV_Transactions": "1643"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Transaction_data(2010_2026)/EV_Transaction_Line_Chart(2022-23).csv",
+      "rows": 1721,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2022,
+      "max_year": 2023,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2023",
+          "Month": "Jan",
+          "EV_Transactions": "2503"
+        },
+        {
+          "State": "AN",
+          "Year": "2023",
+          "Month": "Feb",
+          "EV_Transactions": "2238"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Transaction_data(2010_2026)/EV_Transaction_Line_Chart(2023-24).csv",
+      "rows": 1742,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2023,
+      "max_year": 2024,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "LD",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2024",
+          "Month": "Jan",
+          "EV_Transactions": "2728"
+        },
+        {
+          "State": "AN",
+          "Year": "2024",
+          "Month": "Feb",
+          "EV_Transactions": "2359"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Transaction_data(2010_2026)/EV_Transaction_Line_Chart(2024-25).csv",
+      "rows": 1766,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2024,
+      "max_year": 2025,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "LD",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2025",
+          "Month": "Jan",
+          "EV_Transactions": "2268"
+        },
+        {
+          "State": "AN",
+          "Year": "2025",
+          "Month": "Feb",
+          "EV_Transactions": "2106"
+        }
+      ]
+    },
+    {
+      "file": "Revenue/Transaction_data(2010_2026)/EV_Transaction_Line_Chart(2025-26).csv",
+      "rows": 1480,
+      "columns": 4,
+      "column_names": [
+        "State",
+        "Year",
+        "Month",
+        "EV_Transactions"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Year": "int64",
+        "Month": "str",
+        "EV_Transactions": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Year": 0,
+        "Month": 0,
+        "EV_Transactions": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Year",
+        "EV_Transactions"
+      ],
+      "categorical_columns": [
+        "State",
+        "Month"
+      ],
+      "min_year": 2025,
+      "max_year": 2026,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "LD",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "EV_Transactions"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Year": "2026",
+          "Month": "Jan",
+          "EV_Transactions": "2546"
+        },
+        {
+          "State": "AN",
+          "Year": "2026",
+          "Month": "Feb",
+          "EV_Transactions": "2552"
+        }
+      ]
+    }
+  ],
+  "recommendations": {
+    "primary_target": {
+      "name": "EV_Registrations",
+      "preferred_source": "Register/ev_yearwise_registration.csv",
+      "columns": [
+        "State",
+        "VehicleType",
+        "Year",
+        "Registrations"
+      ],
+      "frequency": "annual",
+      "reason": "Already tidy long-format annual registrations (1067 rows)."
+    },
+    "secondary_targets": [
+      {
+        "name": "EV_Transactions",
+        "preferred_source": "Revenue/Transaction_data(2010_2026)/*.csv",
+        "columns": [
+          "State",
+          "Year",
+          "Month",
+          "EV_Transactions"
+        ],
+        "frequency": "monthly"
+      },
+      {
+        "name": "EV_Revenue",
+        "preferred_source": "Revenue/Revenue_fee_line_chart(2010-2026)/*.csv",
+        "columns": [
+          "State",
+          "Year",
+          "Month",
+          "Revenue"
+        ],
+        "frequency": "monthly"
+      }
+    ],
+    "not_supported": [
+      "Charging stations \u2014 not present in DataSet.zip",
+      "Battery health sensors \u2014 not present",
+      "True geospatial deep learning \u2014 only state codes available"
+    ],
+    "merge_plan": {
+      "annual_registrations": "Use ev_yearwise_registration.csv as primary; expand registration_2010-2026.csv lists as validation/supplement without duplicating identical rows.",
+      "monthly_transactions": "Concatenate all EV_Transaction_Line_Chart*.csv; build datetime from Year+Month.",
+      "monthly_revenue": "Concatenate all EV_Revenue_Line_Chart*.csv; build datetime from Year+Month.",
+      "do_not": "Do not join monthly revenue into annual registration rows at monthly grain without aggregation. Aggregate to common frequency first."
+    },
+    "training_strategy": {
+      "approach_1": "Annual EV registration forecast (Naive, ARIMA, RF, XGB, CNN, LSTM, CNN-LSTM) with chronological split.",
+      "approach_2": "Monthly EV transaction/revenue forecast (ARIMA/SARIMA, CNN, LSTM, CNN-LSTM) with chronological split.",
+      "split": "70/15/15 chronological when enough points; otherwise leave-last-N-years out."
+    }
+  },
+  "relationships": {
+    "overlapping_registration_sources": [
+      "ev_yearwise_registration.csv",
+      "registration_2010-2026.csv (nested lists)",
+      "ev_data.csv (single nested sample)"
+    ],
+    "distributional_tables": [
+      "fuel_type_ev_data.csv",
+      "ev_emission_distribution.csv",
+      "ev_vehicle_class_distribution.csv",
+      "top5_vehicle_makers_all_states.csv",
+      "top5_states_all_filters.csv"
+    ]
+  }
+}

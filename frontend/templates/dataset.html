@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Dataset · EVForecast{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <h1 class="h2 mb-2">Dataset</h1>
+    <p class="text-muted-2 mb-4">EV registration, transaction, and revenue indicators from the project DataSet.zip (state-wise annual & monthly series).</p>
+    <div class="row g-3" id="dsCards"></div>
+    <div class="glass p-4 mt-4">
+      <h2 class="h5">Features & Target</h2>
+      <div id="featList" class="d-flex flex-wrap gap-2"></div>
+      <hr class="border-secondary opacity-25" />
+      <p class="mb-1"><strong>Target:</strong> <code id="dsTarget">Registrations</code></p>
+      <p class="mb-0 text-muted-2">Preprocessing: missing-value handling, duplicate removal, chronological splits, lag/rolling features. Scaling fitted on training data only.</p>
+    </div>
+
+    <div class="mt-5" id="research">
+      <h2 class="h3 mb-2">Research Overview</h2>
+      <p class="text-muted-2 mb-4">IEEE-oriented framing for the BE major project (linked with this dataset).</p>
+
+      <div class="glass p-4 mb-3">
+        <h3 class="h5">Research Gap</h3>
+        <p class="mb-0">Prior EV forecasting rarely unifies temporal deep learning, explainability, and multi-state time-series analysis in one deployable system. This work addresses that with hybrid CNN-LSTM forecasting plus SHAP-based explanation on real registration / transaction / revenue data.</p>
+      </div>
+
+      <div class="glass p-4 mb-3">
+        <h3 class="h5">Literature Themes</h3>
+        <ul class="mb-0">
+          <li>Hybrid CNN-LSTM for temporal market signals</li>
+          <li>ARIMA / SARIMA classical time-series baselines</li>
+          <li>Random Forest / XGBoost tabular forecasting</li>
+          <li>SHAP / LIME for trustworthy AI</li>
+          <li>State-level spatial analysis of EV adoption</li>
+        </ul>
+      </div>
+
+      <div class="glass p-4 table-responsive">
+        <h3 class="h5">Comparison Snapshot</h3>
+        <table class="table mb-0">
+          <thead><tr><th>Approach</th><th>Strength</th><th>Limitation</th><th>Gap Addressed</th></tr></thead>
+          <tbody>
+            <tr><td>ARIMA / Prophet</td><td>Interpretable trends</td><td>Weak nonlinear multi-driver capture</td><td>Deep hybrid + engineered lags</td></tr>
+            <tr><td>XGBoost / Random Forest</td><td>Strong tabular accuracy</td><td>Limited sequence memory</td><td>CNN-LSTM temporal encoding</td></tr>
+            <tr><td>LSTM / CNN</td><td>Temporal / local patterns</td><td>Opaque decisions alone</td><td>SHAP explanations</td></tr>
+            <tr><td>Proposed Hybrid CNN-LSTM</td><td>Local + sequential features</td><td>Needs enough history</td><td>End-to-end EV growth forecast</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>
+(async () => {
+  const s = await EVForecast.API.summary();
+  document.getElementById("dsCards").innerHTML = [
+    ["Rows", s.rows], ["Regions", s.regions], ["Start", s.date_start], ["End", s.date_end], ["Frequency", s.sampling_frequency], ["Missing", s.missing_values]
+  ].map(([k,v]) => `<div class="col-md-2"><div class="glass kpi"><div class="label">${k}</div><div class="value" style="font-size:1.15rem">${v}</div></div></div>`).join("");
+  document.getElementById("featList").innerHTML = (s.features || []).map(f => `<span class="chip">${f}</span>`).join("");
+  if (s.target) document.getElementById("dsTarget").textContent = s.target;
+  if (location.hash === "#research") {
+    document.getElementById("research")?.scrollIntoView({ behavior: "smooth" });
+  }
+})();
+</script>
+{% endblock %}

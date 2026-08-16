@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Research · EVForecast{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container" style="max-width:1000px">
+    <h1 class="h2">Research Overview</h1>
+    <p class="text-muted-2">IEEE-oriented framing for the BE major project.</p>
+
+    <div class="glass p-4 mb-3">
+      <h2 class="h5">Research Gap</h2>
+      <p class="mb-0">Prior EV forecasting rarely unifies spatial-temporal deep learning, explainability, federated privacy, and physics-informed grid/battery constraints in one deployable system. This work closes that gap with a hybrid CNN-LSTM-Attention pipeline plus XAI and FedAvg cross-city training.</p>
+    </div>
+
+    <div class="glass p-4 mb-3">
+      <h2 class="h5">Literature Themes</h2>
+      <ul>
+        <li>Hybrid CNN-LSTM / CNN-GRU for temporal market signals</li>
+        <li>Transformers and TCN for long-range dependencies</li>
+        <li>STGCN / GNN for spatial charging networks</li>
+        <li>XGBoost / LightGBM / CatBoost tabular baselines</li>
+        <li>SHAP / LIME for trustworthy AI</li>
+        <li>Federated learning for multi-city collaboration</li>
+        <li>Physics-informed neural networks for constrained systems</li>
+      </ul>
+    </div>
+
+    <div class="glass p-4 table-responsive">
+      <h2 class="h5">Comparison Snapshot</h2>
+      <table class="table">
+        <thead><tr><th>Approach</th><th>Strength</th><th>Limitation</th><th>Gap Addressed</th></tr></thead>
+        <tbody>
+          <tr><td>ARIMA / Prophet</td><td>Interpretable trends</td><td>Weak nonlinear & multi-driver capture</td><td>Deep hybrid exogenous features</td></tr>
+          <tr><td>XGBoost / LightGBM</td><td>Strong tabular accuracy</td><td>Limited sequence memory</td><td>CNN-LSTM temporal encoding</td></tr>
+          <tr><td>LSTM / GRU</td><td>Temporal dynamics</td><td>Opaque decisions</td><td>Attention + SHAP/LIME</td></tr>
+          <tr><td>STGCN / GNN</td><td>Spatial graphs</td><td>Heavy data needs</td><td>Regional FedAvg + station features</td></tr>
+          <tr><td>Proposed Hybrid</td><td>Accuracy + XAI + privacy + physics</td><td>Training cost</td><td>End-to-end decision system</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+{% endblock %}

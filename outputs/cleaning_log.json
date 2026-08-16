@@ -1,0 +1,85 @@
+{
+  "registrations_rows": 1099,
+  "transactions_rows": 7380,
+  "revenue_rows": 7227,
+  "states_registration": [
+    "AN",
+    "AP",
+    "AR",
+    "AS",
+    "BR",
+    "CG",
+    "CH",
+    "CT",
+    "DD",
+    "DL",
+    "DN",
+    "GA",
+    "GJ",
+    "HP",
+    "HR",
+    "JH",
+    "JK",
+    "KA",
+    "KL",
+    "LA",
+    "LD",
+    "MH",
+    "ML",
+    "MN",
+    "MP",
+    "MZ",
+    "NL",
+    "OD",
+    "PB",
+    "PY",
+    "RJ",
+    "SK",
+    "TN",
+    "TR",
+    "TS",
+    "UK",
+    "UP",
+    "WB"
+  ],
+  "year_range_registration": [
+    2011,
+    2026
+  ],
+  "cleaning_log": [
+    {
+      "action": "clean_primary_registrations",
+      "detail": "Kept 1067/1067 rows; removed nulls/duplicates",
+      "source": "ev_yearwise_registration.csv"
+    },
+    {
+      "action": "expand_nested",
+      "detail": "Expanded registration lists into 1068 rows"
+    },
+    {
+      "action": "merge_registrations",
+      "detail": "Added 32 non-overlapping expanded rows; total=1099"
+    },
+    {
+      "action": "national_aggregate",
+      "detail": "National annual series length=16"
+    },
+    {
+      "action": "clean_monthly",
+      "detail": "transactions: kept 7380/22391 rows -> ev_transactions_monthly.csv"
+    },
+    {
+      "action": "clean_monthly",
+      "detail": "revenue: kept 7227/13726 rows -> ev_revenue_monthly.csv"
+    },
+    {
+      "action": "distributions",
+      "detail": "Saved fuel/emission/class/makers/dashboard cleaned tables"
+    }
+  ],
+  "leakage_notes": [
+    "Scalers and encoders must be fit on training period only (enforced in feature_engineering/train scripts).",
+    "Monthly features are not joined into annual targets at monthly grain.",
+    "Forecast inputs use only lagged historical values."
+  ]
+}
