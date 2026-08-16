@@ -1,10 +1,15 @@
 .venv/
+venv/
+ENV/
+env/
 __pycache__/
+**/__pycache__/
 *.pyc
 *.pyo
 .pytest_cache/
 .idea/
 .vscode/
+vscode.local.bak/
 *.db
 .env
 models/saved/*.keras
@@ -17,3 +22,4 @@ data/raw/*
 *.log
 .DS_Store
 catboost_info/
+.ipynb_checkpoints/
