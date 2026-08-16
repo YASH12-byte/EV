@@ -30,6 +30,31 @@ Open **http://127.0.0.1:5000/login** (not Live Server HTTPS).
 
 ---
 
+## Important: GitHub is not the website
+
+https://github.com/YASH12-byte/EV shows **source code only** (README text / files).  
+It does **not** run Flask. Do **not** upload a Windows `venv/` folder — hosting platforms install packages from `requirements-deploy.txt`.
+
+### Deploy the live website (Render)
+
+1. Push this repo to GitHub (already done).
+2. On [Render](https://render.com): **New → Web Service** → connect `YASH12-byte/EV`.
+3. Settings:
+   - **Build command:** `pip install -r requirements-deploy.txt`
+   - **Start command:** `gunicorn run:app --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 120`
+   - **Python version:** `3.11.9` (see `runtime.txt`)
+4. Deploy → open the `https://….onrender.com` URL (that is the real website).
+
+Local `venv` stays on your PC only:
+
+```bash
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+---
+
 ## Dataset (from DataSet.zip)
 
 ### Register (annual + distributions)

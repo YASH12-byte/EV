@@ -1,0 +1,14 @@
+# Web-service deploy deps (Render / Railway).
+# Do NOT use a Windows venv on the server — the host installs these packages.
+flask==3.0.3
+flask-cors==4.0.1
+flask-jwt-extended==4.6.0
+flask-sqlalchemy==3.1.1
+werkzeug==3.0.3
+python-dotenv==1.0.1
+gunicorn==22.0.0
+numpy==1.26.4
+pandas==2.2.2
+scikit-learn==1.5.1
+joblib==1.4.2
+openpyxl==3.1.5

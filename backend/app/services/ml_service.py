@@ -40,12 +40,16 @@ class MLService:
                 self.target_scaler = joblib.load(ts)
             model_path = config.MODEL_DIR / "Hybrid_CNN_LSTM_Attention.keras"
             if model_path.exists():
-                import tensorflow as tf
-                from ml.models.hybrid_cnn_lstm_attention import AttentionBlock
+                try:
+                    import tensorflow as tf
+                    from ml.models.hybrid_cnn_lstm_attention import AttentionBlock
 
-                self.model = tf.keras.models.load_model(
-                    model_path, custom_objects={"AttentionBlock": AttentionBlock}
-                )
+                    self.model = tf.keras.models.load_model(
+                        model_path, custom_objects={"AttentionBlock": AttentionBlock}
+                    )
+                except ImportError:
+                    print("[MLService] TensorFlow not installed — using data/heuristic forecasts only.")
+                    self.model = None
         except Exception as e:
             print(f"[MLService] artifact load warning: {e}")
 
