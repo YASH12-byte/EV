@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Forecast · EVForecast{% endblock %}
+{% block head %}<script src="../static/js/live-server-bridge.js"></script>{% endblock %}
 {% block content %}
 <section class="section">
   <div class="container">
@@ -50,11 +51,19 @@
         <div class="glass p-4 h-100">
           <h2 class="h5">Predicted EV Growth</h2>
           <div id="predResult" class="text-muted-2">Choose options and generate a forecast.</div>
-          <div id="forecastPlot" class="mt-3" style="height:280px"></div>
+          <div id="forecastPlot" class="mt-3" style="min-height:320px"></div>
+          <div id="forecastPlotEmpty" class="text-muted-2 small d-none mt-2">Insufficient data to render chart.</div>
+          <div class="mt-4" id="localXaiSection">
+            <h3 class="h6">Why This Prediction Increased / Decreased</h3>
+            <p class="small text-muted-2 mb-2">Local TreeSHAP on Random Forest for the selected row (model behavior, not causation).</p>
+            <div id="localXaiContent" class="small text-muted-2">Generate a forecast to see a local explanation.</div>
+            <div id="localXaiChart" class="mt-3" style="min-height:260px"></div>
+          </div>
           <div class="mt-4">
-            <h3 class="h6">Why?</h3>
-            <p class="small text-muted-2 mb-2">Top influencing features from SHAP / trained-model importance (actual features only):</p>
+            <h3 class="h6">Global Model Feature Importance</h3>
+            <p class="small text-muted-2 mb-2">Dataset-wide SHAP ranking (separate from the local explanation above):</p>
             <ul id="driverList" class="list-unstyled"></ul>
+            <a href="/xai" class="btn btn-ghost btn-sm mt-2">Open full Explainability dashboard →</a>
           </div>
         </div>
       </div>
@@ -77,15 +86,185 @@ function syncHorizonUI() {
   }
 }
 
+function sanitizeSeries(dates, values) {
+  const pairs = (dates || []).map((d, i) => {
+    const v = values?.[i];
+    const num = Number(v);
+    return { d: String(d), v: Number.isFinite(num) ? num : null };
+  }).filter((p) => p.d && p.v !== null);
+  pairs.sort((a, b) => String(a.d).localeCompare(String(b.d), undefined, { numeric: true }));
+  return { dates: pairs.map((p) => p.d), values: pairs.map((p) => p.v) };
+}
+
+function renderForecastChart(containerId, history, forecast, modelFit, yLabel) {
+  const plotEl = document.getElementById(containerId);
+  const emptyEl = document.getElementById("forecastPlotEmpty");
+  const hist = sanitizeSeries(history?.dates, history?.values || history?.ev_sales);
+  const fc = sanitizeSeries(forecast?.dates, forecast?.values || forecast?.ev_sales);
+  const fit = sanitizeSeries(modelFit?.dates, modelFit?.predicted);
+
+  if (!hist.dates.length && !fc.dates.length) {
+    Plotly.purge(plotEl);
+    emptyEl.classList.remove("d-none");
+    return;
+  }
+  emptyEl.classList.add("d-none");
+
+  const traces = [];
+  if (hist.dates.length) {
+    traces.push({
+      x: hist.dates, y: hist.values, name: "Actual (historical)", type: "scatter",
+      mode: "lines+markers", line: { color: "#38bdf8", width: 2.5 },
+      hovertemplate: "<b>%{x}</b><br>Actual: %{y:,.0f}<extra></extra>",
+    });
+  }
+  if (fit.dates.length) {
+    traces.push({
+      x: fit.dates, y: fit.values, name: "Predicted (RF test)", type: "scatter",
+      mode: "lines+markers", line: { color: "#a78bfa", dash: "dot", width: 2 },
+      hovertemplate: "<b>%{x}</b><br>Predicted: %{y:,.0f}<extra></extra>",
+    });
+  }
+  if (fc.dates.length) {
+    const bridge = hist.dates.length
+      ? [[hist.dates[hist.dates.length - 1], hist.values[hist.values.length - 1]]]
+      : [];
+    traces.push({
+      x: [...(bridge.length ? [bridge[0][0]] : []), ...fc.dates],
+      y: [...(bridge.length ? [bridge[0][1]] : []), ...fc.values],
+      name: "Forecast", type: "scatter", mode: "lines+markers",
+      line: { color: "#2dd4bf", width: 3, dash: "dash" },
+      hovertemplate: "<b>%{x}</b><br>Forecast: %{y:,.0f}<extra></extra>",
+    });
+  }
+
+  Plotly.newPlot(plotEl, traces, {
+    paper_bgcolor: "transparent", plot_bgcolor: "transparent",
+    font: { color: "#cfe3ec", family: "Outfit" },
+    margin: { t: 24, r: 16, b: 48, l: 64 },
+    legend: { orientation: "h", y: 1.12 },
+    xaxis: { title: "Period", gridcolor: "rgba(255,255,255,0.05)", tickangle: -25 },
+    yaxis: { title: yLabel, gridcolor: "rgba(255,255,255,0.05)", tickformat: ",.0f" },
+    hovermode: "x unified",
+  }, { responsive: true, displayModeBar: true });
+}
+
+function renderLocalXai(expl) {
+  const box = document.getElementById("localXaiContent");
+  const chart = document.getElementById("localXaiChart");
+  if (!expl || !expl.ok) {
+    box.innerHTML = `<div class="text-warning">${expl?.error || "Local explanation unavailable for this selection."}</div>`;
+    Plotly.purge(chart);
+    return;
+  }
+  const nl = expl.natural_language || {};
+  const pos = (expl.positive_contributors || []).slice(0, 3);
+  const neg = (expl.negative_contributors || []).slice(0, 3);
+  box.innerHTML = `
+    <p><strong>Prediction:</strong> ${Number(expl.prediction).toLocaleString("en-IN")} registrations
+    · <strong>Baseline:</strong> ${Number(expl.baseline).toLocaleString("en-IN")}
+    · <strong>Direction:</strong> ${expl.direction || "—"} (${expl.growth_pct != null ? expl.growth_pct.toFixed(1) + "%" : "—"})</p>
+    <p class="mb-1"><strong>Main reasons:</strong></p>
+    <ol class="mb-2">${(nl.main_reasons || []).map((l) => `<li>${l}</li>`).join("") || "<li>—</li>"}</ol>
+    <p class="mb-1"><strong>Factors reducing the prediction:</strong></p>
+    <ol class="mb-2">${(nl.reducing_factors || []).map((l) => `<li>${l}</li>`).join("") || "<li>None identified</li>"}</ol>
+    <p class="mb-0">${nl.overall || ""}</p>
+    <p class="small text-muted-2 mt-2 mb-0">${nl.causality_note || ""}${expl.aggregate_note ? " " + expl.aggregate_note : ""}</p>`;
+
+  const wf = expl.waterfall || {};
+  const labels = ["Baseline", ...(wf.contributions || []).map((c) => c.label), "Final"];
+  const measures = ["absolute", ...(wf.contributions || []).map(() => "relative"), "total"];
+  const values = [wf.base || 0, ...(wf.contributions || []).map((c) => c.value), wf.final || 0];
+  Plotly.newPlot(chart, [{
+    type: "waterfall", orientation: "v", x: labels, y: values, measure: measures,
+    increasing: { marker: { color: "#2dd4bf" } },
+    decreasing: { marker: { color: "#f87171" } },
+    totals: { marker: { color: "#38bdf8" } },
+    connector: { line: { color: "rgba(255,255,255,0.2)" } },
+  }], {
+    paper_bgcolor: "transparent", plot_bgcolor: "transparent",
+    font: { color: "#cfe3ec", size: 10 },
+    margin: { t: 16, r: 10, b: 90, l: 55 },
+    xaxis: { tickangle: -35 },
+    yaxis: { title: "Registrations", tickformat: ",.0f" },
+  }, { responsive: true, displayModeBar: false });
+}
+
+async function runForecast() {
+  const target = document.getElementById("predTarget").value;
+  const region = document.getElementById("predRegion").value;
+  const vehicle = document.getElementById("predVehicle").value;
+  const horizon = parseInt(document.getElementById("predHorizon").value, 10);
+  const resultEl = document.getElementById("predResult");
+  resultEl.innerHTML = `<span class="text-muted-2">Loading forecast…</span>`;
+  try {
+    const out = await EVForecast.API.forecast(region, horizon, target, vehicle);
+    if (!out.ok) {
+      resultEl.innerHTML = `<div class="text-danger">${out.message || "Forecast failed"}</div>`;
+      return;
+    }
+
+    const unit =
+      target === "revenue" ? "revenue units" :
+      target === "transactions" ? "EV transactions" : "EV registrations";
+    const points = (out.forecast?.points || []).map((p) => {
+      const period = p.period || p.year;
+      return `<li class="mb-1"><strong>${period}</strong> → ${Number(p.value).toLocaleString("en-IN")} ${unit}</li>`;
+    }).join("");
+
+    resultEl.innerHTML = `
+      <div class="mb-2"><span class="chip">${out.region_name || out.region}</span>
+      <span class="chip">${out.target || target}</span>
+      <span class="chip">${out.model || ""}</span></div>
+      <ul class="mb-0">${points}</ul>
+      <p class="small text-muted-2 mt-2 mb-0">${out.note || ""}</p>`;
+
+    try {
+      renderForecastChart(
+        "forecastPlot",
+        out.history,
+        out.forecast,
+        out.model_fit,
+        unit.charAt(0).toUpperCase() + unit.slice(1)
+      );
+    } catch (chartErr) {
+      console.error(chartErr);
+      document.getElementById("forecastPlotEmpty")?.classList.remove("d-none");
+    }
+
+    try {
+      if (target === "registrations" && out.local_explanation) {
+        renderLocalXai(out.local_explanation);
+      } else {
+        document.getElementById("localXaiContent").innerHTML =
+          `<span class="text-muted-2">Local TreeSHAP is available for EV Registrations forecasts.</span>`;
+        Plotly.purge(document.getElementById("localXaiChart"));
+      }
+    } catch (xaiErr) {
+      console.error(xaiErr);
+      document.getElementById("localXaiContent").innerHTML =
+        `<span class="text-warning">Local explanation chart could not be rendered.</span>`;
+    }
+
+    const drivers = out.top_factors || [];
+    document.getElementById("driverList").innerHTML = drivers.length
+      ? drivers.map((d, i) =>
+          `<li class="mb-2"><strong>${i + 1}. ${d.label || d.feature}</strong> (importance ${Number(d.importance).toFixed(3)})</li>`
+        ).join("")
+      : `<li class="text-muted-2">No SHAP ranking file yet — run python src/xai_shap.py</li>`;
+  } catch (err) {
+    resultEl.innerHTML = `<div class="text-danger">${err.message || "Failed to load forecast."}</div>`;
+  }
+}
+
 document.getElementById("predTarget").addEventListener("change", syncHorizonUI);
 syncHorizonUI();
 
 (async () => {
   const regs = await EVForecast.API.regions();
   const sel = document.getElementById("predRegion");
-  (regs.regions || []).forEach(r => {
+  (regs.regions || []).forEach((r) => {
     const o = document.createElement("option");
-    // Support both {code,name} and legacy string
     if (typeof r === "string") {
       o.value = r;
       o.textContent = r;
@@ -95,53 +274,12 @@ syncHorizonUI();
     }
     sel.appendChild(o);
   });
+  runForecast();
 })();
 
-document.getElementById("predForm").addEventListener("submit", async (e) => {
+document.getElementById("predForm").addEventListener("submit", (e) => {
   e.preventDefault();
-  const target = document.getElementById("predTarget").value;
-  const region = document.getElementById("predRegion").value;
-  const vehicle = document.getElementById("predVehicle").value;
-  const horizon = parseInt(document.getElementById("predHorizon").value, 10);
-  const out = await EVForecast.API.forecast(region, horizon, target, vehicle);
-  if (!out.ok) {
-    document.getElementById("predResult").innerHTML = `<div class="text-danger">${out.message || "Forecast failed"}</div>`;
-    return;
-  }
-
-  const unit =
-    target === "revenue" ? "revenue units" :
-    target === "transactions" ? "EV transactions" : "EV registrations";
-  const points = (out.forecast?.points || []).map(p => {
-    const period = p.period || p.year;
-    return `<li class="mb-1"><strong>${period}</strong> → ${Number(p.value).toLocaleString("en-IN")} ${unit}</li>`;
-  }).join("");
-
-  document.getElementById("predResult").innerHTML = `
-    <div class="mb-2"><span class="chip">${out.region_name || out.region}</span>
-    <span class="chip">${out.target || target}</span>
-    <span class="chip">${out.model || ""}</span></div>
-    <ul class="mb-0">${points}</ul>
-    <p class="small text-muted-2 mt-2 mb-0">${out.note || ""}</p>`;
-
-  Plotly.newPlot("forecastPlot", [
-    { x: out.history.dates, y: out.history.ev_sales || out.history.values, name: "Historical", type: "scatter", mode: "lines", line: { color: "#38bdf8" } },
-    { x: out.forecast.dates, y: out.forecast.ev_sales || out.forecast.values, name: "Forecast", type: "scatter", mode: "lines+markers", line: { color: "#2dd4bf", dash: "dot" } }
-  ], {
-    paper_bgcolor: "transparent", plot_bgcolor: "transparent",
-    font: { color: "#cfe3ec", family: "Outfit" },
-    margin: { t: 10, r: 10, b: 40, l: 50 },
-    legend: { orientation: "h" },
-    xaxis: { gridcolor: "rgba(255,255,255,0.05)" },
-    yaxis: { gridcolor: "rgba(255,255,255,0.05)" }
-  }, { responsive: true, displayModeBar: false });
-
-  const drivers = out.top_factors || [];
-  document.getElementById("driverList").innerHTML = drivers.length
-    ? drivers.map((d, i) =>
-        `<li class="mb-2"><strong>${i + 1}. ${d.label || d.feature}</strong></li>`
-      ).join("")
-    : `<li class="text-muted-2">No SHAP ranking file yet — run python src/xai_shap.py</li>`;
+  runForecast();
 });
 </script>
 {% endblock %}

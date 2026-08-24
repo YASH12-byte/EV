@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% block title %}Explainable AI · EVForecast{% endblock %}
+{% block head %}
+<script src="../static/js/live-server-bridge.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/xai-dashboard.css') }}" />
+{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container">
+
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-3">
+      <div>
+        <div class="chip mb-2">Explainable AI</div>
+        <h1 class="h2 mb-1">Why Did EV Sales Change?</h1>
+        <p class="text-muted-2 mb-0">SHAP + LIME · temporal drivers · natural-language explanations (dataset features only)</p>
+      </div>
+      <div class="d-flex flex-wrap gap-2 align-items-center">
+        <select id="xaiState" class="form-select" style="min-width:200px"></select>
+        <select id="xaiYear" class="form-select" style="min-width:100px"></select>
+        <select id="xaiVehicle" class="form-select" style="min-width:140px"></select>
+        <button type="button" class="btn btn-ghost" id="xaiReset">Reset Filters</button>
+        <button type="button" class="btn btn-glow" id="xaiRefresh">Refresh <span id="xaiSpin" class="xai-spinner d-none"></span></button>
+      </div>
+    </div>
+
+    <p class="small text-muted-2">Last refreshed: <span id="xaiLastRef">—</span></p>
+    <div id="xaiToast" class="xai-toast d-none" role="status"></div>
+    <p class="xai-disclaimer" id="xaiDisclaimer"></p>
+
+    <div class="row g-3 mb-3">
+      <div class="col-md-4 col-xl"><div class="glass kpi xai-kpi"><div class="label">Current EV Registrations</div><div class="value" id="kpiCurrent">—</div></div></div>
+      <div class="col-md-4 col-xl"><div class="glass kpi xai-kpi"><div class="label">Model Prediction</div><div class="value" id="kpiPred">—</div></div></div>
+      <div class="col-md-4 col-xl"><div class="glass kpi xai-kpi"><div class="label">Growth %</div><div class="value" id="kpiGrowth">—</div></div></div>
+      <div class="col-md-4 col-xl"><div class="glass kpi xai-kpi"><div class="label">Approx. Forecast Accuracy</div><div class="value" id="kpiAcc">—</div></div></div>
+      <div class="col-md-4 col-xl"><div class="glass kpi xai-kpi"><div class="label">Top Positive Factor</div><div class="value" id="kpiPos" style="font-size:1rem">—</div></div></div>
+      <div class="col-md-4 col-xl"><div class="glass kpi xai-kpi"><div class="label">Top Negative Factor</div><div class="value" id="kpiNeg" style="font-size:1rem">—</div></div></div>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div class="col-lg-8">
+        <div class="glass xai-panel">
+          <h2 class="h6">EV Sales Trend — Actual · Predicted · Forecast</h2>
+          <div id="chartTimeseries" style="height:360px"></div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="glass xai-panel">
+          <h2 class="h6">Prediction Explanation Card</h2>
+          <div id="predCard" class="small text-muted-2">Loading…</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div class="col-lg-8">
+        <div class="glass xai-panel">
+          <h2 class="h6">Why This Prediction Increased / Decreased <span class="chip ms-1">Local TreeSHAP</span></h2>
+          <div id="localExplainSummary" class="small mb-3"></div>
+          <div id="chartLocalContrib" style="height:300px"></div>
+          <div class="table-responsive mt-3">
+            <table class="table table-sm" id="contribTable">
+              <thead><tr><th>Feature</th><th>Actual</th><th>Reference</th><th>Contribution</th><th>Direction</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="glass xai-panel">
+          <h2 class="h6">Model Accuracy (Test Set)</h2>
+          <p class="small text-muted-2" id="accLabel"></p>
+          <div class="table-responsive">
+            <table class="table table-sm" id="accTable">
+              <thead><tr><th>Model</th><th>MAE</th><th>RMSE</th><th>MAPE</th><th>R²</th><th>Approx Acc</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="small mb-0" id="pointErr"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div class="col-lg-6">
+        <div class="glass xai-panel">
+          <h2 class="h6">Why Did Sales Increase / Decrease?</h2>
+          <div id="whyPanel"></div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="glass xai-panel">
+          <h2 class="h6">What Factors Are Driving EV Sales?</h2>
+          <div class="row">
+            <div class="col-md-6">
+              <h3 class="h6 text-success">Positive Drivers</h3>
+              <ul class="xai-factor-list" id="posDrivers"></ul>
+            </div>
+            <div class="col-md-6">
+              <h3 class="h6 text-danger">Negative Drivers</h3>
+              <ul class="xai-factor-list" id="negDrivers"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div class="col-lg-6">
+        <div class="glass xai-panel">
+          <h2 class="h6">SHAP Feature Importance <span class="chip ms-1">Global</span></h2>
+          <canvas id="chartImportance" height="220"></canvas>
+          <div class="table-responsive mt-3">
+            <table class="table table-sm" id="impTable">
+              <thead><tr><th>Feature</th><th>Importance</th><th>Impact</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="glass xai-panel">
+          <h2 class="h6">SHAP Waterfall — Individual Prediction</h2>
+          <div id="chartWaterfall" style="height:280px"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div class="col-lg-6">
+        <div class="glass xai-panel">
+          <h2 class="h6">Feature Dependence</h2>
+          <select id="depFeature" class="form-select form-select-sm mb-2" style="max-width:280px"></select>
+          <div id="chartDependence" style="height:260px"></div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="glass xai-panel">
+          <h2 class="h6">Positive vs Negative Contributions</h2>
+          <div id="chartPosNeg" style="height:260px"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div class="col-lg-4">
+        <div class="glass xai-panel">
+          <h2 class="h6">Historical Explanation</h2>
+          <p id="histExplain" class="mb-0"></p>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="glass xai-panel">
+          <h2 class="h6">Forecast Explanation</h2>
+          <p id="fcExplain" class="mb-0"></p>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="glass xai-panel">
+          <h2 class="h6">Model XAI Compatibility</h2>
+          <div id="modelXai" class="small"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-3">
+      <div class="col-lg-6">
+        <div class="glass xai-panel">
+          <h2 class="h6">SHAP Summary Plot</h2>
+          <img id="imgSummary" class="xai-img" alt="SHAP summary" />
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="glass xai-panel">
+          <h2 class="h6">LIME Local Explanation</h2>
+          <div id="limeWrap" class="xai-unavail">Run <code>python src/xai_lime.py</code> to generate LIME HTML.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="glass xai-panel">
+      <h2 class="h6">Not Available in Current Dataset</h2>
+      <ul id="unavailList" class="xai-unavail mb-0"></ul>
+    </div>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/xai-dashboard.js') }}"></script>
+{% endblock %}

@@ -10,14 +10,23 @@ const API = {
     try {
       res = await fetch(path, { ...options, headers });
     } catch (netErr) {
-      const err = new Error(
-        "Cannot reach Flask at this URL. Start the app with: python run.py (http://127.0.0.1:5000)"
-      );
+      const err = new Error("Cannot reach the server. Check that the application is running.");
       err.status = 0;
       err.data = {};
       throw err;
     }
-    const data = await res.json().catch(() => ({}));
+    const text = await res.text();
+    let data = {};
+    try {
+      data = JSON.parse(
+        text
+          .replace(/\bNaN\b/g, "null")
+          .replace(/-Infinity\b/g, "null")
+          .replace(/\bInfinity\b/g, "null")
+      );
+    } catch (_) {
+      data = {};
+    }
     if (!res.ok) {
       const err = new Error(
         data.message || `Request failed (${res.status} ${path})`
@@ -46,6 +55,11 @@ const API = {
         `&target=${encodeURIComponent(target)}&vehicle_type=${encodeURIComponent(vehicleType)}`
     ),
   xai: () => API.request("/api/xai/insights"),
+  xaiDashboard: (params = {}) => {
+    const q = new URLSearchParams(params).toString();
+    return API.request(`/api/xai/dashboard${q ? `?${q}` : ""}`);
+  },
+  xaiRefresh: (params = {}) => API.xaiDashboard({ ...params, refresh: "1" }),
   adminStats: () => API.request("/api/admin/stats"),
   adminUsers: () => API.request("/api/admin/users"),
   adminPredictions: () => API.request("/api/admin/predictions"),

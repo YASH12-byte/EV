@@ -1,0 +1,1100 @@
+State,VehicleType,Year,Registrations
+AN,Non Transport,2016,1.0
+AN,Non Transport,2017,0.0
+AN,Non Transport,2018,20.0
+AN,Non Transport,2019,2.0
+AN,Non Transport,2020,36.0
+AN,Non Transport,2021,92.0
+AN,Non Transport,2022,23.0
+AN,Non Transport,2023,26.0
+AN,Non Transport,2024,79.0
+AN,Non Transport,2025,201.0
+AN,Non Transport,2026,148.0
+AN,Transport,2020,1.0
+AN,Transport,2021,71.0
+AN,Transport,2022,18.0
+AN,Transport,2023,9.0
+AN,Transport,2024,33.0
+AN,Transport,2025,108.0
+AN,Transport,2026,84.0
+AP,Non Transport,2011,78.0
+AP,Non Transport,2012,18.0
+AP,Non Transport,2013,20.0
+AP,Non Transport,2014,12.0
+AP,Non Transport,2015,9.0
+AP,Non Transport,2016,20.0
+AP,Non Transport,2017,1.0
+AP,Non Transport,2018,1180.0
+AP,Non Transport,2019,2143.0
+AP,Non Transport,2020,1649.0
+AP,Non Transport,2021,9675.0
+AP,Non Transport,2022,29338.0
+AP,Non Transport,2023,32857.0
+AP,Non Transport,2024,57467.0
+AP,Non Transport,2025,61829.0
+AP,Non Transport,2026,67151.0
+AP,Transport,2011,6.0
+AP,Transport,2012,0.0
+AP,Transport,2013,0.0
+AP,Transport,2014,0.0
+AP,Transport,2015,0.0
+AP,Transport,2016,1.0
+AP,Transport,2017,1.0
+AP,Transport,2018,53.0
+AP,Transport,2019,495.0
+AP,Transport,2020,653.0
+AP,Transport,2021,1975.0
+AP,Transport,2022,997.0
+AP,Transport,2023,2694.0
+AP,Transport,2024,3709.0
+AP,Transport,2025,5619.0
+AP,Transport,2026,6140.0
+AR,Non Transport,2012,1.0
+AR,Non Transport,2013,0.0
+AR,Non Transport,2014,0.0
+AR,Non Transport,2015,0.0
+AR,Non Transport,2016,1.0
+AR,Non Transport,2017,0.0
+AR,Non Transport,2018,1.0
+AR,Non Transport,2019,1.0
+AR,Non Transport,2020,4.0
+AR,Non Transport,2021,2.0
+AR,Non Transport,2022,2.0
+AR,Non Transport,2023,18.0
+AR,Non Transport,2024,96.0
+AR,Non Transport,2025,228.0
+AR,Non Transport,2026,204.0
+AR,Transport,2024,3.0
+AR,Transport,2025,12.0
+AR,Transport,2026,8.0
+AS,Non Transport,2011,2.0
+AS,Non Transport,2012,4.0
+AS,Non Transport,2013,3.0
+AS,Non Transport,2014,4.0
+AS,Non Transport,2015,23.0
+AS,Non Transport,2016,19.0
+AS,Non Transport,2017,3821.0
+AS,Non Transport,2018,7374.0
+AS,Non Transport,2019,10838.0
+AS,Non Transport,2020,8355.0
+AS,Non Transport,2021,15617.0
+AS,Non Transport,2022,40666.0
+AS,Non Transport,2023,60777.0
+AS,Non Transport,2024,68417.0
+AS,Non Transport,2025,85622.0
+AS,Non Transport,2026,65204.0
+AS,Transport,2012,2.0
+AS,Transport,2013,1.0
+AS,Transport,2014,2.0
+AS,Transport,2015,19.0
+AS,Transport,2016,13.0
+AS,Transport,2017,3686.0
+AS,Transport,2018,7305.0
+AS,Transport,2019,10740.0
+AS,Transport,2020,8308.0
+AS,Transport,2021,15234.0
+AS,Transport,2022,38690.0
+AS,Transport,2023,58104.0
+AS,Transport,2024,63350.0
+AS,Transport,2025,81025.0
+AS,Transport,2026,60867.0
+BR,Non Transport,2011,156.0
+BR,Non Transport,2012,20.0
+BR,Non Transport,2013,14.0
+BR,Non Transport,2014,11.0
+BR,Non Transport,2015,69.0
+BR,Non Transport,2016,1100.0
+BR,Non Transport,2017,3594.0
+BR,Non Transport,2018,8464.0
+BR,Non Transport,2019,12379.0
+BR,Non Transport,2020,12446.0
+BR,Non Transport,2021,23082.0
+BR,Non Transport,2022,55750.0
+BR,Non Transport,2023,88204.0
+BR,Non Transport,2024,113138.0
+BR,Non Transport,2025,124449.0
+BR,Non Transport,2026,89085.0
+BR,Transport,2011,122.0
+BR,Transport,2012,5.0
+BR,Transport,2013,5.0
+BR,Transport,2014,4.0
+BR,Transport,2015,65.0
+BR,Transport,2016,1099.0
+BR,Transport,2017,3579.0
+BR,Transport,2018,7874.0
+BR,Transport,2019,11654.0
+BR,Transport,2020,12042.0
+BR,Transport,2021,20234.0
+BR,Transport,2022,45678.0
+BR,Transport,2023,75205.0
+BR,Transport,2024,89778.0
+BR,Transport,2025,94587.0
+BR,Transport,2026,63222.0
+CG,Non Transport,2011,270.0
+CG,Non Transport,2012,182.0
+CG,Non Transport,2013,78.0
+CG,Non Transport,2014,123.0
+CG,Non Transport,2015,83.0
+CG,Non Transport,2016,191.0
+CG,Non Transport,2017,943.0
+CG,Non Transport,2018,1903.0
+CG,Non Transport,2019,2741.0
+CG,Non Transport,2020,1487.0
+CG,Non Transport,2021,4216.0
+CG,Non Transport,2022,22354.0
+CG,Non Transport,2023,38235.0
+CG,Non Transport,2024,49467.0
+CG,Non Transport,2025,49010.0
+CG,Non Transport,2026,38331.0
+CG,Transport,2012,1.0
+CG,Transport,2013,1.0
+CG,Transport,2014,0.0
+CG,Transport,2015,1.0
+CG,Transport,2016,34.0
+CG,Transport,2017,698.0
+CG,Transport,2018,1171.0
+CG,Transport,2019,1821.0
+CG,Transport,2020,868.0
+CG,Transport,2021,1512.0
+CG,Transport,2022,5591.0
+CG,Transport,2023,11400.0
+CG,Transport,2024,13810.0
+CG,Transport,2025,14088.0
+CG,Transport,2026,9660.0
+CH,Non Transport,2012,2.0
+CH,Non Transport,2013,1.0
+CH,Non Transport,2014,0.0
+CH,Non Transport,2015,2.0
+CH,Non Transport,2016,1.0
+CH,Non Transport,2017,22.0
+CH,Non Transport,2018,212.0
+CH,Non Transport,2019,495.0
+CH,Non Transport,2020,369.0
+CH,Non Transport,2021,677.0
+CH,Non Transport,2022,2713.0
+CH,Non Transport,2023,6370.0
+CH,Non Transport,2024,7042.0
+CH,Non Transport,2025,6812.0
+CH,Non Transport,2026,5072.0
+CH,Transport,2017,9.0
+CH,Transport,2018,168.0
+CH,Transport,2019,467.0
+CH,Transport,2020,322.0
+CH,Transport,2021,425.0
+CH,Transport,2022,1594.0
+CH,Transport,2023,3214.0
+CH,Transport,2024,3001.0
+CH,Transport,2025,2028.0
+CH,Transport,2026,1094.0
+CT,Non Transport,2011,6600.0
+CT,Non Transport,2012,5525.0
+CT,Non Transport,2013,2719.0
+CT,Non Transport,2014,2364.0
+CT,Non Transport,2015,7731.0
+CT,Non Transport,2016,49490.0
+CT,Non Transport,2017,86022.0
+CT,Non Transport,2018,129550.0
+CT,Non Transport,2019,165797.0
+CT,Non Transport,2020,125144.0
+CT,Non Transport,2021,339210.0
+CT,Non Transport,2022,1055741.0
+CT,Non Transport,2023,1580704.0
+CT,Non Transport,2024,2084151.0
+CT,Non Transport,2025,2465216.0
+CT,Non Transport,2026,1992442.0
+CT,Transport,2011,292.0
+CT,Transport,2012,176.0
+CT,Transport,2013,193.0
+CT,Transport,2014,136.0
+CT,Transport,2015,5579.0
+CT,Transport,2016,47221.0
+CT,Transport,2017,83380.0
+CT,Transport,2018,110585.0
+CT,Transport,2019,135957.0
+CT,Transport,2020,93818.0
+CT,Transport,2021,164885.0
+CT,Transport,2022,365401.0
+CT,Transport,2023,603957.0
+CT,Transport,2024,724614.0
+CT,Transport,2025,839294.0
+CT,Transport,2026,558347.0
+DD,Non Transport,2011,6.0
+DD,Non Transport,2012,1.0
+DD,Non Transport,2013,0.0
+DD,Non Transport,2014,0.0
+DD,Non Transport,2015,2.0
+DD,Non Transport,2016,2.0
+DD,Non Transport,2017,1.0
+DD,Non Transport,2018,19.0
+DD,Non Transport,2019,19.0
+DD,Non Transport,2020,22.0
+DD,Non Transport,2021,28.0
+DD,Non Transport,2022,142.0
+DD,Non Transport,2023,159.0
+DD,Non Transport,2024,491.0
+DD,Non Transport,2025,621.0
+DD,Non Transport,2026,441.0
+DD,Transport,2018,18.0
+DD,Transport,2019,12.0
+DD,Transport,2020,11.0
+DD,Transport,2021,6.0
+DD,Transport,2022,38.0
+DD,Transport,2023,19.0
+DD,Transport,2024,15.0
+DD,Transport,2025,53.0
+DD,Transport,2026,28.0
+DL,Non Transport,2011,377.0
+DL,Non Transport,2012,368.0
+DL,Non Transport,2013,113.0
+DL,Non Transport,2014,43.0
+DL,Non Transport,2015,3554.0
+DL,Non Transport,2016,21664.0
+DL,Non Transport,2017,17824.0
+DL,Non Transport,2018,20887.0
+DL,Non Transport,2019,22869.0
+DL,Non Transport,2020,12320.0
+DL,Non Transport,2021,25677.0
+DL,Non Transport,2022,61868.0
+DL,Non Transport,2023,73552.0
+DL,Non Transport,2024,85252.0
+DL,Non Transport,2025,121515.0
+DL,Non Transport,2026,68164.0
+DL,Transport,2013,8.0
+DL,Transport,2014,1.0
+DL,Transport,2015,3486.0
+DL,Transport,2016,21584.0
+DL,Transport,2017,17695.0
+DL,Transport,2018,20375.0
+DL,Transport,2019,21880.0
+DL,Transport,2020,10738.0
+DL,Transport,2021,16639.0
+DL,Transport,2022,24393.0
+DL,Transport,2023,30173.0
+DL,Transport,2024,44313.0
+DL,Transport,2025,62500.0
+DL,Transport,2026,14271.0
+DN,Non Transport,2011,6600.0
+DN,Non Transport,2012,5525.0
+DN,Non Transport,2013,2719.0
+DN,Non Transport,2014,2364.0
+DN,Non Transport,2015,7731.0
+DN,Non Transport,2016,49490.0
+DN,Non Transport,2017,86022.0
+DN,Non Transport,2018,129550.0
+DN,Non Transport,2019,165797.0
+DN,Non Transport,2020,125144.0
+DN,Non Transport,2021,339210.0
+DN,Non Transport,2022,1055741.0
+DN,Non Transport,2023,1580704.0
+DN,Non Transport,2024,2084151.0
+DN,Non Transport,2025,2465216.0
+DN,Non Transport,2026,1992442.0
+DN,Transport,2011,292.0
+DN,Transport,2012,176.0
+DN,Transport,2013,193.0
+DN,Transport,2014,136.0
+DN,Transport,2015,5579.0
+DN,Transport,2016,47221.0
+DN,Transport,2017,83380.0
+DN,Transport,2018,110585.0
+DN,Transport,2019,135957.0
+DN,Transport,2020,93818.0
+DN,Transport,2021,164885.0
+DN,Transport,2022,365401.0
+DN,Transport,2023,603957.0
+DN,Transport,2024,724614.0
+DN,Transport,2025,839294.0
+DN,Transport,2026,558347.0
+GA,Non Transport,2011,26.0
+GA,Non Transport,2012,30.0
+GA,Non Transport,2013,16.0
+GA,Non Transport,2014,9.0
+GA,Non Transport,2015,4.0
+GA,Non Transport,2016,32.0
+GA,Non Transport,2017,36.0
+GA,Non Transport,2018,21.0
+GA,Non Transport,2019,41.0
+GA,Non Transport,2020,82.0
+GA,Non Transport,2021,1097.0
+GA,Non Transport,2022,5679.0
+GA,Non Transport,2023,9447.0
+GA,Non Transport,2024,11726.0
+GA,Non Transport,2025,9880.0
+GA,Non Transport,2026,7725.0
+GA,Transport,2013,1.0
+GA,Transport,2014,0.0
+GA,Transport,2015,0.0
+GA,Transport,2016,0.0
+GA,Transport,2017,2.0
+GA,Transport,2018,2.0
+GA,Transport,2019,7.0
+GA,Transport,2020,5.0
+GA,Transport,2021,59.0
+GA,Transport,2022,69.0
+GA,Transport,2023,117.0
+GA,Transport,2024,220.0
+GA,Transport,2025,161.0
+GA,Transport,2026,105.0
+GJ,Non Transport,2011,501.0
+GJ,Non Transport,2012,426.0
+GJ,Non Transport,2013,104.0
+GJ,Non Transport,2014,70.0
+GJ,Non Transport,2015,79.0
+GJ,Non Transport,2016,138.0
+GJ,Non Transport,2017,164.0
+GJ,Non Transport,2018,487.0
+GJ,Non Transport,2019,943.0
+GJ,Non Transport,2020,1113.0
+GJ,Non Transport,2021,9720.0
+GJ,Non Transport,2022,68770.0
+GJ,Non Transport,2023,88383.0
+GJ,Non Transport,2024,80213.0
+GJ,Non Transport,2025,83894.0
+GJ,Non Transport,2026,77639.0
+GJ,Transport,2011,9.0
+GJ,Transport,2012,9.0
+GJ,Transport,2013,10.0
+GJ,Transport,2014,2.0
+GJ,Transport,2015,5.0
+GJ,Transport,2016,32.0
+GJ,Transport,2017,101.0
+GJ,Transport,2018,149.0
+GJ,Transport,2019,402.0
+GJ,Transport,2020,358.0
+GJ,Transport,2021,979.0
+GJ,Transport,2022,1547.0
+GJ,Transport,2023,3491.0
+GJ,Transport,2024,4436.0
+GJ,Transport,2025,5241.0
+GJ,Transport,2026,4435.0
+HP,Non Transport,2011,2.0
+HP,Non Transport,2012,3.0
+HP,Non Transport,2013,2.0
+HP,Non Transport,2014,0.0
+HP,Non Transport,2015,5.0
+HP,Non Transport,2016,4.0
+HP,Non Transport,2017,16.0
+HP,Non Transport,2018,62.0
+HP,Non Transport,2019,53.0
+HP,Non Transport,2020,181.0
+HP,Non Transport,2021,326.0
+HP,Non Transport,2022,1014.0
+HP,Non Transport,2023,1143.0
+HP,Non Transport,2024,2116.0
+HP,Non Transport,2025,2554.0
+HP,Non Transport,2026,2043.0
+HP,Transport,2011,1.0
+HP,Transport,2012,1.0
+HP,Transport,2013,0.0
+HP,Transport,2014,0.0
+HP,Transport,2015,1.0
+HP,Transport,2016,0.0
+HP,Transport,2017,15.0
+HP,Transport,2018,60.0
+HP,Transport,2019,51.0
+HP,Transport,2020,155.0
+HP,Transport,2021,10.0
+HP,Transport,2022,20.0
+HP,Transport,2023,88.0
+HP,Transport,2024,200.0
+HP,Transport,2025,315.0
+HP,Transport,2026,232.0
+HR,Non Transport,2011,14.0
+HR,Non Transport,2012,21.0
+HR,Non Transport,2013,7.0
+HR,Non Transport,2014,10.0
+HR,Non Transport,2015,56.0
+HR,Non Transport,2016,1379.0
+HR,Non Transport,2017,2485.0
+HR,Non Transport,2018,4619.0
+HR,Non Transport,2019,5097.0
+HR,Non Transport,2020,2964.0
+HR,Non Transport,2021,8571.0
+HR,Non Transport,2022,25820.0
+HR,Non Transport,2023,30496.0
+HR,Non Transport,2024,47796.0
+HR,Non Transport,2025,46754.0
+HR,Non Transport,2026,28663.0
+HR,Transport,2011,2.0
+HR,Transport,2012,0.0
+HR,Transport,2013,2.0
+HR,Transport,2014,0.0
+HR,Transport,2015,41.0
+HR,Transport,2016,1276.0
+HR,Transport,2017,2238.0
+HR,Transport,2018,3165.0
+HR,Transport,2019,3926.0
+HR,Transport,2020,2683.0
+HR,Transport,2021,4799.0
+HR,Transport,2022,13717.0
+HR,Transport,2023,21246.0
+HR,Transport,2024,21264.0
+HR,Transport,2025,20440.0
+HR,Transport,2026,12742.0
+JH,Non Transport,2011,6.0
+JH,Non Transport,2012,15.0
+JH,Non Transport,2013,16.0
+JH,Non Transport,2014,4.0
+JH,Non Transport,2015,194.0
+JH,Non Transport,2016,705.0
+JH,Non Transport,2017,1353.0
+JH,Non Transport,2018,1957.0
+JH,Non Transport,2019,1932.0
+JH,Non Transport,2020,1515.0
+JH,Non Transport,2021,3739.0
+JH,Non Transport,2022,13677.0
+JH,Non Transport,2023,21124.0
+JH,Non Transport,2024,26276.0
+JH,Non Transport,2025,34691.0
+JH,Non Transport,2026,26348.0
+JH,Transport,2012,4.0
+JH,Transport,2013,1.0
+JH,Transport,2014,1.0
+JH,Transport,2015,191.0
+JH,Transport,2016,675.0
+JH,Transport,2017,1327.0
+JH,Transport,2018,1601.0
+JH,Transport,2019,1663.0
+JH,Transport,2020,1206.0
+JH,Transport,2021,2033.0
+JH,Transport,2022,6845.0
+JH,Transport,2023,13331.0
+JH,Transport,2024,15149.0
+JH,Transport,2025,21521.0
+JH,Transport,2026,15576.0
+JK,Non Transport,2011,10.0
+JK,Non Transport,2012,5.0
+JK,Non Transport,2013,4.0
+JK,Non Transport,2014,4.0
+JK,Non Transport,2015,3.0
+JK,Non Transport,2016,0.0
+JK,Non Transport,2017,1.0
+JK,Non Transport,2018,90.0
+JK,Non Transport,2019,75.0
+JK,Non Transport,2020,74.0
+JK,Non Transport,2021,1146.0
+JK,Non Transport,2022,4688.0
+JK,Non Transport,2023,9742.0
+JK,Non Transport,2024,13364.0
+JK,Non Transport,2025,12095.0
+JK,Non Transport,2026,10137.0
+JK,Transport,2011,9.0
+JK,Transport,2012,0.0
+JK,Transport,2013,1.0
+JK,Transport,2014,1.0
+JK,Transport,2015,0.0
+JK,Transport,2016,0.0
+JK,Transport,2017,0.0
+JK,Transport,2018,0.0
+JK,Transport,2019,39.0
+JK,Transport,2020,0.0
+JK,Transport,2021,11.0
+JK,Transport,2022,2508.0
+JK,Transport,2023,7742.0
+JK,Transport,2024,9940.0
+JK,Transport,2025,8875.0
+JK,Transport,2026,6818.0
+KA,Non Transport,2011,1039.0
+KA,Non Transport,2012,1132.0
+KA,Non Transport,2013,571.0
+KA,Non Transport,2014,625.0
+KA,Non Transport,2015,695.0
+KA,Non Transport,2016,582.0
+KA,Non Transport,2017,704.0
+KA,Non Transport,2018,2230.0
+KA,Non Transport,2019,5728.0
+KA,Non Transport,2020,9539.0
+KA,Non Transport,2021,32840.0
+KA,Non Transport,2022,94768.0
+KA,Non Transport,2023,152577.0
+KA,Non Transport,2024,185472.0
+KA,Non Transport,2025,214914.0
+KA,Non Transport,2026,185481.0
+KA,Transport,2011,56.0
+KA,Transport,2012,40.0
+KA,Transport,2013,51.0
+KA,Transport,2014,31.0
+KA,Transport,2015,128.0
+KA,Transport,2016,128.0
+KA,Transport,2017,301.0
+KA,Transport,2018,683.0
+KA,Transport,2019,1757.0
+KA,Transport,2020,2497.0
+KA,Transport,2021,3708.0
+KA,Transport,2022,9115.0
+KA,Transport,2023,10214.0
+KA,Transport,2024,17188.0
+KA,Transport,2025,20538.0
+KA,Transport,2026,19060.0
+KL,Non Transport,2011,117.0
+KL,Non Transport,2012,98.0
+KL,Non Transport,2013,59.0
+KL,Non Transport,2014,24.0
+KL,Non Transport,2015,25.0
+KL,Non Transport,2016,22.0
+KL,Non Transport,2017,75.0
+KL,Non Transport,2018,292.0
+KL,Non Transport,2019,510.0
+KL,Non Transport,2020,1339.0
+KL,Non Transport,2021,8660.0
+KL,Non Transport,2022,39592.0
+KL,Non Transport,2023,75778.0
+KL,Non Transport,2024,86877.0
+KL,Non Transport,2025,115732.0
+KL,Non Transport,2026,92299.0
+KL,Transport,2011,5.0
+KL,Transport,2012,4.0
+KL,Transport,2013,1.0
+KL,Transport,2014,1.0
+KL,Transport,2015,1.0
+KL,Transport,2016,0.0
+KL,Transport,2017,9.0
+KL,Transport,2018,48.0
+KL,Transport,2019,118.0
+KL,Transport,2020,516.0
+KL,Transport,2021,1133.0
+KL,Transport,2022,2299.0
+KL,Transport,2023,4251.0
+KL,Transport,2024,5438.0
+KL,Transport,2025,7063.0
+KL,Transport,2026,7379.0
+LA,Non Transport,2019,1.0
+LA,Non Transport,2020,0.0
+LA,Non Transport,2021,6.0
+LA,Non Transport,2022,40.0
+LA,Non Transport,2023,28.0
+LA,Non Transport,2024,20.0
+LA,Non Transport,2025,8.0
+LA,Non Transport,2026,9.0
+LA,Transport,2019,1.0
+LA,Transport,2020,0.0
+LA,Transport,2021,0.0
+LA,Transport,2022,10.0
+LA,Transport,2023,10.0
+LA,Transport,2024,0.0
+LA,Transport,2025,0.0
+LA,Transport,2026,1.0
+LD,Non Transport,2011,8.0
+LD,Non Transport,2012,9.0
+LD,Non Transport,2013,5.0
+LD,Non Transport,2014,3.0
+LD,Non Transport,2015,4.0
+LD,Non Transport,2016,5.0
+LD,Non Transport,2017,0.0
+LD,Non Transport,2018,0.0
+LD,Non Transport,2019,1.0
+LD,Non Transport,2020,7.0
+LD,Non Transport,2021,5.0
+LD,Non Transport,2022,2.0
+LD,Non Transport,2023,9.0
+LD,Non Transport,2024,15.0
+LD,Non Transport,2025,32.0
+LD,Non Transport,2026,66.0
+LD,Transport,2019,1.0
+LD,Transport,2020,1.0
+LD,Transport,2021,1.0
+LD,Transport,2022,1.0
+LD,Transport,2023,0.0
+LD,Transport,2024,1.0
+LD,Transport,2025,5.0
+LD,Transport,2026,3.0
+MH,Non Transport,2011,965.0
+MH,Non Transport,2012,503.0
+MH,Non Transport,2013,548.0
+MH,Non Transport,2014,850.0
+MH,Non Transport,2015,927.0
+MH,Non Transport,2016,861.0
+MH,Non Transport,2017,898.0
+MH,Non Transport,2018,4619.0
+MH,Non Transport,2019,7286.0
+MH,Non Transport,2020,7098.0
+MH,Non Transport,2021,29842.0
+MH,Non Transport,2022,135847.0
+MH,Non Transport,2023,194057.0
+MH,Non Transport,2024,250724.0
+MH,Non Transport,2025,282270.0
+MH,Non Transport,2026,227804.0
+MH,Transport,2011,6.0
+MH,Transport,2012,13.0
+MH,Transport,2013,17.0
+MH,Transport,2014,16.0
+MH,Transport,2015,3.0
+MH,Transport,2016,10.0
+MH,Transport,2017,476.0
+MH,Transport,2018,1390.0
+MH,Transport,2019,1459.0
+MH,Transport,2020,1298.0
+MH,Transport,2021,2532.0
+MH,Transport,2022,7352.0
+MH,Transport,2023,14089.0
+MH,Transport,2024,17981.0
+MH,Transport,2025,21485.0
+MH,Transport,2026,14042.0
+ML,Non Transport,2012,1.0
+ML,Non Transport,2013,3.0
+ML,Non Transport,2014,0.0
+ML,Non Transport,2015,0.0
+ML,Non Transport,2016,1.0
+ML,Non Transport,2017,0.0
+ML,Non Transport,2018,2.0
+ML,Non Transport,2019,13.0
+ML,Non Transport,2020,3.0
+ML,Non Transport,2021,5.0
+ML,Non Transport,2022,41.0
+ML,Non Transport,2023,115.0
+ML,Non Transport,2024,832.0
+ML,Non Transport,2025,1037.0
+ML,Non Transport,2026,610.0
+ML,Transport,2013,3.0
+ML,Transport,2014,0.0
+ML,Transport,2015,0.0
+ML,Transport,2016,0.0
+ML,Transport,2017,0.0
+ML,Transport,2018,0.0
+ML,Transport,2019,1.0
+ML,Transport,2020,0.0
+ML,Transport,2021,2.0
+ML,Transport,2022,7.0
+ML,Transport,2023,20.0
+ML,Transport,2024,551.0
+ML,Transport,2025,608.0
+ML,Transport,2026,414.0
+MN,Non Transport,2011,5.0
+MN,Non Transport,2012,0.0
+MN,Non Transport,2013,0.0
+MN,Non Transport,2014,0.0
+MN,Non Transport,2015,0.0
+MN,Non Transport,2016,2.0
+MN,Non Transport,2017,5.0
+MN,Non Transport,2018,39.0
+MN,Non Transport,2019,251.0
+MN,Non Transport,2020,102.0
+MN,Non Transport,2021,114.0
+MN,Non Transport,2022,341.0
+MN,Non Transport,2023,398.0
+MN,Non Transport,2024,445.0
+MN,Non Transport,2025,1246.0
+MN,Non Transport,2026,1165.0
+MN,Transport,2011,5.0
+MN,Transport,2012,0.0
+MN,Transport,2013,0.0
+MN,Transport,2014,0.0
+MN,Transport,2015,0.0
+MN,Transport,2016,1.0
+MN,Transport,2017,1.0
+MN,Transport,2018,38.0
+MN,Transport,2019,204.0
+MN,Transport,2020,95.0
+MN,Transport,2021,94.0
+MN,Transport,2022,215.0
+MN,Transport,2023,280.0
+MN,Transport,2024,269.0
+MN,Transport,2025,745.0
+MN,Transport,2026,641.0
+MP,Non Transport,2011,312.0
+MP,Non Transport,2012,162.0
+MP,Non Transport,2013,51.0
+MP,Non Transport,2014,40.0
+MP,Non Transport,2015,85.0
+MP,Non Transport,2016,850.0
+MP,Non Transport,2017,1408.0
+MP,Non Transport,2018,2739.0
+MP,Non Transport,2019,3682.0
+MP,Non Transport,2020,3362.0
+MP,Non Transport,2021,10440.0
+MP,Non Transport,2022,36804.0
+MP,Non Transport,2023,67959.0
+MP,Non Transport,2024,101396.0
+MP,Non Transport,2025,141608.0
+MP,Non Transport,2026,114765.0
+MP,Transport,2015,43.0
+MP,Transport,2016,803.0
+MP,Transport,2017,1304.0
+MP,Transport,2018,2152.0
+MP,Transport,2019,2387.0
+MP,Transport,2020,2404.0
+MP,Transport,2021,5154.0
+MP,Transport,2022,13868.0
+MP,Transport,2023,29423.0
+MP,Transport,2024,32019.0
+MP,Transport,2025,36343.0
+MP,Transport,2026,23098.0
+MZ,Non Transport,2012,2.0
+MZ,Non Transport,2013,0.0
+MZ,Non Transport,2014,0.0
+MZ,Non Transport,2015,0.0
+MZ,Non Transport,2016,2.0
+MZ,Non Transport,2017,0.0
+MZ,Non Transport,2018,0.0
+MZ,Non Transport,2019,1.0
+MZ,Non Transport,2020,1.0
+MZ,Non Transport,2021,1.0
+MZ,Non Transport,2022,36.0
+MZ,Non Transport,2023,167.0
+MZ,Non Transport,2024,574.0
+MZ,Non Transport,2025,845.0
+MZ,Non Transport,2026,826.0
+MZ,Transport,2016,1.0
+MZ,Transport,2017,0.0
+MZ,Transport,2018,0.0
+MZ,Transport,2019,0.0
+MZ,Transport,2020,0.0
+MZ,Transport,2021,0.0
+MZ,Transport,2022,0.0
+MZ,Transport,2023,0.0
+MZ,Transport,2024,0.0
+MZ,Transport,2025,2.0
+NL,Non Transport,2013,3.0
+NL,Non Transport,2014,1.0
+NL,Non Transport,2015,1.0
+NL,Non Transport,2016,0.0
+NL,Non Transport,2017,0.0
+NL,Non Transport,2018,0.0
+NL,Non Transport,2019,29.0
+NL,Non Transport,2020,12.0
+NL,Non Transport,2021,2.0
+NL,Non Transport,2022,3.0
+NL,Non Transport,2023,6.0
+NL,Non Transport,2024,45.0
+NL,Non Transport,2025,93.0
+NL,Non Transport,2026,67.0
+NL,Transport,2013,1.0
+NL,Transport,2014,1.0
+NL,Transport,2015,0.0
+NL,Transport,2016,0.0
+NL,Transport,2017,0.0
+NL,Transport,2018,0.0
+NL,Transport,2019,0.0
+NL,Transport,2020,1.0
+NL,Transport,2021,0.0
+NL,Transport,2022,0.0
+NL,Transport,2023,0.0
+NL,Transport,2024,3.0
+NL,Transport,2025,2.0
+OD,Non Transport,2011,6600.0
+OD,Non Transport,2012,5525.0
+OD,Non Transport,2013,2719.0
+OD,Non Transport,2014,2364.0
+OD,Non Transport,2015,7731.0
+OD,Non Transport,2016,49490.0
+OD,Non Transport,2017,86022.0
+OD,Non Transport,2018,129550.0
+OD,Non Transport,2019,165797.0
+OD,Non Transport,2020,125144.0
+OD,Non Transport,2021,339210.0
+OD,Non Transport,2022,1055741.0
+OD,Non Transport,2023,1580704.0
+OD,Non Transport,2024,2084151.0
+OD,Non Transport,2025,2465216.0
+OD,Non Transport,2026,1992442.0
+OD,Transport,2011,292.0
+OD,Transport,2012,176.0
+OD,Transport,2013,193.0
+OD,Transport,2014,136.0
+OD,Transport,2015,5579.0
+OD,Transport,2016,47221.0
+OD,Transport,2017,83380.0
+OD,Transport,2018,110585.0
+OD,Transport,2019,135957.0
+OD,Transport,2020,93818.0
+OD,Transport,2021,164885.0
+OD,Transport,2022,365401.0
+OD,Transport,2023,603957.0
+OD,Transport,2024,724614.0
+OD,Transport,2025,839294.0
+OD,Transport,2026,558347.0
+PB,Non Transport,2011,545.0
+PB,Non Transport,2012,617.0
+PB,Non Transport,2013,177.0
+PB,Non Transport,2014,31.0
+PB,Non Transport,2015,17.0
+PB,Non Transport,2016,37.0
+PB,Non Transport,2017,137.0
+PB,Non Transport,2018,364.0
+PB,Non Transport,2019,948.0
+PB,Non Transport,2020,832.0
+PB,Non Transport,2021,4648.0
+PB,Non Transport,2022,14044.0
+PB,Non Transport,2023,25744.0
+PB,Non Transport,2024,47138.0
+PB,Non Transport,2025,49816.0
+PB,Non Transport,2026,38179.0
+PB,Transport,2011,5.0
+PB,Transport,2012,4.0
+PB,Transport,2013,2.0
+PB,Transport,2014,0.0
+PB,Transport,2015,4.0
+PB,Transport,2016,24.0
+PB,Transport,2017,94.0
+PB,Transport,2018,69.0
+PB,Transport,2019,457.0
+PB,Transport,2020,695.0
+PB,Transport,2021,1339.0
+PB,Transport,2022,6405.0
+PB,Transport,2023,16210.0
+PB,Transport,2024,23172.0
+PB,Transport,2025,14280.0
+PB,Transport,2026,9851.0
+PY,Non Transport,2011,39.0
+PY,Non Transport,2012,47.0
+PY,Non Transport,2013,25.0
+PY,Non Transport,2014,4.0
+PY,Non Transport,2015,11.0
+PY,Non Transport,2016,7.0
+PY,Non Transport,2017,9.0
+PY,Non Transport,2018,86.0
+PY,Non Transport,2019,81.0
+PY,Non Transport,2020,90.0
+PY,Non Transport,2021,405.0
+PY,Non Transport,2022,1483.0
+PY,Non Transport,2023,2636.0
+PY,Non Transport,2024,4738.0
+PY,Non Transport,2025,5074.0
+PY,Non Transport,2026,4998.0
+PY,Transport,2011,1.0
+PY,Transport,2012,0.0
+PY,Transport,2013,0.0
+PY,Transport,2014,0.0
+PY,Transport,2015,0.0
+PY,Transport,2016,1.0
+PY,Transport,2017,3.0
+PY,Transport,2018,2.0
+PY,Transport,2019,0.0
+PY,Transport,2020,1.0
+PY,Transport,2021,3.0
+PY,Transport,2022,45.0
+PY,Transport,2023,105.0
+PY,Transport,2024,347.0
+PY,Transport,2025,606.0
+PY,Transport,2026,341.0
+RJ,Non Transport,2011,342.0
+RJ,Non Transport,2012,353.0
+RJ,Non Transport,2013,171.0
+RJ,Non Transport,2014,88.0
+RJ,Non Transport,2015,672.0
+RJ,Non Transport,2016,3979.0
+RJ,Non Transport,2017,3916.0
+RJ,Non Transport,2018,4660.0
+RJ,Non Transport,2019,6603.0
+RJ,Non Transport,2020,5591.0
+RJ,Non Transport,2021,23362.0
+RJ,Non Transport,2022,78135.0
+RJ,Non Transport,2023,93711.0
+RJ,Non Transport,2024,111169.0
+RJ,Non Transport,2025,117457.0
+RJ,Non Transport,2026,99490.0
+RJ,Transport,2011,6.0
+RJ,Transport,2012,8.0
+RJ,Transport,2013,9.0
+RJ,Transport,2014,4.0
+RJ,Transport,2015,623.0
+RJ,Transport,2016,3914.0
+RJ,Transport,2017,3835.0
+RJ,Transport,2018,3146.0
+RJ,Transport,2019,4642.0
+RJ,Transport,2020,3504.0
+RJ,Transport,2021,8927.0
+RJ,Transport,2022,22604.0
+RJ,Transport,2023,29816.0
+RJ,Transport,2024,26501.0
+RJ,Transport,2025,23631.0
+RJ,Transport,2026,19568.0
+SK,Non Transport,2011,2.0
+SK,Non Transport,2012,3.0
+SK,Non Transport,2013,0.0
+SK,Non Transport,2014,1.0
+SK,Non Transport,2015,1.0
+SK,Non Transport,2016,0.0
+SK,Non Transport,2017,0.0
+SK,Non Transport,2018,0.0
+SK,Non Transport,2019,0.0
+SK,Non Transport,2020,0.0
+SK,Non Transport,2021,0.0
+SK,Non Transport,2022,0.0
+SK,Non Transport,2023,0.0
+SK,Non Transport,2024,17.0
+SK,Non Transport,2025,23.0
+SK,Non Transport,2026,22.0
+SK,Transport,2011,1.0
+SK,Transport,2012,1.0
+SK,Transport,2013,0.0
+SK,Transport,2014,1.0
+TN,Non Transport,2011,701.0
+TN,Non Transport,2012,671.0
+TN,Non Transport,2013,359.0
+TN,Non Transport,2014,176.0
+TN,Non Transport,2015,82.0
+TN,Non Transport,2016,80.0
+TN,Non Transport,2017,109.0
+TN,Non Transport,2018,1339.0
+TN,Non Transport,2019,3358.0
+TN,Non Transport,2020,5590.0
+TN,Non Transport,2021,29823.0
+TN,Non Transport,2022,66330.0
+TN,Non Transport,2023,89585.0
+TN,Non Transport,2024,135420.0
+TN,Non Transport,2025,174167.0
+TN,Non Transport,2026,172500.0
+TN,Transport,2011,42.0
+TN,Transport,2012,54.0
+TN,Transport,2013,63.0
+TN,Transport,2014,58.0
+TN,Transport,2015,12.0
+TN,Transport,2016,10.0
+TN,Transport,2017,7.0
+TN,Transport,2018,8.0
+TN,Transport,2019,9.0
+TN,Transport,2020,1.0
+TN,Transport,2021,5147.0
+TN,Transport,2022,2921.0
+TN,Transport,2023,6019.0
+TN,Transport,2024,9276.0
+TN,Transport,2025,14578.0
+TN,Transport,2026,8826.0
+TR,Non Transport,2013,1.0
+TR,Non Transport,2014,0.0
+TR,Non Transport,2015,0.0
+TR,Non Transport,2016,0.0
+TR,Non Transport,2017,2.0
+TR,Non Transport,2018,32.0
+TR,Non Transport,2019,1459.0
+TR,Non Transport,2020,3416.0
+TR,Non Transport,2021,2431.0
+TR,Non Transport,2022,4177.0
+TR,Non Transport,2023,6311.0
+TR,Non Transport,2024,9624.0
+TR,Non Transport,2025,10253.0
+TR,Non Transport,2026,5738.0
+TR,Transport,2018,1.0
+TR,Transport,2019,1435.0
+TR,Transport,2020,3409.0
+TR,Transport,2021,2423.0
+TR,Transport,2022,3981.0
+TR,Transport,2023,6029.0
+TR,Transport,2024,9161.0
+TR,Transport,2025,9673.0
+TR,Transport,2026,5313.0
+TS,Non Transport,2011,6600.0
+TS,Non Transport,2012,5525.0
+TS,Non Transport,2013,2719.0
+TS,Non Transport,2014,2364.0
+TS,Non Transport,2015,7731.0
+TS,Non Transport,2016,49490.0
+TS,Non Transport,2017,86022.0
+TS,Non Transport,2018,129550.0
+TS,Non Transport,2019,165797.0
+TS,Non Transport,2020,125144.0
+TS,Non Transport,2021,339210.0
+TS,Non Transport,2022,1055741.0
+TS,Non Transport,2023,1580704.0
+TS,Non Transport,2024,2084151.0
+TS,Non Transport,2025,2465216.0
+TS,Non Transport,2026,1992442.0
+TS,Transport,2011,292.0
+TS,Transport,2012,176.0
+TS,Transport,2013,193.0
+TS,Transport,2014,136.0
+TS,Transport,2015,5579.0
+TS,Transport,2016,47221.0
+TS,Transport,2017,83380.0
+TS,Transport,2018,110585.0
+TS,Transport,2019,135957.0
+TS,Transport,2020,93818.0
+TS,Transport,2021,164885.0
+TS,Transport,2022,365401.0
+TS,Transport,2023,603957.0
+TS,Transport,2024,724614.0
+TS,Transport,2025,839294.0
+TS,Transport,2026,558347.0
+UK,Non Transport,2011,29.0
+UK,Non Transport,2012,48.0
+UK,Non Transport,2013,25.0
+UK,Non Transport,2014,9.0
+UK,Non Transport,2015,15.0
+UK,Non Transport,2016,1091.0
+UK,Non Transport,2017,4012.0
+UK,Non Transport,2018,4807.0
+UK,Non Transport,2019,5622.0
+UK,Non Transport,2020,2321.0
+UK,Non Transport,2021,5233.0
+UK,Non Transport,2022,15480.0
+UK,Non Transport,2023,16774.0
+UK,Non Transport,2024,20221.0
+UK,Non Transport,2025,20954.0
+UK,Non Transport,2026,16039.0
+UK,Transport,2015,1.0
+UK,Transport,2016,1058.0
+UK,Transport,2017,3982.0
+UK,Transport,2018,4552.0
+UK,Transport,2019,5136.0
+UK,Transport,2020,2131.0
+UK,Transport,2021,3909.0
+UK,Transport,2022,9423.0
+UK,Transport,2023,10606.0
+UK,Transport,2024,10999.0
+UK,Transport,2025,10570.0
+UK,Transport,2026,6680.0
+UP,Non Transport,2011,625.0
+UP,Non Transport,2012,392.0
+UP,Non Transport,2013,202.0
+UP,Non Transport,2014,148.0
+UP,Non Transport,2015,1015.0
+UP,Non Transport,2016,15123.0
+UP,Non Transport,2017,39750.0
+UP,Non Transport,2018,52035.0
+UP,Non Transport,2019,54898.0
+UP,Non Transport,2020,30952.0
+UP,Non Transport,2021,66097.0
+UP,Non Transport,2022,162441.0
+UP,Non Transport,2023,278159.0
+UP,Non Transport,2024,378348.0
+UP,Non Transport,2025,422386.0
+UP,Non Transport,2026,278995.0
+UP,Transport,2011,2.0
+UP,Transport,2012,2.0
+UP,Transport,2013,0.0
+UP,Transport,2014,8.0
+UP,Transport,2015,927.0
+UP,Transport,2016,15055.0
+UP,Transport,2017,39444.0
+UP,Transport,2018,49265.0
+UP,Transport,2019,51183.0
+UP,Transport,2020,29627.0
+UP,Transport,2021,59865.0
+UP,Transport,2022,138677.0
+UP,Transport,2023,232725.0
+UP,Transport,2024,267206.0
+UP,Transport,2025,275388.0
+UP,Transport,2026,163043.0
+WB,Non Transport,2011,268.0
+WB,Non Transport,2012,243.0
+WB,Non Transport,2013,32.0
+WB,Non Transport,2014,2.0
+WB,Non Transport,2015,29.0
+WB,Non Transport,2016,1528.0
+WB,Non Transport,2017,4450.0
+WB,Non Transport,2018,6724.0
+WB,Non Transport,2019,13532.0
+WB,Non Transport,2020,10079.0
+WB,Non Transport,2021,6394.0
+WB,Non Transport,2022,11140.0
+WB,Non Transport,2023,21393.0
+WB,Non Transport,2024,46562.0
+WB,Non Transport,2025,102674.0
+WB,Non Transport,2026,100964.0
+WB,Transport,2011,1.0
+WB,Transport,2012,18.0
+WB,Transport,2013,11.0
+WB,Transport,2014,0.0
+WB,Transport,2015,12.0
+WB,Transport,2016,1496.0
+WB,Transport,2017,4432.0
+WB,Transport,2018,6695.0
+WB,Transport,2019,13259.0
+WB,Transport,2020,9895.0
+WB,Transport,2021,5165.0
+WB,Transport,2022,1930.0
+WB,Transport,2023,8141.0
+WB,Transport,2024,20422.0
+WB,Transport,2025,69651.0
+WB,Transport,2026,72307.0

@@ -1,10 +1,12 @@
 """Flask application factory for EV Market Growth Prediction System."""
 from __future__ import annotations
 
+import math
 import sys
 from pathlib import Path
 
 from flask import Flask
+from flask.json.provider import DefaultJSONProvider
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from flask_sqlalchemy import SQLAlchemy
@@ -17,6 +19,35 @@ db = SQLAlchemy()
 jwt = JWTManager()
 
 
+class SafeJSONProvider(DefaultJSONProvider):
+    """Emit null instead of NaN/Infinity so browsers can parse API JSON."""
+
+    @staticmethod
+    def _clean(obj):
+        if isinstance(obj, float):
+            if math.isnan(obj) or math.isinf(obj):
+                return None
+            return obj
+        if isinstance(obj, dict):
+            return {k: SafeJSONProvider._clean(v) for k, v in obj.items()}
+        if isinstance(obj, (list, tuple)):
+            return [SafeJSONProvider._clean(v) for v in obj]
+        try:
+            import numpy as np
+
+            if isinstance(obj, np.generic):
+                return SafeJSONProvider._clean(obj.item())
+            if isinstance(obj, np.ndarray):
+                return SafeJSONProvider._clean(obj.tolist())
+        except ImportError:
+            pass
+        return obj
+
+    def dumps(self, obj, **kwargs):
+        kwargs.setdefault("allow_nan", False)
+        return super().dumps(self._clean(obj), **kwargs)
+
+
 def create_app() -> Flask:
     app = Flask(
         __name__,
@@ -24,6 +55,7 @@ def create_app() -> Flask:
         static_folder=str(ROOT / "frontend" / "static"),
         static_url_path="/static",
     )
+    app.json = SafeJSONProvider(app)
     app.config["SECRET_KEY"] = config.SECRET_KEY
     app.config["SQLALCHEMY_DATABASE_URI"] = config.DATABASE_URL
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False

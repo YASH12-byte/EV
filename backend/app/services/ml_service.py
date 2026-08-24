@@ -607,6 +607,19 @@ class MLService:
             fc_dates = [str(x.get("period") or x.get("year")) for x in out["forecast"]]
             fc_vals = [round(float(x["value"]), 2) for x in out["forecast"]]
 
+            model_fit = {"dates": [], "actual": [], "predicted": []}
+            local_explanation = None
+            if t in ("registrations", "ev_registrations", "registration"):
+                try:
+                    from src.xai_engine import build_local_explanation, test_set_predictions_series
+
+                    model_fit = test_set_predictions_series(state, vehicle_type)
+                    latest_year = int(hist_dates[-1]) if hist_dates else None
+                    if latest_year:
+                        local_explanation = build_local_explanation(state, latest_year, vehicle_type)
+                except Exception as exc:
+                    local_explanation = {"ok": False, "error": str(exc)}
+
             # SHAP-based explanation features (actual ranking from outputs/xai)
             xai = self.feature_importance()
             top_factors = []
@@ -638,6 +651,8 @@ class MLService:
                 },
                 "model": out.get("model", "real_dataset_forecast"),
                 "frequency": out.get("frequency", "annual"),
+                "model_fit": model_fit,
+                "local_explanation": local_explanation,
                 "top_factors": top_factors,
                 "note": (
                     "Real DataSet.zip forecast from processed series / saved models. "

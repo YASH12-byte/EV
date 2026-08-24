@@ -12,11 +12,11 @@
     root: document.getElementById("lpRoot"),
     cinema: document.getElementById("lpCinema"),
     stage: document.getElementById("lpStage"),
-    actor: document.getElementById("lpActor"),
-    humanCanvas: document.getElementById("lpHumanCanvas"),
-    bagBurst: document.getElementById("lpBagBurst"),
-    lab: document.querySelector(".lp-lab"),
-    deskGlow: document.querySelector(".lp-desk-glow"),
+    carsCanvas: document.getElementById("lpCarsCanvas"),
+    gateBurst: document.getElementById("lpGateBurst"),
+    sceneLabel: document.getElementById("lpSceneLabel"),
+    progress: document.getElementById("lpProgress"),
+    cinemaUi: document.getElementById("lpCinemaUi"),
     workspace: document.getElementById("lpWorkspace"),
     card: document.getElementById("lpCard"),
     form: document.getElementById("loginForm"),
@@ -31,7 +31,7 @@
   };
 
   let cinemaDone = false;
-  let human3d = null;
+  let cars3d = null;
   const timers = [];
 
   function later(fn, ms) {
@@ -44,83 +44,82 @@
     while (timers.length) clearTimeout(timers.pop());
   }
 
+  function setProgress(pct, label) {
+    if (els.progress) els.progress.style.width = `${pct}%`;
+    if (label && els.sceneLabel) els.sceneLabel.textContent = label;
+  }
+
   function revealWorkspace() {
     if (cinemaDone) return;
     cinemaDone = true;
     clearTimers();
-    human3d?.setState("done");
+    cars3d?.setState("done");
     els.cinema?.classList.add("is-done");
-    els.cinema?.classList.remove("is-walking", "is-throwing", "is-bag-open");
+    els.cinema?.classList.remove("is-approaching", "is-gate-open");
     els.workspace?.classList.add("is-visible");
     els.workspace?.setAttribute("aria-hidden", "false");
     setTimeout(() => {
       if (window.EVForecast?.enableCard3DTilt) {
         EVForecast.enableCard3DTilt("#lpCard");
       }
+      els.form?.querySelector('input[name="email"]')?.focus();
     }, 400);
   }
 
   /**
    * Sequence (must finish before login opens):
-   * 1) 3D human walks in with bag
-   * 2) Stop
-   * 3) Throw bag onto desk
-   * 4) Bag opens / burst
-   * 5) Login page appears
+   * 1) 3D EVs approach closed gate
+   * 2) Gate opens
+   * 3) Burst / portal
+   * 4) Login interface appears
    */
   function playCinema() {
     if (reduced) {
-      later(revealWorkspace, 300);
+      setProgress(100, "Opening secure access…");
+      later(revealWorkspace, 250);
       return;
     }
 
     const cinema = els.cinema;
-    const actor = els.actor;
     if (!cinema) {
       later(revealWorkspace, 200);
       return;
     }
 
-    if (window.EVHuman3D && els.humanCanvas) {
-      human3d = EVHuman3D.create(els.humanCanvas);
+    if (window.EVCars3D && els.carsCanvas) {
+      cars3d = EVCars3D.create(els.carsCanvas);
     }
 
     els.workspace?.classList.remove("is-visible");
     els.workspace?.setAttribute("aria-hidden", "true");
-    cinema.classList.remove("is-done", "is-walking", "is-throwing", "is-bag-open");
+    cinema.classList.remove("is-done", "is-approaching", "is-gate-open");
+    setProgress(8, "EV fleet approaching secure gate…");
 
-    // Scene 1 — 3D human walks in
-    actor?.classList.add("is-walking");
-    human3d?.setState("walk");
+    // Scene 1 — cars approach
+    cars3d?.setState("approach");
     requestAnimationFrame(() => {
-      cinema.classList.add("is-walking");
-      if (els.lab) els.lab.style.opacity = "1";
+      cinema.classList.add("is-approaching");
+      setProgress(35, "EV fleet approaching secure gate…");
     });
 
-    // Scene 2 — stop at desk
+    // Scene 2 — gate opens
     later(() => {
-      actor?.classList.remove("is-walking");
-      human3d?.setState("idle");
-    }, 3400);
+      cinema.classList.add("is-gate-open");
+      cars3d?.setState("open");
+      setProgress(72, "Gate unlocking · Access granted…");
+    }, 2800);
 
-    // Scene 3 — throw bag
+    // Scene 3 — portal burst
     later(() => {
-      cinema.classList.add("is-throwing");
-      human3d?.setState("throw");
-      if (els.deskGlow) els.deskGlow.style.opacity = "1";
-    }, 4000);
+      els.gateBurst?.classList.add("is-active");
+      setProgress(92, "Entering forecasting platform…");
+    }, 4200);
 
-    // Scene 4 — bag lands & opens
+    // Scene 4 — reveal login
     later(() => {
-      cinema.classList.remove("is-throwing");
-      cinema.classList.add("is-bag-open");
-      human3d?.setState("open");
-    }, 5200);
-
-    // Scene 5 — open login page
-    later(() => {
+      setProgress(100, "Welcome");
       revealWorkspace();
-    }, 6800);
+    }, 5600);
   }
 
   /* ----- Three.js particle field ----- */
@@ -143,9 +142,9 @@
     const positions = new Float32Array(count * 3);
     const colors = new Float32Array(count * 3);
     const palette = [
-      [0.145, 0.388, 0.922], // electric blue
-      [0.024, 0.714, 0.831], // cyan
-      [0.063, 0.725, 0.506], // emerald
+      [0.145, 0.388, 0.922],
+      [0.024, 0.714, 0.831],
+      [0.063, 0.725, 0.506],
     ];
 
     for (let i = 0; i < count; i++) {
@@ -175,7 +174,6 @@
     const points = new THREE.Points(geo, mat);
     scene.add(points);
 
-    // Soft neural links (line segments)
     const linkCount = 80;
     const linkPos = new Float32Array(linkCount * 6);
     for (let i = 0; i < linkCount; i++) {
@@ -243,7 +241,6 @@
     els.error.classList.add("show");
   });
 
-  // Remember me
   try {
     const remembered = localStorage.getItem("evforecast_remember_email");
     if (remembered && els.form) {
@@ -300,7 +297,6 @@
         }
       } catch (_) { /* ignore */ }
 
-      // Success cinematic
       els.card.classList.add("is-dissolving");
       els.success.classList.add("is-active");
       els.success.setAttribute("aria-hidden", "false");
@@ -330,7 +326,19 @@
     }
   });
 
-  // Boot
+  // Skip intro on click / Escape so login is always reachable
+  function skipCinema() {
+    if (!cinemaDone) revealWorkspace();
+  }
+  els.cinema?.addEventListener("click", skipCinema);
+  window.addEventListener("keydown", (e) => {
+    if (cinemaDone) return;
+    if (e.key === "Escape" || e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      skipCinema();
+    }
+  });
+
   initThree();
   playCinema();
 })();

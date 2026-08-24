@@ -5,7 +5,7 @@ import json
 import time
 from pathlib import Path
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, send_from_directory
 from flask_jwt_extended import get_jwt_identity, jwt_required
 
 import sys
@@ -15,9 +15,11 @@ sys.path.insert(0, str(ROOT))
 from backend.app import db
 from backend.app.models.prediction import PredictionLog
 from backend.app.services.ml_service import MLService
+from backend.app.services.xai_service import XAIService
 
 predict_bp = Blueprint("predict", __name__)
 _ml_service = None
+_xai_service = None
 
 
 def get_ml_service():
@@ -26,6 +28,13 @@ def get_ml_service():
     if _ml_service is None:
         _ml_service = MLService()
     return _ml_service
+
+
+def get_xai_service():
+    global _xai_service
+    if _xai_service is None:
+        _xai_service = XAIService()
+    return _xai_service
 
 
 @predict_bp.get("/health")
@@ -124,3 +133,52 @@ def forecast():
 @predict_bp.get("/xai/insights")
 def xai_insights():
     return jsonify(get_ml_service().xai_insights())
+
+
+@predict_bp.get("/xai/dashboard")
+def xai_dashboard():
+    state = request.args.get("state", "ALL")
+    year = request.args.get("year")
+    vehicle_type = request.args.get("vehicle_type", "All")
+    target = request.args.get("target", "registrations")
+    refresh = request.args.get("refresh", "0") in ("1", "true", "yes")
+    try:
+        data = get_xai_service().dashboard(
+            state=state,
+            year=int(year) if year else None,
+            vehicle_type=vehicle_type,
+            target=target,
+            refresh=refresh,
+        )
+        return jsonify(data)
+    except Exception as exc:
+        return jsonify({"ok": False, "message": str(exc)}), 500
+
+
+@predict_bp.get("/xai/refresh")
+def xai_refresh():
+    """Reload data and recompute XAI (does not retrain deep models)."""
+    state = request.args.get("state", "ALL")
+    year = request.args.get("year")
+    vehicle_type = request.args.get("vehicle_type", "All")
+    target = request.args.get("target", "registrations")
+    try:
+        data = get_xai_service().dashboard(
+            state=state,
+            year=int(year) if year else None,
+            vehicle_type=vehicle_type,
+            target=target,
+            refresh=True,
+        )
+        return jsonify(data)
+    except Exception as exc:
+        return jsonify({"ok": False, "message": str(exc)}), 500
+
+
+@predict_bp.get("/xai/artifacts/<path:filename>")
+def xai_artifact(filename):
+    directory = get_xai_service().artifacts_dir()
+    safe = Path(filename).name
+    if Path(safe).suffix.lower() not in {".png", ".html", ".json"}:
+        return jsonify({"ok": False, "message": "Not found"}), 404
+    return send_from_directory(directory, safe)

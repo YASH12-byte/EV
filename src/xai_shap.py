@@ -95,6 +95,32 @@ def main() -> None:
         json.dumps({"method": used, "ranking": ranking}, indent=2),
         encoding="utf-8",
     )
+    # JSON for interactive dashboard waterfall cache
+    try:
+        import shap
+
+        explainer = shap.TreeExplainer(model)
+        sample = X_test[: min(100, len(X_test))]
+        shap_values = explainer.shap_values(sample)
+        if isinstance(shap_values, list):
+            shap_values = shap_values[0]
+        ev = float(np.asarray(explainer.expected_value).reshape(-1)[0])
+        row0 = np.asarray(shap_values[0])
+        (OUT / "waterfall_sample.json").write_text(
+            json.dumps(
+                {
+                    "base": ev,
+                    "contributions": [
+                        {"feature": f, "label": f.replace("_", " ").title(), "value": float(v)}
+                        for f, v in zip(feature_cols, row0)
+                    ],
+                },
+                indent=2,
+            ),
+            encoding="utf-8",
+        )
+    except Exception:
+        pass
     print("XAI artifacts written to", OUT)
 
 

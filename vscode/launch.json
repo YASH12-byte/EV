@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "EVForecast Flask (use this, not Live Server)",
+      "name": "EVForecast Flask",
       "type": "debugpy",
       "request": "launch",
       "module": "flask",
