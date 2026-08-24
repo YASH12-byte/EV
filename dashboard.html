@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard · EVForecast</title>
+  <script>
+    (function () {
+      var parts = location.pathname.split("/").filter(Boolean);
+      var base = location.hostname.indexOf("github.io") !== -1 && parts[0]
+        ? "/" + parts[0] + "/"
+        : location.pathname.replace(/[^/]*$/, "") || "/";
+      document.write('<base href="' + base + '">');
+    })();
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="frontend/static/css/style.css" />
+</head>
+<body>
+<div id="navHost"></div>
+<main>
+<section class="section">
+  <div class="container">
+    <h1 class="h2 mb-3">Dashboard</h1>
+    <p class="text-muted-2" id="welcome">Loading…</p>
+    <div class="row g-3 mb-4">
+      <div class="col-md-4"><div class="glass kpi"><div class="label">Latest national year</div><div class="value" id="kpiYear">—</div></div></div>
+      <div class="col-md-4"><div class="glass kpi"><div class="label">Registrations</div><div class="value" id="kpiVal">—</div></div></div>
+      <div class="col-md-4"><div class="glass kpi"><div class="label">YoY change</div><div class="value" id="kpiYoy">—</div></div></div>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+      <a class="btn btn-glow" href="prediction.html">Open Forecast</a>
+      <a class="btn btn-ghost" href="comparison.html">Model Metrics</a>
+    </div>
+  </div>
+</section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="frontend/static/js/app.js"></script>
+<script src="site/core.js"></script>
+<script src="site/chrome.js"></script>
+<script>
+EVPages.requireAuth();
+const user = EVForecast.currentUser();
+document.getElementById("welcome").textContent = `Welcome, ${user?.name || "user"}.`;
+(async () => {
+  const national = await EVPagesData.national();
+  const last = national[national.length - 1];
+  const prev = national[national.length - 2];
+  document.getElementById("kpiYear").textContent = last?.year ?? "—";
+  document.getElementById("kpiVal").textContent = last ? last.value.toLocaleString() : "—";
+  if (last && prev && prev.value) {
+    const pct = ((last.value - prev.value) / prev.value) * 100;
+    document.getElementById("kpiYoy").textContent = `${pct >= 0 ? "+" : ""}${pct.toFixed(1)}%`;
+  }
+})();
+</script>
+</body>
+</html>

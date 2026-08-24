@@ -2,7 +2,7 @@
   "use strict";
 
   if (window.EVForecast?.currentUser?.()) {
-    location.replace("/home");
+    location.replace(window.EVPages ? window.EVPages.href("/home") : "/home");
     return;
   }
 
@@ -317,7 +317,9 @@
       }
 
       const dest = data.user.role === "admin" ? "/admin" : "/dashboard";
-      setTimeout(() => { location.href = dest; }, 1600);
+      setTimeout(() => {
+        location.href = window.EVPages ? window.EVPages.href(dest) : dest;
+      }, 1600);
     } catch (ex) {
       els.btn.classList.remove("is-loading");
       els.card.classList.remove("is-scanning");

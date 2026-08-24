@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forecast · EVForecast</title>
+  <script>
+    (function () {
+      var parts = location.pathname.split("/").filter(Boolean);
+      var base = location.hostname.indexOf("github.io") !== -1 && parts[0]
+        ? "/" + parts[0] + "/"
+        : location.pathname.replace(/[^/]*$/, "") || "/";
+      document.write('<base href="' + base + '">');
+    })();
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="frontend/static/css/style.css" />
+</head>
+<body>
+<div id="navHost"></div>
+<main>
+<section class="section">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-5">
+        <div class="glass p-4">
+          <div class="chip mb-2">Forecast</div>
+          <h1 class="h3">EV Market Forecast</h1>
+          <p class="text-muted-2">Static GitHub Pages demo using processed registration series (growth continuation). Full hybrid models run on the Flask deploy.</p>
+          <form id="predForm" class="row g-3">
+            <div class="col-12">
+              <label class="form-label">State / Region</label>
+              <select class="form-select" name="region" id="predRegion"></select>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Vehicle Type</label>
+              <select class="form-select" name="vehicle_type" id="predVehicle">
+                <option value="All">All</option>
+                <option value="Transport">Transport</option>
+                <option value="Non Transport">Non Transport</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label">Forecast Horizon (years)</label>
+              <select class="form-select" name="horizon" id="predHorizon">
+                <option value="1">Next 1</option>
+                <option value="3" selected>Next 3</option>
+                <option value="5">Next 5</option>
+              </select>
+            </div>
+            <div class="col-12"><button class="btn btn-glow w-100" type="submit">Generate Forecast</button></div>
+          </form>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="glass p-4 h-100">
+          <h2 class="h5">Predicted EV Growth</h2>
+          <div id="predResult" class="text-muted-2">Choose options and generate a forecast.</div>
+          <canvas id="forecastChart" class="mt-3" height="160"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script src="frontend/static/js/app.js"></script>
+<script src="site/core.js"></script>
+<script src="site/chrome.js"></script>
+<script>
+let chart;
+(async () => {
+  const annual = await EVPagesData.annual();
+  const states = [...new Set(annual.map((r) => r.state))].filter(Boolean).sort();
+  const sel = document.getElementById("predRegion");
+  sel.innerHTML = states.map((s) => `<option value="${s}" ${s === "ALL" ? "selected" : ""}>${s}</option>`).join("");
+
+  document.getElementById("predForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const state = sel.value;
+    const vehicle = document.getElementById("predVehicle").value;
+    const horizon = Number(document.getElementById("predHorizon").value);
+    let series = annual.filter((r) => r.state === state && Number.isFinite(r.value));
+    if (vehicle !== "All") series = series.filter((r) => r.vehicle === vehicle);
+    const byYear = {};
+    series.forEach((r) => { byYear[r.year] = (byYear[r.year] || 0) + r.value; });
+    const hist = Object.keys(byYear).map(Number).sort((a, b) => a - b).map((y) => ({ year: y, value: byYear[y] }));
+    const fut = EVPagesData.forecast(hist, horizon);
+    document.getElementById("predResult").innerHTML =
+      `<strong>${state}</strong> · ${vehicle} · next ${horizon} year(s)<br>` +
+      fut.map((p) => `${p.year}: ${p.value.toLocaleString()}`).join(" · ");
+    const labels = [...hist.map((p) => p.year), ...fut.map((p) => p.year)];
+    const histData = [...hist.map((p) => p.value), ...fut.map(() => null)];
+    const futData = [...hist.map(() => null), ...fut.map((p) => p.value)];
+    if (hist.length) futData[hist.length - 1] = hist[hist.length - 1].value;
+    if (chart) chart.destroy();
+    chart = new Chart(document.getElementById("forecastChart"), {
+      type: "line",
+      data: {
+        labels,
+        datasets: [
+          { label: "History", data: histData, borderColor: "#2dd4bf", tension: 0.3, spanGaps: false },
+          { label: "Forecast", data: futData, borderColor: "#38bdf8", borderDash: [6, 4], tension: 0.3, spanGaps: true }
+        ]
+      },
+      options: {
+        plugins: { legend: { labels: { color: "#cfe3ec" } } },
+        scales: {
+          x: { ticks: { color: "#8fa3b0" }, grid: { color: "rgba(255,255,255,0.04)" } },
+          y: { ticks: { color: "#8fa3b0" }, grid: { color: "rgba(255,255,255,0.04)" } }
+        }
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>

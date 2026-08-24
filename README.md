@@ -30,10 +30,18 @@ Open **http://127.0.0.1:5000/login** (not Live Server HTTPS).
 
 ---
 
-## Important: GitHub is not the website
+## Important: what each GitHub URL is
 
-https://github.com/YASH12-byte/EV shows **source code only** (README text / files).  
-It does **not** run Flask. Do **not** upload a Windows `venv/` folder — hosting platforms install packages from `requirements-deploy.txt`.
+| URL | What you see |
+|-----|----------------|
+| https://github.com/YASH12-byte/EV | Source code (README / files) |
+| https://yash12-byte.github.io/EV/ | **Website demo** (login + charts) — GitHub Pages |
+| Render `*.onrender.com` | Full Flask app with Python API |
+
+GitHub Pages **cannot** run Flask. This repo includes a static site (`index.html`, `home.html`, …) so the Pages link opens the website UI.
+
+### Demo login (GitHub Pages)
+- Admin: `admin@evforecast.edu` / `Admin@123`
 
 ### Deploy the live website (Render)
 
@@ -43,7 +51,7 @@ It does **not** run Flask. Do **not** upload a Windows `venv/` folder — hostin
    - **Build command:** `pip install -r requirements-deploy.txt`
    - **Start command:** `gunicorn run:app --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 120`
    - **Python version:** `3.11.9` (see `runtime.txt`)
-4. Deploy → open the `https://….onrender.com` URL (that is the real website).
+4. Deploy → open the `https://….onrender.com` URL (full backend).
 
 Local `venv` stays on your PC only:
 
