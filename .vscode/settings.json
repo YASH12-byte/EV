@@ -1,6 +1,6 @@
 {
   "liveServer.settings.port": 5500,
-  "liveServer.settings.file": "index.html",
+  "liveServer.settings.file": "live-index.html",
   "liveServer.settings.donotShowInfoMsg": true,
   "liveServer.settings.ignoreFiles": [
     ".vscode/**",

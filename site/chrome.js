@@ -16,10 +16,12 @@
       <div class="collapse navbar-collapse" id="navMain">
         <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
           <li class="nav-item"><a class="nav-link" href="${h("/home")}">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="${h("/dashboard")}">Dashboard</a></li>
           <li class="nav-item"><a class="nav-link" href="${h("/about")}">About</a></li>
           <li class="nav-item"><a class="nav-link" href="${h("/dataset")}">Dataset</a></li>
           <li class="nav-item"><a class="nav-link" href="${h("/prediction")}">Prediction</a></li>
           <li class="nav-item"><a class="nav-link" href="${h("/comparison")}">Models</a></li>
+          <li class="nav-item"><a class="nav-link" href="${h("/xai")}">Explainability</a></li>
           <li class="nav-item"><a class="nav-link" href="${h("/contact")}">Contact</a></li>
           <li class="nav-item ms-lg-2" id="navAuth"></li>
         </ul>

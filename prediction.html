@@ -58,6 +58,8 @@
           <h2 class="h5">Predicted EV Growth</h2>
           <div id="predResult" class="text-muted-2">Choose options and generate a forecast.</div>
           <canvas id="forecastChart" class="mt-3" height="160"></canvas>
+          <div id="predXai" class="small text-muted-2 mt-3"></div>
+          <a class="btn btn-ghost btn-sm mt-2" href="xai.html">Open full Explainability dashboard →</a>
         </div>
       </div>
     </div>
@@ -73,6 +75,7 @@
 let chart;
 (async () => {
   const annual = await EVPagesData.annual();
+  const shap = await EVPagesData.shapImportance();
   const states = [...new Set(annual.map((r) => r.state))].filter(Boolean).sort();
   const sel = document.getElementById("predRegion");
   sel.innerHTML = states.map((s) => `<option value="${s}" ${s === "ALL" ? "selected" : ""}>${s}</option>`).join("");
@@ -88,9 +91,13 @@ let chart;
     series.forEach((r) => { byYear[r.year] = (byYear[r.year] || 0) + r.value; });
     const hist = Object.keys(byYear).map(Number).sort((a, b) => a - b).map((y) => ({ year: y, value: byYear[y] }));
     const fut = EVPagesData.forecast(hist, horizon);
+    const expl = EVPagesData.explainSeries(hist, hist[hist.length - 1]?.year, shap);
     document.getElementById("predResult").innerHTML =
       `<strong>${state}</strong> · ${vehicle} · next ${horizon} year(s)<br>` +
       fut.map((p) => `${p.year}: ${p.value.toLocaleString()}`).join(" · ");
+    document.getElementById("predXai").innerHTML =
+      `<strong>Why:</strong> ${expl.growth_pct >= 0 ? "Increase" : "Decrease"} vs last year (${expl.growth_pct.toFixed(1)}%). ` +
+      `Top positive: ${expl.pos[0]?.label || "—"}. Top negative: ${expl.neg[0]?.label || "none"}.`;
     const labels = [...hist.map((p) => p.year), ...fut.map((p) => p.year)];
     const histData = [...hist.map((p) => p.value), ...fut.map(() => null)];
     const futData = [...hist.map(() => null), ...fut.map((p) => p.value)];

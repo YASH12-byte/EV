@@ -31,7 +31,7 @@
     "/about": "about.html",
     "/comparison": "comparison.html",
     "/contact": "contact.html",
-    "/xai": "about.html",
+    "/xai": "xai.html",
   };
 
   window.EVPages = {
@@ -153,6 +153,108 @@
     async comparison() {
       const res = await fetch(window.EVPages.asset("models/saved/comparison_results.json"));
       return res.json();
+    },
+    async monthly(rel, valueKey) {
+      const rows = parseCSV(await fetchText(rel));
+      return rows.map((r) => ({
+        state: r.State,
+        year: Number(r.Year),
+        month: Number(r.MonthNum),
+        date: r.Date,
+        value: Number(r[valueKey]),
+      }));
+    },
+    async shapImportance() {
+      const res = await fetch(window.EVPages.asset("outputs/xai/feature_importance.json"));
+      return res.json();
+    },
+    async nationalXai() {
+      const res = await fetch(window.EVPages.asset("site/xai-national.json"));
+      return res.json();
+    },
+    seriesFor(annual, state, vehicle) {
+      let rows = annual.filter((r) => Number.isFinite(r.value) && Number.isFinite(r.year));
+      if (state && state !== "ALL") rows = rows.filter((r) => r.state === state);
+      if (vehicle && vehicle !== "All") rows = rows.filter((r) => r.vehicle === vehicle);
+      const byYear = {};
+      rows.forEach((r) => {
+        byYear[r.year] = (byYear[r.year] || 0) + r.value;
+      });
+      return Object.keys(byYear)
+        .map(Number)
+        .sort((a, b) => a - b)
+        .map((y) => ({ year: y, value: byYear[y] }));
+    },
+    explainSeries(hist, year, importance) {
+      const LABELS = {
+        Year: "Year",
+        lag_1: "Previous year EV registrations",
+        lag_2: "EV registrations (2 years ago)",
+        lag_3: "EV registrations (3 years ago)",
+        rolling_mean_3: "3-year rolling average",
+        yoy_growth: "Year-over-year growth rate",
+        State_enc: "State / region",
+        VehicleType_enc: "Vehicle type",
+      };
+      const byY = Object.fromEntries(hist.map((p) => [p.year, p.value]));
+      const years = hist.map((p) => p.year);
+      const y = year && byY[year] != null ? year : years[years.length - 1];
+      const current = byY[y] || 0;
+      const lag1 = byY[y - 1] || 0;
+      const lag2 = byY[y - 2] || 0;
+      const lag3 = byY[y - 3] || 0;
+      const roll = [lag1, lag2, lag3].filter((v) => v > 0);
+      const rolling = roll.length ? roll.reduce((a, b) => a + b, 0) / roll.length : 0;
+      const yoy = lag1 > 0 ? ((current - lag1) / lag1) * 100 : 0;
+      const feats = {
+        Year: y,
+        lag_1: lag1,
+        lag_2: lag2,
+        lag_3: lag3,
+        rolling_mean_3: rolling,
+        yoy_growth: yoy,
+      };
+      const ranking = (importance && importance.ranking) || [];
+      const meanY = years.reduce((a, b) => a + b, 0) / Math.max(years.length, 1);
+      const meanV = hist.reduce((a, p) => a + p.value, 0) / Math.max(hist.length, 1);
+      const contribs = ranking.map((r) => {
+        const val = feats[r.feature];
+        const ref = r.feature === "Year" ? meanY : r.feature === "yoy_growth" ? 0 : meanV;
+        const delta = (val || 0) - ref;
+        const scale = Math.abs(ref) > 1 ? Math.abs(ref) : 1;
+        const contribution = (Number(r.importance) || 0) * (delta / scale);
+        return {
+          feature: r.feature,
+          label: LABELS[r.feature] || r.feature,
+          contribution,
+          importance: r.importance,
+          actual_display: Number.isFinite(val) ? Math.round(val).toLocaleString("en-IN") : "—",
+          direction: contribution >= 0 ? "positive" : "negative",
+          pct: 0,
+        };
+      });
+      const absSum = contribs.reduce((a, c) => a + Math.abs(c.contribution), 0) || 1;
+      contribs.forEach((c) => {
+        c.pct = (Math.abs(c.contribution) / absSum) * 100;
+      });
+      contribs.sort((a, b) => Math.abs(b.contribution) - Math.abs(a.contribution));
+      const pos = contribs.filter((c) => c.contribution >= 0);
+      const neg = contribs.filter((c) => c.contribution < 0);
+      const pred = current * (yoy > 0 ? 1 + Math.min(yoy, 40) / 100 : 0.95);
+      const fut = this.forecast(hist, 3);
+      return {
+        year: y,
+        current,
+        previous: lag1,
+        predicted: pred,
+        growth_pct: yoy,
+        contribs,
+        pos,
+        neg,
+        hist,
+        forecast: fut,
+        features: feats,
+      };
     },
     forecast(series, horizon) {
       const pts = series.filter((p) => Number.isFinite(p.value) && p.value > 0);
