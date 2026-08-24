@@ -87,21 +87,25 @@ function updateNavAuth() {
   if (!el) return;
   const user = currentUser();
   if (user) {
+    const label = String(user.name || user.email || "User").split(" ")[0];
     el.innerHTML = `
-      <div class="dropdown">
-        <button class="btn btn-glow dropdown-toggle" data-bs-toggle="dropdown">${user.name.split(" ")[0]}</button>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
-          ${user.role === "admin" ? '<li><a class="dropdown-item" href="/admin">Admin</a></li>' : ""}
-          <li><hr class="dropdown-divider" /></li>
-          <li><button class="dropdown-item" id="logoutBtn">Logout</button></li>
-        </ul>
+      <div class="d-flex align-items-center gap-2">
+        <span class="text-muted-2 small d-none d-lg-inline">${label}</span>
+        <button type="button" class="btn btn-glow" id="logoutBtn" data-action="logout">Logout</button>
       </div>`;
-    const btn = document.getElementById("logoutBtn");
-    if (btn) btn.addEventListener("click", () => { clearSession(); location.href = "/login"; });
   } else {
-    el.innerHTML = `<a class="btn btn-glow" href="/login">Login</a>`;
+    const loginHref = window.EVPages ? window.EVPages.href("/login") : "/login";
+    el.innerHTML = `<a class="btn btn-glow" href="${loginHref}">Login</a>`;
   }
+}
+
+function doLogout(e) {
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+  clearSession();
+  location.href = window.EVPages ? window.EVPages.href("/login") : "/login";
 }
 
 function spawnParticles(rootSelector, count = 18) {
@@ -185,6 +189,10 @@ function enableCard3DTilt(selector = ".login-from-bag") {
     card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0)";
   });
 }
+
+document.addEventListener("click", (e) => {
+  if (e.target.closest("#logoutBtn, [data-action='logout']")) doLogout(e);
+});
 
 document.addEventListener("DOMContentLoaded", () => {
   updateNavAuth();

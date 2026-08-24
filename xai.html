@@ -41,10 +41,13 @@
     </div>
     <p class="xai-disclaimer">SHAP / LIME describe factors that influenced the <em>model prediction</em> (contribution), not guaranteed real-world causation. Charging stations, subsidies, and fuel prices are not in this dataset.</p>
 
+    <div class="glass xai-panel mb-3" id="growthDirPanel"></div>
+
     <div class="row g-3 mb-3">
       <div class="col-md-4 col-xl"><div class="glass kpi xai-kpi"><div class="label">Current EV Registrations</div><div class="value" id="kpiCurrent">—</div></div></div>
       <div class="col-md-4 col-xl"><div class="glass kpi xai-kpi"><div class="label">Model Prediction</div><div class="value" id="kpiPred">—</div></div></div>
       <div class="col-md-4 col-xl"><div class="glass kpi xai-kpi"><div class="label">Growth %</div><div class="value" id="kpiGrowth">—</div></div></div>
+      <div class="col-md-4 col-xl"><div class="glass kpi xai-kpi"><div class="label">Approx. Forecast Accuracy</div><div class="value" id="kpiAcc">—</div></div></div>
       <div class="col-md-4 col-xl"><div class="glass kpi xai-kpi"><div class="label">Top Positive Factor</div><div class="value" id="kpiPos" style="font-size:1rem">—</div></div></div>
       <div class="col-md-4 col-xl"><div class="glass kpi xai-kpi"><div class="label">Top Negative Factor</div><div class="value" id="kpiNeg" style="font-size:1rem">—</div></div></div>
     </div>

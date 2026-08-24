@@ -76,6 +76,62 @@
     if (selected != null) sel.value = selected;
   }
 
+  function renderGrowthDirection(data) {
+    const el = document.getElementById("growthDirPanel");
+    if (!el) return;
+    const k = data.kpis || {};
+    const acc = data.accuracy || {};
+    const loc = data.local_explanation || {};
+    const growth = Number(k.growth_pct);
+    const positive = loc.positive_contributors || data.explanation_panel?.positive_contributors || [];
+    const negative = loc.negative_contributors || data.explanation_panel?.negative_contributors || [];
+    const rfAcc = k.explanation_model_accuracy_approx ?? acc.explanation_model_metrics?.approx_accuracy;
+    const bestAcc = k.forecast_accuracy_approx ?? acc.best_model_metrics?.approx_accuracy;
+    const pointErr = acc.point_forecast_error?.abs_pct_error;
+    const growthEl = document.getElementById("kpiGrowth");
+    if (growthEl) {
+      growthEl.style.color = !Number.isFinite(growth) ? "" : growth >= 0 ? "#6ee7b7" : "#fca5a5";
+    }
+    const factorRow = (f) => {
+      const share = f.pct != null ? fmtPct(f.pct) : "—";
+      return `<li><strong>${f.label || f.feature}</strong> — contribution share ${share}`
+        + (f.actual_display ? ` · value ${f.actual_display}` : "")
+        + (rfAcc != null ? ` · explanation-model accuracy ${rfAcc}%` : "")
+        + `</li>`;
+    };
+    if (!Number.isFinite(growth)) {
+      el.innerHTML = "<p class='mb-0'>Growth is not available for this filter.</p>";
+      return;
+    }
+    let html = "";
+    if (growth >= 0) {
+      html += `<h2 class="h6 text-success">Prediction / growth is POSITIVE (${fmtPct(growth)})</h2>`;
+      html += `<p>These factors <strong>pushed the forecast up</strong> (local SHAP share of the explanation):</p><ol>`;
+      html += positive.length ? positive.map(factorRow).join("") : "<li>No positive SHAP drivers for this slice.</li>";
+      html += `</ol>`;
+      if (negative.length) {
+        html += `<p class="mt-2">Factors that still <strong>reduced</strong> the prediction (offset some of the rise):</p><ul class="mb-2">`;
+        html += negative.map(factorRow).join("");
+        html += `</ul>`;
+      }
+    } else {
+      html += `<h2 class="h6 text-danger">Prediction / growth is NEGATIVE (${fmtPct(growth)})</h2>`;
+      html += `<p>These factors <strong>pulled the forecast down</strong> (local SHAP share of the explanation):</p><ol>`;
+      html += negative.length ? negative.map(factorRow).join("") : "<li>No negative SHAP drivers for this slice.</li>";
+      html += `</ol>`;
+      if (positive.length) {
+        html += `<p class="mt-2">Factors that still <strong>supported</strong> the prediction (limited the fall):</p><ul class="mb-2">`;
+        html += positive.map(factorRow).join("");
+        html += `</ul>`;
+      }
+    }
+    html += `<p class="mb-0"><strong>Accuracy:</strong> explanation model (Random Forest) ${rfAcc != null ? rfAcc + "%" : "—"}`;
+    html += ` · best forecast model ${bestAcc != null ? bestAcc + "%" : "—"}`;
+    html += pointErr != null ? ` · this point’s absolute error ${fmtMetric(pointErr)}%.` : ".";
+    html += ` Approx. accuracy = max(0, 100 − MAPE) on held-out test years.</p>`;
+    el.innerHTML = html;
+  }
+
   function renderDrivers(listId, items, cls) {
     document.getElementById(listId).innerHTML = (items || []).length
       ? items.map((i) =>
@@ -278,6 +334,7 @@
       ? `${k.forecast_accuracy_approx}% (best model)` : "—");
     document.getElementById("kpiPos").textContent = k.top_positive_factor || "—";
     document.getElementById("kpiNeg").textContent = k.top_negative_factor || "—";
+    renderGrowthDirection(data);
 
     const pc = data.prediction_card || {};
     document.getElementById("predCard").innerHTML = `

@@ -287,14 +287,12 @@
     const user = currentUser();
     if (!el) return;
     if (user) {
+      const label = String(user.name || user.email || "User").split(" ")[0];
       el.innerHTML =
-        '<button class="btn btn-glow" id="logoutBtn" type="button">Logout · ' +
-        user.name.split(" ")[0] +
-        "</button>";
-      document.getElementById("logoutBtn")?.addEventListener("click", () => {
-        clearSession();
-        location.href = window.EVPages.href("/login");
-      });
+        '<div class="d-flex align-items-center gap-2">' +
+        '<span class="text-muted-2 small d-none d-lg-inline">' + label + "</span>" +
+        '<button type="button" class="btn btn-glow" id="logoutBtn" data-action="logout">Logout</button>' +
+        "</div>";
     } else {
       el.innerHTML = '<a class="btn btn-glow" href="' + window.EVPages.href("/login") + '">Login</a>';
     }

@@ -7,9 +7,32 @@
   let annual = [];
   let importance = { ranking: [] };
   let nationalPack = null;
-  let tsChart;
-  let localChart;
-  let impChart;
+  function paintGrowth(growth, pos, neg, accNote) {
+    const el = document.getElementById("growthDirPanel");
+    const gEl = document.getElementById("kpiGrowth");
+    if (gEl) gEl.style.color = growth >= 0 ? "#6ee7b7" : "#fca5a5";
+    if (!el) return;
+    const row = (f, kind) =>
+      `<li><strong>${f.label}</strong> — ${kind} share ${fmtPct(f.pct)}`
+      + (f.actual_display ? ` · value ${f.actual_display}` : "")
+      + `</li>`;
+    let html = "";
+    if (growth >= 0) {
+      html += `<h2 class="h6" style="color:#6ee7b7">Prediction / growth is POSITIVE (${fmtPct(growth)})</h2>`;
+      html += `<p>These factors <strong>made growth positive</strong> (share of the explanation):</p><ol>${pos.map((f) => row(f, "positive")).join("") || "<li>None</li>"}</ol>`;
+      if (neg.length) {
+        html += `<p>These factors worked <strong>against</strong> the rise:</p><ul>${neg.map((f) => row(f, "negative")).join("")}</ul>`;
+      }
+    } else {
+      html += `<h2 class="h6" style="color:#fca5a5">Prediction / growth is NEGATIVE (${fmtPct(growth)})</h2>`;
+      html += `<p>These factors <strong>made growth negative</strong> (share of the explanation):</p><ol>${neg.map((f) => row(f, "negative")).join("") || "<li>None</li>"}</ol>`;
+      if (pos.length) {
+        html += `<p>These factors still <strong>supported</strong> the prediction:</p><ul>${pos.map((f) => row(f, "positive")).join("")}</ul>`;
+      }
+    }
+    html += `<p class="mb-0"><strong>Accuracy:</strong> ${accNote}</p>`;
+    el.innerHTML = html;
+  }
 
   function stateName(code) {
     const pack = nationalPack?.filter_options?.regions || [];
@@ -147,6 +170,23 @@
     document.getElementById("kpiGrowth").textContent = fmtPct(k.growth_pct);
     document.getElementById("kpiPos").textContent = k.top_positive_factor || "—";
     document.getElementById("kpiNeg").textContent = k.top_negative_factor || "—";
+    const accEl = document.getElementById("kpiAcc");
+    if (accEl) {
+      accEl.textContent = k.explanation_model_accuracy_approx != null
+        ? `${k.explanation_model_accuracy_approx}%`
+        : (k.forecast_accuracy_approx != null ? `${k.forecast_accuracy_approx}%` : "—");
+    }
+    const rf = k.explanation_model_accuracy_approx;
+    const best = k.forecast_accuracy_approx;
+    const pe = nationalPack.accuracy?.point_forecast_error?.abs_pct_error;
+    paintGrowth(
+      Number(k.growth_pct),
+      loc.positive_contributors || [],
+      loc.negative_contributors || [],
+      `Random Forest (SHAP) ${rf != null ? rf + "%" : "—"} · best forecast model ${best != null ? best + "%" : "—"}`
+        + (pe != null ? ` · this point absolute error ${Number(pe).toFixed(1)}%` : "")
+        + `. Approx. accuracy = max(0, 100 − MAPE).`
+    );
     const nl = loc.natural_language || {};
     document.getElementById("predCard").innerHTML =
       `<p>${nl.overall || nationalPack.explanation_panel?.main_reason || ""}</p>` +
@@ -187,6 +227,15 @@
     document.getElementById("kpiGrowth").textContent = fmtPct(expl.growth_pct);
     document.getElementById("kpiPos").textContent = expl.pos[0]?.label || "—";
     document.getElementById("kpiNeg").textContent = expl.neg[0]?.label || "—";
+    const accEl = document.getElementById("kpiAcc");
+    const rf = nationalPack?.kpis?.explanation_model_accuracy_approx;
+    if (accEl) accEl.textContent = rf != null ? `${rf}%` : "—";
+    paintGrowth(
+      expl.growth_pct,
+      expl.pos,
+      expl.neg,
+      `Factor shares are SHAP-style weights for this state/year. Explanation-model accuracy ${rf != null ? rf + "%" : "not loaded"} (100 − MAPE).`
+    );
     const dir = expl.growth_pct >= 0 ? "increase" : "decrease";
     document.getElementById("predCard").innerHTML =
       `<p>For <strong>${state === "ALL" ? "All India" : state}</strong> in ${expl.year}, registrations ${dir} ` +
