@@ -654,9 +654,10 @@ class MLService:
                 "model_fit": model_fit,
                 "local_explanation": local_explanation,
                 "top_factors": top_factors,
+                "accuracy": out.get("accuracy"),
                 "note": (
-                    "Real DataSet.zip forecast from processed series / saved models. "
-                    "No retraining on this request."
+                    f"Forecast for {display_name(state)} from processed series "
+                    "(recent growth continuation). Test-set accuracy is reported for the best RMSE model."
                 ),
             }
 

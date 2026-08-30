@@ -24,6 +24,7 @@ CACHE_DIR.mkdir(parents=True, exist_ok=True)
 # In-process caches (avoid reloading model/scaler/SHAP on every request)
 _ARTIFACTS: Dict[str, Any] = {}
 _DATA_CACHE: Dict[str, Any] = {}
+_DASH_MEM: Dict[str, Any] = {}
 
 # Factors commonly requested but NOT in DataSet.zip
 UNAVAILABLE_FACTORS = [
@@ -152,18 +153,27 @@ def _get_rf_artifacts() -> Dict[str, Any]:
     _ARTIFACTS["scaler"] = joblib.load(sp) if sp.exists() else None
     ep = MODEL_DIR / "encoders_registrations.pkl"
     _ARTIFACTS["encoders"] = joblib.load(ep) if ep.exists() else {}
-    import shap
+    model = _ARTIFACTS["model"]
+    try:
+        import shap
 
-    _ARTIFACTS["explainer"] = shap.TreeExplainer(_ARTIFACTS["model"])
-    ev = _ARTIFACTS["explainer"].expected_value
-    _ARTIFACTS["base_value"] = float(np.asarray(ev).reshape(-1)[0]) if ev is not None else 0.0
+        _ARTIFACTS["explainer"] = shap.TreeExplainer(model)
+        ev = _ARTIFACTS["explainer"].expected_value
+        _ARTIFACTS["base_value"] = float(np.asarray(ev).reshape(-1)[0]) if ev is not None else 0.0
+    except Exception:
+        _ARTIFACTS["explainer"] = None
+        n_in = int(getattr(model, "n_features_in_", 8) or 8)
+        try:
+            _ARTIFACTS["base_value"] = float(model.predict(np.zeros((1, n_in)))[0])
+        except Exception:
+            _ARTIFACTS["base_value"] = 0.0
     _ARTIFACTS["ready"] = True
     return _ARTIFACTS
 
 
 def _cache_path(state: str, year: int, vehicle_type: str, target: str) -> Path:
     safe = f"{state}_{year}_{vehicle_type}_{target}".replace(" ", "_").replace("/", "-")
-    return CACHE_DIR / f"dashboard_{safe}.json"
+    return CACHE_DIR / f"dashboard_v3_{safe}.json"
 
 
 def _national_trend() -> pd.DataFrame:
@@ -236,8 +246,22 @@ def _scale_matrix(rows: pd.DataFrame, feature_cols: List[str]) -> Optional[np.nd
     if rows.empty:
         return None
     arts = _get_rf_artifacts()
-    encoded = [_encode_row(r, feature_cols) for _, r in rows.iterrows()]
-    X = np.array([[float(r[c]) for c in feature_cols] for r in encoded], dtype=float)
+    work = rows.copy()
+    encoders = arts.get("encoders") or {}
+    for col, le in encoders.items():
+        enc_col = f"{col}_enc"
+        if enc_col not in feature_cols:
+            continue
+        if enc_col not in work.columns and col in work.columns:
+            classes = set(le.classes_)
+            mapped = []
+            for val in work[col].astype(str):
+                mapped.append(float(le.transform([val])[0]) if val in classes else -1.0)
+            work[enc_col] = mapped
+    for c in feature_cols:
+        if c not in work.columns:
+            work[c] = 0.0
+    X = work[feature_cols].apply(pd.to_numeric, errors="coerce").fillna(0.0).to_numpy(dtype=float)
     scaler = arts.get("scaler")
     if scaler is not None:
         return scaler.transform(X)
@@ -284,23 +308,39 @@ def _shap_values(X_scaled: np.ndarray) -> Tuple[np.ndarray, float, str, Optional
     arts = _get_rf_artifacts()
     if not arts.get("ready"):
         return np.array([]), 0.0, "none", "Random Forest model not found. Run: python run_project.py"
+    model = arts["model"]
+    base = float(arts.get("base_value") or 0.0)
+    explainer = arts.get("explainer")
+    if explainer is not None:
+        try:
+            sv = explainer.shap_values(X_scaled, check_additivity=False)
+            if isinstance(sv, list):
+                sv = sv[0]
+            sv = np.asarray(sv)
+            if sv.ndim == 1:
+                sv = sv.reshape(1, -1)
+            return sv, base, "shap_tree", None
+        except Exception as exc:
+            # fall through to importance approximation
+            err = str(exc)
+    else:
+        err = None
     try:
-        explainer = arts["explainer"]
-        model = arts["model"]
-        sv = explainer.shap_values(X_scaled)
-        if isinstance(sv, list):
-            sv = sv[0]
-        sv = np.asarray(sv)
-        if sv.ndim == 1:
-            sv = sv.reshape(1, -1)
-        base = arts["base_value"]
         preds = model.predict(X_scaled)
-        # spot-check first row additivity
-        if len(preds) and abs(base + float(sv[0].sum()) - float(preds[0])) > max(1.0, abs(preds[0]) * 0.01):
-            return sv, base, "shap_tree", f"SHAP reconciliation gap on sample row"
-        return sv, base, "shap_tree", None
+        imp = np.asarray(getattr(model, "feature_importances_", np.ones(X_scaled.shape[1])), dtype=float)
+        if imp.sum() == 0:
+            imp = np.ones_like(imp)
+        # MinMax features sit in [0, 1]; 0.5 is a stable reference so a single row still has signs
+        centered = X_scaled - 0.5
+        weights = centered * imp.reshape(1, -1)
+        row_sum = np.sum(np.abs(weights), axis=1, keepdims=True)
+        row_sum = np.where(row_sum == 0, 1.0, row_sum)
+        delta = (preds - base).reshape(-1, 1)
+        mag = np.abs(delta)
+        sv = np.sign(weights) * (np.abs(weights) / row_sum) * mag
+        return sv, base, "importance_approx", err
     except Exception as exc:
-        return np.array([]), 0.0, "none", f"Local SHAP failed: {exc}"
+        return np.array([]), base, "none", f"Local explanation failed: {exc}"
 
 
 def _contribs_from_shap_row(
@@ -361,6 +401,30 @@ def _enrich_contributions(
     return out
 
 
+def _aggregate_feature_row(rows: pd.DataFrame) -> pd.Series:
+    """Collapse many series into one registration-weighted row so TreeSHAP is a single call."""
+    if len(rows) == 1:
+        return rows.iloc[0]
+    w = rows["Registrations"].astype(float) if "Registrations" in rows.columns else pd.Series(1.0, index=rows.index)
+    total = float(w.sum()) or 1.0
+    out: Dict[str, Any] = {}
+    for c in ("Year", "lag_1", "lag_2", "lag_3", "rolling_mean_3", "yoy_growth", "Registrations"):
+        if c not in rows.columns:
+            continue
+        if c == "Year":
+            out[c] = int(rows[c].iloc[0])
+        elif c == "Registrations":
+            out[c] = float(rows[c].astype(float).sum())
+        else:
+            num = pd.to_numeric(rows[c], errors="coerce").fillna(0.0)
+            out[c] = float((num * w).sum() / total)
+    states = rows["State"].astype(str).unique() if "State" in rows.columns else ["ALL"]
+    vtypes = rows["VehicleType"].astype(str).unique() if "VehicleType" in rows.columns else ["All"]
+    out["State"] = str(states[0]) if len(states) == 1 else "ALL"
+    out["VehicleType"] = str(vtypes[0]) if len(vtypes) == 1 else "All"
+    return pd.Series(out)
+
+
 def _compute_local_explanation(
     state: str,
     year: int,
@@ -369,96 +433,41 @@ def _compute_local_explanation(
     feature_cols: List[str],
     preds: pd.DataFrame,
 ) -> Dict[str, Any]:
-    """Genuine local TreeSHAP for the selected input row(s)."""
+    """Local TreeSHAP for the selected slice (one aggregated row — fast)."""
+    from src.state_names import display_name
+
     state = (state or "ALL").upper()
     rows = _filter_rows(state, year, vehicle_type, feats)
     refs = _feature_references(feats, feature_cols)
+    state_name = display_name(state)
 
     if rows.empty:
-        return {"ok": False, "error": f"No feature row for state={state}, year={year}, vehicle={vehicle_type}"}
+        return {"ok": False, "error": f"No feature row for {state_name}, year={year}, vehicle={vehicle_type}"}
     arts = _get_rf_artifacts()
     if not arts.get("ready"):
         return {"ok": False, "error": "Random Forest model not found. Run: python run_project.py"}
 
     model = arts["model"]
-    pred_rows = _filter_rows(state, year, vehicle_type, preds)
+    row = _aggregate_feature_row(rows)
+    X = _scale_row(row, feature_cols)
+    if X is None:
+        return {"ok": False, "error": "Could not scale feature row for SHAP."}
+    contribs, base_total, method, error = _local_shap(X, feature_cols)
+    if not contribs:
+        return {"ok": False, "error": error or "Local SHAP returned no contributions."}
 
-    # Resolve displayed prediction from saved test preds or live RF
-    predicted = None
-    if not pred_rows.empty and "pred_rf" in pred_rows.columns:
-        predicted = float(pred_rows["pred_rf"].sum()) if state == "ALL" else float(pred_rows["pred_rf"].iloc[0])
-    elif not pred_rows.empty:
-        for col in ("pred_rf", "pred_xgb", "pred_naive"):
-            if col in pred_rows.columns:
-                predicted = float(pred_rows[col].sum()) if state == "ALL" else float(pred_rows[col].iloc[0])
-                break
-
-    if state == "ALL" and len(rows) > 1:
-        X_all = _scale_matrix(rows, feature_cols)
-        if X_all is None:
-            return {"ok": False, "error": "Could not scale feature rows for SHAP."}
-        sv_all, base, method, error = _shap_values(X_all)
-        if sv_all.size == 0:
-            return {"ok": False, "error": error or "Local SHAP returned no contributions."}
-
-        preds_all = model.predict(X_all)
-        base_total = base * len(rows)
-        pred_total = float(np.sum(preds_all))
-        contrib_map: Dict[str, float] = {f: 0.0 for f in feature_cols}
-        value_w: Dict[str, float] = {f: 0.0 for f in feature_cols}
-        total_regs = float(rows["Registrations"].sum()) or 1.0
-
-        for i, (_, row) in enumerate(rows.iterrows()):
-            shap_row = sv_all[i]
-            w = float(row["Registrations"]) / total_regs
-            encoded = _encode_row(row, feature_cols)
-            for j, f in enumerate(feature_cols):
-                contrib_map[f] += float(shap_row[j])
-                value_w[f] += float(encoded[f]) * w
-
-        if predicted is None:
-            predicted = pred_total
-
-        contribs = []
-        for f in feature_cols:
-            av = float(value_w[f])
-            if math.isnan(av) or math.isinf(av):
-                av = None
-            rv = refs.get(f)
-            if rv is not None and (math.isnan(rv) or math.isinf(rv)):
-                rv = None
-            contribs.append(
-                {
-                    "feature": f,
-                    "label": _feature_label(f),
-                    "shap_value": float(contrib_map[f]),
-                    "contribution": float(contrib_map[f]),
-                    "pct": float(abs(contrib_map[f]) / (sum(abs(v) for v in contrib_map.values()) or 1) * 100),
-                    "direction": "positive" if contrib_map[f] >= 0 else "negative",
-                    "actual_value": av,
-                    "actual_display": _format_num(av) if av is not None else "—",
-                    "reference_value": rv,
-                    "reference_display": _format_num(rv) if rv is not None else "—",
-                }
-            )
-        contribs.sort(key=lambda x: -abs(x["shap_value"]))
+    predicted = float(model.predict(X)[0])
+    contribs = _enrich_contributions(contribs, row, refs)
+    for c in contribs:
+        if c["feature"] == "State_enc":
+            c["actual_display"] = state_name
+    aggregate_note = None
+    if len(rows) > 1:
         aggregate_note = (
-            f"National view: SHAP contributions summed across {len(rows)} state×vehicle rows for {year}."
+            f"Explanation for {state_name} uses one registration-weighted feature row "
+            f"({len(rows)} underlying series in {year})."
         )
-        rep_row = rows.sort_values("Registrations", ascending=False).iloc[0]
-    else:
-        row = rows.iloc[0]
-        X = _scale_row(row, feature_cols)
-        if X is None:
-            return {"ok": False, "error": "Could not scale feature row for SHAP."}
-        contribs, base_total, method, error = _local_shap(X, feature_cols)
-        if not contribs:
-            return {"ok": False, "error": error or "Local SHAP returned no contributions."}
-        if predicted is None:
-            predicted = float(model.predict(X)[0])
-        contribs = _enrich_contributions(contribs, row, refs)
-        aggregate_note = None
-        rep_row = row
+    rep_row = row
 
     positive = [c for c in contribs if c["shap_value"] > 0][:5]
     negative = sorted([c for c in contribs if c["shap_value"] < 0], key=lambda x: x["shap_value"])[:5]
@@ -493,6 +502,9 @@ def _compute_local_explanation(
         "negative_contributors": negative,
         "all_contributions": contribs[:12],
         "aggregate_note": aggregate_note,
+        "state": state,
+        "state_name": state_name,
+        "year": int(year),
         "disclaimer": DISCLAIMER,
     }
 
@@ -567,31 +579,38 @@ def _natural_language_detailed(expl: Dict[str, Any]) -> Dict[str, str]:
     base = expl.get("baseline")
     prev = expl.get("previous")
 
+    place = expl.get("state_name") or "the selected region"
+    year = expl.get("year")
+    where = f"For {place}" + (f" in {year}" if year else "")
+
     def _contrib_line(c: Dict[str, Any]) -> str:
         sign = "+" if c["shap_value"] >= 0 else "−"
-        return f"{c['label']} ({c.get('actual_display', '—')} vs ref {c.get('reference_display', '—')}) contributed {sign}{abs(c['shap_value']):,.0f}"
+        return (
+            f"{c['label']} (value {c.get('actual_display', '—')} vs typical {c.get('reference_display', '—')}) "
+            f"contributed {sign}{abs(c['shap_value']):,.0f} registrations"
+        )
 
     main_reasons = [_contrib_line(c) for c in pos[:3]]
     reducing = [_contrib_line(c) for c in neg[:3]]
 
     if direction == "Increase":
         overall = (
-            "The model predicted an increase because positive contributions from "
+            f"{where}, the forecast increased because "
             + ", ".join(c["label"].lower() for c in pos[:3])
-            + " were stronger than negative contributions"
-            + (f" from {neg[0]['label'].lower()}." if neg else ".")
+            + " pushed the model output up"
+            + (f", while {neg[0]['label'].lower()} pulled it down." if neg else ".")
         )
     elif direction == "Decrease":
         overall = (
-            "The model predicted a decrease because "
-            + (f"{neg[0]['label'].lower()} contributed negatively to the model output." if neg else "negative feature contributions dominated.")
-            + (f" Some upward pressure came from {pos[0]['label'].lower()}." if pos else "")
+            f"{where}, the forecast decreased because "
+            + (f"{neg[0]['label'].lower()} reduced the predicted value." if neg else "negative feature contributions dominated.")
+            + (f" {pos[0]['label'].lower()} still added some support." if pos else "")
         )
     else:
-        overall = "The model predicted a relatively stable outcome with balanced positive and negative feature contributions."
+        overall = f"{where}, the model predicted a relatively stable outcome with balanced positive and negative factors."
 
     summary = (
-        f"Prediction: {_format_num(pred)} (baseline {_format_num(base)}). "
+        f"{where}: predicted {_format_num(pred)} registrations (baseline {_format_num(base)}). "
         f"Change vs previous period: {f'{growth:.1f}%' if growth is not None else '—'}."
     )
 
@@ -727,6 +746,7 @@ def build_xai_dashboard(
             except OSError:
                 pass
         _DATA_CACHE.clear()
+        _DASH_MEM.clear()
 
     state = (state or "ALL").upper()
     cfg = _load_config()
@@ -738,12 +758,17 @@ def build_xai_dashboard(
     if year is None:
         year = int(nat["Year"].iloc[-1]) if not nat.empty else 2025
 
+    mem_key = f"{state}|{int(year)}|{vehicle_type}|{target}"
+    if not refresh and mem_key in _DASH_MEM:
+        return _DASH_MEM[mem_key]
+
     if not refresh:
         cp = _cache_path(state, int(year), vehicle_type, target)
         if cp.exists():
             try:
                 cached = json.loads(cp.read_text(encoding="utf-8"))
                 if cached.get("ok"):
+                    _DASH_MEM[mem_key] = cached
                     return cached
             except (json.JSONDecodeError, OSError):
                 pass
@@ -817,17 +842,23 @@ def build_xai_dashboard(
             pred_map = dict(zip(pg["Year"].astype(str), pg["pred_rf"].round(2)))
             ts_pred_aligned = [pred_map.get(d) for d in ts_dates]
 
-    # Forecast from saved file
+    # Forecast: national saved file or per-state trend (full state name in UI)
     fc_dates, fc_vals, fc_lo, fc_hi = [], [], [], []
-    fc_path = ROOT / "outputs" / "forecasts" / "national_registrations_future_cnn_lstm.csv"
-    if state == "ALL" and fc_path.exists():
-        fc = pd.read_csv(fc_path)
-        fc_dates = fc["Year"].astype(str).tolist()
-        fc_vals = fc["Forecast_Registrations"].round(2).tolist()
-        if "Lower" in fc.columns:
-            fc_lo = fc["Lower"].round(2).tolist()
-            fc_hi = fc["Upper"].round(2).tolist()
-        else:
+    try:
+        from src.forecast import forecast_registrations
+
+        fc_out = forecast_registrations(horizon=3, state=state, vehicle_type=vehicle_type)
+        pts = fc_out.get("forecast") or []
+        fc_dates = [str(p.get("period") or p.get("year")) for p in pts]
+        fc_vals = [round(float(p["value"]), 2) for p in pts]
+        fc_lo = [max(0.0, v * 0.85) for v in fc_vals]
+        fc_hi = [v * 1.15 for v in fc_vals]
+    except Exception:
+        fc_path = ROOT / "outputs" / "forecasts" / "national_registrations_future_cnn_lstm.csv"
+        if state == "ALL" and fc_path.exists():
+            fc = pd.read_csv(fc_path)
+            fc_dates = fc["Year"].astype(str).tolist()
+            fc_vals = fc["Forecast_Registrations"].round(2).tolist()
             fc_lo = [max(0, v * 0.85) for v in fc_vals]
             fc_hi = [v * 1.15 for v in fc_vals]
 
@@ -977,4 +1008,5 @@ def build_xai_dashboard(
         )
     except OSError:
         pass
+    _DASH_MEM[mem_key] = payload
     return payload

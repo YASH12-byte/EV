@@ -5,6 +5,7 @@
   let filters = { state: "ALL", year: "", vehicle_type: "All" };
   let loadTimer = null;
   let loadSeq = 0;
+  let filtersReady = false;
 
   function toast(msg, ok = true) {
     const el = document.getElementById("xaiToast");
@@ -326,6 +327,11 @@
     document.getElementById("xaiLastRef").textContent = new Date(data.refreshed_at).toLocaleString();
 
     const k = data.kpis || {};
+    const stateName = data.filters?.state_name || (window.evStateName ? evStateName(data.filters?.state) : data.filters?.state) || "All India";
+    const badge = document.getElementById("xaiStateBadge");
+    if (badge) badge.textContent = stateName;
+    const tsTitle = document.getElementById("tsTitle");
+    if (tsTitle) tsTitle.textContent = `${stateName} — Actual · Predicted · Forecast`;
     document.getElementById("kpiCurrent").textContent = fmt(k.current_sales);
     document.getElementById("kpiPred").textContent = fmt(k.predicted_sales);
     document.getElementById("kpiGrowth").textContent = fmtPct(k.growth_pct);
@@ -337,13 +343,18 @@
     renderGrowthDirection(data);
 
     const pc = data.prediction_card || {};
+    const acc = data.accuracy || {};
+    const accBest = acc.best_model_metrics || {};
     document.getElementById("predCard").innerHTML = `
+      <p><strong>State:</strong> ${stateName}</p>
       <p><strong>Predicted EV Sales:</strong> ${fmt(pc.predicted_ev_sales)}</p>
       <p><strong>Previous Period:</strong> ${fmt(pc.previous_period_sales)}</p>
       <p><strong>Expected Growth:</strong> ${fmtPct(pc.expected_growth_pct)}</p>
       <p><strong>Direction:</strong> ${pc.direction || "—"} · <strong>Trend:</strong> ${pc.overall_trend || "—"}</p>
       <p><strong>Main + factor:</strong> ${pc.main_positive_factor || "—"}</p>
       <p><strong>Main − factor:</strong> ${pc.main_negative_factor || "—"}</p>
+      <p><strong>Test-set accuracy:</strong> ${accBest.approx_accuracy != null ? accBest.approx_accuracy + "%" : "—"}
+        (${acc.best_model || "best RMSE"} · MAPE ${accBest.MAPE != null ? Number(accBest.MAPE).toFixed(1) + "%" : "—"})</p>
       <p class="mb-0"><strong>Interval:</strong> ${fmt(pc.confidence?.lower)} – ${fmt(pc.confidence?.upper)}<br/>
       <span class="text-muted-2">${pc.confidence?.note || ""}</span></p>`;
 
@@ -403,15 +414,26 @@
 
     const lime = document.getElementById("limeWrap");
     if (data.lime?.available && data.lime.url) {
-      lime.innerHTML = `<iframe loading="lazy" src="${data.lime.url}" title="LIME" style="width:100%;height:420px;border:0;border-radius:10px;background:#fff"></iframe>`;
+      lime.innerHTML = `<button type="button" class="btn btn-ghost btn-sm" id="limeOpen">Load LIME explanation</button>`;
+      document.getElementById("limeOpen")?.addEventListener("click", () => {
+        lime.innerHTML = `<iframe loading="lazy" src="${data.lime.url}" title="LIME" style="width:100%;height:420px;border:0;border-radius:10px;background:#fff"></iframe>`;
+      }, { once: true });
     } else {
-      lime.innerHTML = `<span class="xai-unavail">LIME not generated. Run: python src/xai_lime.py</span>`;
+      lime.innerHTML = `<span class="xai-unavail">LIME is optional and not required for SHAP factor explanations.</span>`;
     }
 
-    if (data.filter_options) {
+    if (!filtersReady && data.filter_options) {
       fillSelect("xaiState", data.filter_options.regions, "code", "name", data.filters?.state);
       fillSelect("xaiYear", data.filter_options.years, null, null, data.filters?.year);
       fillSelect("xaiVehicle", data.filter_options.vehicle_types, null, null, data.filters?.vehicle_type);
+      filtersReady = true;
+    } else if (data.filters) {
+      const st = document.getElementById("xaiState");
+      const yr = document.getElementById("xaiYear");
+      const vt = document.getElementById("xaiVehicle");
+      if (st && data.filters.state) st.value = data.filters.state;
+      if (yr && data.filters.year) yr.value = String(data.filters.year);
+      if (vt && data.filters.vehicle_type) vt.value = data.filters.vehicle_type;
     }
   }
 

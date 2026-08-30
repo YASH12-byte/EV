@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Forecast · EVForecast{% endblock %}
-{% block head %}<script src="../static/js/live-server-bridge.js"></script>{% endblock %}
+{% block head %}{% endblock %}
 {% block content %}
 <section class="section">
   <div class="container">
@@ -138,11 +138,12 @@ function renderForecastChart(containerId, history, forecast, modelFit, yLabel) {
     });
   }
 
-  Plotly.newPlot(plotEl, traces, {
+    Plotly.newPlot(plotEl, traces, {
     paper_bgcolor: "transparent", plot_bgcolor: "transparent",
     font: { color: "#cfe3ec", family: "Outfit" },
-    margin: { t: 24, r: 16, b: 48, l: 64 },
+    margin: { t: 48, r: 16, b: 48, l: 64 },
     legend: { orientation: "h", y: 1.12 },
+    title: { text: (window.EVForecast && window._forecastStateName) ? window._forecastStateName : yLabel, font: { size: 14 } },
     xaxis: { title: "Period", gridcolor: "rgba(255,255,255,0.05)", tickangle: -25 },
     yaxis: { title: yLabel, gridcolor: "rgba(255,255,255,0.05)", tickformat: ",.0f" },
     hovermode: "x unified",
@@ -199,6 +200,7 @@ async function runForecast() {
   resultEl.innerHTML = `<span class="text-muted-2">Loading forecast…</span>`;
   try {
     const out = await EVForecast.API.forecast(region, horizon, target, vehicle);
+    window._forecastStateName = out.region_name || (window.evStateName ? evStateName(out.region || region) : region);
     if (!out.ok) {
       resultEl.innerHTML = `<div class="text-danger">${out.message || "Forecast failed"}</div>`;
       return;
@@ -213,10 +215,11 @@ async function runForecast() {
     }).join("");
 
     resultEl.innerHTML = `
-      <div class="mb-2"><span class="chip">${out.region_name || out.region}</span>
+      <div class="mb-2"><span class="chip">${out.region_name || (window.evStateName ? evStateName(out.region) : out.region)}</span>
       <span class="chip">${out.target || target}</span>
       <span class="chip">${out.model || ""}</span></div>
       <ul class="mb-0">${points}</ul>
+      ${out.accuracy && out.accuracy.approx_accuracy != null ? `<p class="small mt-2 mb-0"><strong>Held-out accuracy:</strong> ${out.accuracy.approx_accuracy}% (${out.accuracy.best_model || "best RMSE"} · MAPE ${out.accuracy.MAPE != null ? Number(out.accuracy.MAPE).toFixed(1) : "—"}% · R² ${out.accuracy.R2 != null ? Number(out.accuracy.R2).toFixed(3) : "—"})</p>` : ""}
       <p class="small text-muted-2 mt-2 mb-0">${out.note || ""}</p>`;
 
     try {
@@ -267,7 +270,7 @@ syncHorizonUI();
     const o = document.createElement("option");
     if (typeof r === "string") {
       o.value = r;
-      o.textContent = r;
+      o.textContent = window.evStateName ? evStateName(r) : r;
     } else {
       o.value = r.code;
       o.textContent = r.name;

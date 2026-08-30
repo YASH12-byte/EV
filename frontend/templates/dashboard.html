@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Dashboard · EVForecast{% endblock %}
 {% block head %}
-<script src="../static/js/live-server-bridge.js"></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard-live.css') }}" />
 {% endblock %}
 {% block content %}
@@ -234,8 +233,9 @@ async function loadDashboard(opts = {}) {
     ], {
       paper_bgcolor: "transparent", plot_bgcolor: "transparent",
       font: { color: "#cfe3ec", family: "Outfit" },
-      margin: { t: 20, r: 10, b: 40, l: 50 },
+      margin: { t: 48, r: 10, b: 40, l: 50 },
       legend: { orientation: "h" },
+      title: { text: (snap.region?.name || "All India") + " — registrations + forecast", font: { size: 13 } },
       xaxis: { gridcolor: "rgba(255,255,255,0.05)" },
       yaxis: { gridcolor: "rgba(255,255,255,0.05)" }
     }, { responsive: true, displayModeBar: false });

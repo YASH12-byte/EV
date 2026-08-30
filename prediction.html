@@ -69,6 +69,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 <script src="frontend/static/js/app.js"></script>
+<script src="frontend/static/js/state-names.js"></script>
 <script src="site/core.js"></script>
 <script src="site/chrome.js"></script>
 <script>
@@ -78,7 +79,12 @@ let chart;
   const shap = await EVPagesData.shapImportance();
   const states = [...new Set(annual.map((r) => r.state))].filter(Boolean).sort();
   const sel = document.getElementById("predRegion");
-  sel.innerHTML = states.map((s) => `<option value="${s}" ${s === "ALL" ? "selected" : ""}>${s}</option>`).join("");
+  sel.innerHTML =
+    `<option value="ALL">All India</option>` +
+    states.filter((s) => s !== "ALL").map((s) => {
+      const name = typeof evStateName === "function" ? evStateName(s) : s;
+      return `<option value="${s}">${name}</option>`;
+    }).join("");
 
   document.getElementById("predForm").addEventListener("submit", (e) => {
     e.preventDefault();
@@ -92,11 +98,12 @@ let chart;
     const hist = Object.keys(byYear).map(Number).sort((a, b) => a - b).map((y) => ({ year: y, value: byYear[y] }));
     const fut = EVPagesData.forecast(hist, horizon);
     const expl = EVPagesData.explainSeries(hist, hist[hist.length - 1]?.year, shap);
+    const name = typeof evStateName === "function" ? evStateName(state) : state;
     document.getElementById("predResult").innerHTML =
-      `<strong>${state}</strong> · ${vehicle} · next ${horizon} year(s)<br>` +
+      `<strong>${name}</strong> · ${vehicle} · next ${horizon} year(s)<br>` +
       fut.map((p) => `${p.year}: ${p.value.toLocaleString()}`).join(" · ");
     document.getElementById("predXai").innerHTML =
-      `<strong>Why:</strong> ${expl.growth_pct >= 0 ? "Increase" : "Decrease"} vs last year (${expl.growth_pct.toFixed(1)}%). ` +
+      `<strong>Why (${name}):</strong> ${expl.growth_pct >= 0 ? "Increase" : "Decrease"} vs last year (${expl.growth_pct.toFixed(1)}%). ` +
       `Top positive: ${expl.pos[0]?.label || "—"}. Top negative: ${expl.neg[0]?.label || "none"}.`;
     const labels = [...hist.map((p) => p.year), ...fut.map((p) => p.year)];
     const histData = [...hist.map((p) => p.value), ...fut.map(() => null)];

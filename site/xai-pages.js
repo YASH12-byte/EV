@@ -45,7 +45,7 @@
     const sel = document.getElementById("xaiState");
     sel.innerHTML =
       `<option value="ALL">All India</option>` +
-      codes.map((c) => `<option value="${c}">${c} · ${stateName(c)}</option>`).join("");
+      codes.map((c) => `<option value="${c}">${typeof evStateName === "function" ? evStateName(c) : c}</option>`).join("");
   }
 
   function fillYears(hist) {
@@ -238,7 +238,7 @@
     );
     const dir = expl.growth_pct >= 0 ? "increase" : "decrease";
     document.getElementById("predCard").innerHTML =
-      `<p>For <strong>${state === "ALL" ? "All India" : state}</strong> in ${expl.year}, registrations ${dir} ` +
+      `<p>For <strong>${state === "ALL" ? "All India" : (typeof evStateName === "function" ? evStateName(state) : state)}</strong> in ${expl.year}, registrations ${dir} ` +
       `${fmtPct(Math.abs(expl.growth_pct))} vs the previous year.</p>` +
       `<p class="mb-0">Main lift: ${expl.pos[0]?.label || "trend features"}. Main drag: ${expl.neg[0]?.label || "none"}.</p>`;
     document.getElementById("localExplainSummary").textContent =
@@ -265,6 +265,8 @@
 
   function refresh() {
     const state = document.getElementById("xaiState").value;
+    const badge = document.getElementById("xaiStateBadge");
+    if (badge) badge.textContent = typeof evStateName === "function" ? evStateName(state) : (state === "ALL" ? "All India" : state);
     const vehicle = document.getElementById("xaiVehicle").value;
     const year = Number(document.getElementById("xaiYear").value);
     const hist = EVPagesData.seriesFor(annual, state, vehicle);

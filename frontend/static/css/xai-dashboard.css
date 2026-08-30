@@ -1,13 +1,4 @@
 /* Explainable AI dashboard */
-.xai-banner {
-  padding: 10px 14px;
-  border-radius: 10px;
-  background: rgba(56, 189, 248, 0.1);
-  border: 1px solid rgba(56, 189, 248, 0.25);
-  font-size: 0.88rem;
-  color: #bae6fd;
-  margin-bottom: 1rem;
-}
 .xai-disclaimer {
   font-size: 0.82rem;
   color: var(--muted, #8fa3b0);
