@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
   <title>Dataset · EVForecast</title>
   <script>
     (function () {
@@ -39,10 +40,28 @@
 <script src="site/chrome.js"></script>
 <script>
 (async () => {
-  const annual = await EVPagesData.annual();
-  const national = await EVPagesData.national();
-  const states = new Set(annual.map((r) => r.state).filter((s) => s && s !== "ALL"));
-  const years = annual.map((r) => r.year).filter(Number.isFinite);
+  await EVPages.ready;
+  let annual, national, states, years;
+  if (EVPages.hasBackend) {
+    try {
+      const s = await EVForecast.API.summary();
+      document.getElementById("dsCards").innerHTML = [
+        ["States / UTs", s.regions ?? "—"],
+        ["Rows", (s.rows ?? 0).toLocaleString()],
+        ["Year span", s.date_start && s.date_end ? `${s.date_start}–${s.date_end}` : "—"],
+        ["Target", s.target || "Registrations"]
+      ].map(([label, value]) =>
+        `<div class="col-md-3"><div class="glass kpi"><div class="label">${label}</div><div class="value">${value}</div></div></div>`
+      ).join("");
+      return;
+    } catch (e) {
+      console.warn("Dataset API failed, using static CSV:", e);
+    }
+  }
+  annual = await EVPagesData.annual();
+  national = await EVPagesData.national();
+  states = new Set(annual.map((r) => r.state).filter((s) => s && s !== "ALL"));
+  years = annual.map((r) => r.year).filter(Number.isFinite);
   document.getElementById("dsCards").innerHTML = [
     ["States / UTs", states.size],
     ["Rows", annual.length.toLocaleString()],

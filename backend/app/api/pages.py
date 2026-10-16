@@ -6,7 +6,8 @@ pages_bp = Blueprint("pages", __name__)
 _LIVE_SERVER_PAGES = {
     "login.html": "pages.login_page",
     "register.html": "pages.register_page",
-    "index.html": "pages.home",
+    "index.html": "pages.login_page",
+    "home.html": "pages.home",
     "dashboard.html": "pages.dashboard",
     "about.html": "pages.about",
     "dataset.html": "pages.dataset",
@@ -22,6 +23,15 @@ _LIVE_SERVER_PAGES = {
 
 @pages_bp.get("/live-index.html")
 def live_index():
+    return redirect(url_for("pages.login_page"))
+
+
+@pages_bp.get("/<string:page_name>.html")
+def root_html_page(page_name: str):
+    filename = f"{page_name}.html"
+    endpoint = _LIVE_SERVER_PAGES.get(filename)
+    if endpoint:
+        return redirect(url_for(endpoint))
     return redirect(url_for("pages.login_page"))
 
 

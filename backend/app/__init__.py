@@ -84,6 +84,20 @@ def create_app() -> Flask:
         db.create_all()
         _ensure_admin()
 
+    def _warm_xai():
+        try:
+            from src.xai_engine import _get_rf_artifacts, _load_features, _load_predictions
+
+            _get_rf_artifacts()
+            _load_features()
+            _load_predictions()
+        except Exception:
+            pass
+
+    import threading
+
+    threading.Thread(target=_warm_xai, daemon=True).start()
+
     return app
 
 

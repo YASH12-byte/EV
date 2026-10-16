@@ -591,7 +591,88 @@
     },
     {
       "file": "Register/status_distribution_all_states.xlsx",
-      "error": "unreadable"
+      "rows": 72,
+      "columns": 3,
+      "column_names": [
+        "State",
+        "Vehicle Status",
+        "Count"
+      ],
+      "dtypes": {
+        "State": "str",
+        "Vehicle Status": "str",
+        "Count": "int64"
+      },
+      "missing_values": {
+        "State": 0,
+        "Vehicle Status": 0,
+        "Count": 0
+      },
+      "duplicate_rows": 0,
+      "numeric_columns": [
+        "Count"
+      ],
+      "categorical_columns": [
+        "State",
+        "Vehicle Status"
+      ],
+      "min_year": null,
+      "max_year": null,
+      "unique_states": [
+        "AN",
+        "AP",
+        "AR",
+        "AS",
+        "BR",
+        "CG",
+        "CH",
+        "DD",
+        "DL",
+        "DN",
+        "GA",
+        "GJ",
+        "HP",
+        "HR",
+        "JH",
+        "JK",
+        "KA",
+        "KL",
+        "LA",
+        "LD",
+        "MH",
+        "ML",
+        "MN",
+        "MP",
+        "MZ",
+        "NL",
+        "OD",
+        "PB",
+        "PY",
+        "RJ",
+        "SK",
+        "TN",
+        "TR",
+        "TS",
+        "UK",
+        "UP",
+        "WB"
+      ],
+      "unique_vehicle_types": [],
+      "possible_targets": [
+        "Count"
+      ],
+      "sample_head": [
+        {
+          "State": "AN",
+          "Vehicle Status": "ACTIVE_NON_COMPLIANT",
+          "Count": "262"
+        },
+        {
+          "State": "AN",
+          "Vehicle Status": "ACTIVE_COMPLIANT",
+          "Count": "62"
+        }
+      ]
     },
     {
       "file": "Register/top5_states_all_filters.csv",

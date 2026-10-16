@@ -1,17 +1,25 @@
 {
   "liveServer.settings.port": 5500,
-  "liveServer.settings.file": "live-index.html",
+  "liveServer.settings.host": "127.0.0.1",
+  "liveServer.settings.root": "/",
+  "liveServer.settings.file": "index.html",
   "liveServer.settings.donotShowInfoMsg": true,
+  "liveServer.settings.https": {
+    "enable": false
+  },
+  "liveServer.settings.mount": [
+    ["/frontend/templates", "./live-shims"]
+  ],
+  "liveServer.settings.proxy": {
+    "enable": true,
+    "baseUri": "/api",
+    "proxyUri": "http://127.0.0.1:5000"
+  },
   "liveServer.settings.ignoreFiles": [
     ".vscode/**",
     "**/*.py",
     "**/venv/**",
     "**/.venv/**"
   ],
-  "liveServer.settings.proxy": {
-    "enable": true,
-    "baseUri": "/",
-    "proxyUri": "http://127.0.0.1:5000/"
-  },
   "task.allowAutomaticTasks": "on"
 }

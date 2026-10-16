@@ -13,6 +13,8 @@ def mape(y_true, y_pred) -> float:
     y_true = np.asarray(y_true).ravel()
     y_pred = np.asarray(y_pred).ravel()
     mask = y_true != 0
+    if not np.any(mask):
+        return 0.0
     return float(np.mean(np.abs((y_true[mask] - y_pred[mask]) / y_true[mask])) * 100)
 
 

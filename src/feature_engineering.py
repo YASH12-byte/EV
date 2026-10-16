@@ -201,7 +201,20 @@ def main() -> None:
     tx = build_monthly_features("transactions")
     rev = build_monthly_features("revenue")
 
-    reg_feats = ["Year", "lag_1", "lag_2", "lag_3", "rolling_mean_3", "yoy_growth"]
+    reg_feats = [
+        "Year",
+        "lag_1",
+        "lag_2",
+        "lag_3",
+        "rolling_mean_3",
+        "yoy_growth",
+        "charging_stations",
+        "gov_policy_index",
+        "fuel_price",
+        "battery_cost",
+        "gdp_index",
+        "ev_adoption_index",
+    ]
     pack = prepare_tabular_xy(
         regs,
         target="Registrations",

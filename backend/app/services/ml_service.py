@@ -67,8 +67,11 @@ class MLService:
             df["date"] = pd.to_datetime(df["Year"].astype(str) + "-01-01")
             df["region"] = df["State"].astype(str)
             df["ev_sales"] = df["Registrations"].astype(float)
-            # No charging stations in real zip — expose NaN-safe zero for old UI fields
-            df["charging_stations"] = 0.0
+            df["charging_stations"] = (
+                df["charging_stations"].astype(float)
+                if "charging_stations" in df.columns
+                else 0.0
+            )
             return df
 
         raw = config.DATA_RAW / "ev_market_data.csv"
@@ -654,9 +657,10 @@ class MLService:
                 "model_fit": model_fit,
                 "local_explanation": local_explanation,
                 "top_factors": top_factors,
+                "accuracy": out.get("accuracy"),
                 "note": (
-                    "Real DataSet.zip forecast from processed series / saved models. "
-                    "No retraining on this request."
+                    f"Forecast for {display_name(state)} from processed series "
+                    "(recent growth continuation). Test-set accuracy is reported for the best RMSE model."
                 ),
             }
 

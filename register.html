@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
   <title>Register · EVForecast</title>
   <script>
     (function () {
@@ -15,45 +16,118 @@
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="frontend/static/css/style.css" />
+  <link rel="stylesheet" href="frontend/static/css/style.css?v=20260912-contrast" />
 </head>
 <body class="auth-body">
-<main class="section">
-  <div class="container" style="max-width:480px">
-    <div class="glass p-4">
-      <h1 class="h3">Create Account</h1>
-      <p class="text-muted-2">Demo accounts are stored in this browser only.</p>
-      <form id="regForm" class="row g-3">
-        <div class="col-12"><label class="form-label">Name</label><input class="form-control" name="name" required /></div>
-        <div class="col-12"><label class="form-label">Email</label><input class="form-control" type="email" name="email" required /></div>
-        <div class="col-12"><label class="form-label">Password</label><input class="form-control" type="password" name="password" minlength="6" required /></div>
-        <div class="col-12"><button class="btn btn-glow w-100" type="submit">Register</button></div>
-      </form>
-      <div id="regError" class="auth-error mt-3"></div>
-      <a class="btn btn-ghost w-100 mt-2" href="index.html">Back to Login</a>
+<main class="auth-center-wrap">
+  <a class="auth-center-brand" href="home.html">
+    <span class="brand-mark"></span>
+    <span class="auth-center-brand-text">EV<span>Forecast</span></span>
+  </a>
+
+  <div class="auth-center-card glass">
+    <div class="auth-card-head">
+      <span class="chip">Get Started</span>
+      <h1>Create account</h1>
+      <p>Fill in your details to join the EV forecasting workspace.</p>
     </div>
+
+    <form id="regForm" novalidate>
+      <div class="mb-3">
+        <label class="form-label">Full name</label>
+        <input type="text" class="form-control" name="name" required placeholder="e.g. Yash Sharma" autocomplete="name" />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Email address</label>
+        <input type="email" class="form-control" name="email" required placeholder="you@institute.edu" autocomplete="email" />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Organization / University</label>
+        <input type="text" class="form-control" name="organization" placeholder="e.g. Engineering College / Company" />
+      </div>
+
+      <div class="row g-3 mb-3">
+        <div class="col-md-6">
+          <label class="form-label">Password</label>
+          <div class="password-field">
+            <input type="password" class="form-control" name="password" id="regPassword" required minlength="6" placeholder="Min 6 characters" autocomplete="new-password" />
+            <button type="button" class="password-toggle" id="regTogglePass" aria-label="Show password">
+              <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Confirm password</label>
+          <div class="password-field">
+            <input type="password" class="form-control" name="password_confirm" id="regPasswordConfirm" required minlength="6" placeholder="Re-enter password" autocomplete="new-password" />
+            <button type="button" class="password-toggle" id="regTogglePassConfirm" aria-label="Show password">
+              <svg class="eye-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn auth-btn-submit w-100 mt-2" type="submit">Create account</button>
+      <div class="auth-error" id="regError"></div>
+    </form>
+
+    <p class="auth-switch">Already registered? <a href="login.html">Sign in</a></p>
   </div>
 </main>
 <script src="frontend/static/js/app.js"></script>
 <script src="site/core.js"></script>
 <script>
-document.getElementById("regForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const fd = new FormData(e.target);
-  const err = document.getElementById("regError");
-  err.classList.remove("show");
-  try {
-    await EVForecast.API.register({
-      name: fd.get("name"),
-      email: fd.get("email"),
-      password: fd.get("password")
-    });
-    location.href = EVPages.href("/login");
-  } catch (ex) {
-    err.textContent = ex.data?.message || ex.message;
-    err.classList.add("show");
+(() => {
+  const EMAIL_RE = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (window.EVForecast && typeof window.EVForecast.spawnParticles === "function") {
+    EVForecast.spawnParticles(".auth-center-wrap", 18);
   }
-});
+
+  function wireToggle(inputId, buttonId) {
+    const pass = document.getElementById(inputId);
+    const toggle = document.getElementById(buttonId);
+    toggle.addEventListener("click", () => {
+      const shown = pass.type === "text";
+      pass.type = shown ? "password" : "text";
+      toggle.classList.toggle("is-shown", !shown);
+      toggle.setAttribute("aria-label", shown ? "Show password" : "Hide password");
+    });
+  }
+  wireToggle("regPassword", "regTogglePass");
+  wireToggle("regPasswordConfirm", "regTogglePassConfirm");
+
+  document.getElementById("regForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const err = document.getElementById("regError");
+    err.classList.remove("show");
+    const fd = new FormData(e.target);
+    const email = String(fd.get("email") || "").trim().toLowerCase();
+    const password = String(fd.get("password") || "");
+    const passwordConfirm = String(fd.get("password_confirm") || "");
+    const name = String(fd.get("name") || "").trim();
+
+    if (!name) return showError("Please enter your full name.");
+    if (!EMAIL_RE.test(email)) return showError("Please enter a valid email address.");
+    if (password.length < 6) return showError("Password must be at least 6 characters.");
+    if (password !== passwordConfirm) return showError("Passwords do not match. Please re-enter.");
+
+    try {
+      await EVForecast.API.register({ name, email, organization: fd.get("organization"), password });
+      location.href = EVPages.href("/login");
+    } catch (ex) {
+      showError(ex.data?.message || ex.message);
+    }
+
+    function showError(message) {
+      err.textContent = message;
+      err.classList.add("show");
+    }
+  });
+})();
 </script>
 </body>
 </html>

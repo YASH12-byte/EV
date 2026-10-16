@@ -7,6 +7,12 @@
     "lag_3",
     "rolling_mean_3",
     "yoy_growth",
+    "charging_stations",
+    "gov_policy_index",
+    "fuel_price",
+    "battery_cost",
+    "gdp_index",
+    "ev_adoption_index",
     "State_enc",
     "VehicleType_enc"
   ],

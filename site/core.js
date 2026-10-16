@@ -1,9 +1,17 @@
 /**
- * GitHub Pages adapter (static hosting cannot run Flask).
- * Provides demo login, CSV charts, and correct /EV/ links.
+ * Static host adapter (GitHub Pages + VS Code Live Server).
+ * Demo login + CSV charts when Flask is offline; real API when /api/health responds.
  */
 (function () {
   "use strict";
+
+  function isStaticHost() {
+    if (location.protocol === "file:") return true;
+    if (location.hostname === "127.0.0.1" || location.hostname === "localhost") {
+      return location.port === "5500" || location.port === "5501";
+    }
+    return location.hostname.endsWith("github.io");
+  }
 
   function repoBase() {
     if (!location.hostname.endsWith("github.io")) {
@@ -21,7 +29,7 @@
   const BASE = repoBase();
   const FILE = {
     "/": "index.html",
-    "/login": "index.html",
+    "/login": "login.html",
     "/register": "register.html",
     "/home": "home.html",
     "/dashboard": "dashboard.html",
@@ -34,19 +42,51 @@
     "/xai": "xai.html",
   };
 
+  const TOKEN_KEY = "evforecast_token";
+  const USER_KEY = "evforecast_user";
+
+  let backendProbe = null;
+
+  function probeBackend() {
+    if (backendProbe) return backendProbe;
+    backendProbe = (async () => {
+      if (!isStaticHost()) return false;
+      try {
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), 2500);
+        const res = await fetch("/api/health", { signal: ctrl.signal });
+        clearTimeout(timer);
+        if (!res.ok) return false;
+        const data = await res.json();
+        return !!(data && data.ok);
+      } catch {
+        return false;
+      }
+    })();
+    return backendProbe;
+  }
+
   window.EVPages = {
     base: BASE,
+    isStaticHost: isStaticHost(),
+    hasBackend: false,
     href(path) {
-      const key = String(path || "/").split("#")[0].split("?")[0];
-      return BASE + (FILE[key] || "index.html");
+      let key = String(path || "/").split("#")[0].split("?")[0];
+      if (FILE[key]) return BASE + FILE[key];
+      const withSlash = key.startsWith("/") ? key : "/" + key;
+      if (FILE[withSlash]) return BASE + FILE[withSlash];
+      const clean = key.replace(/^\//, "");
+      if (clean.endsWith(".html")) return BASE + clean;
+      return BASE + "index.html";
     },
     asset(path) {
       return BASE + path.replace(/^\//, "");
     },
+    whenBackendReady() {
+      return probeBackend();
+    },
+    ready: null,
   };
-
-  const TOKEN_KEY = "evforecast_token";
-  const USER_KEY = "evforecast_user";
 
   function saveSession(token, user) {
     localStorage.setItem(TOKEN_KEY, token);
@@ -64,7 +104,7 @@
     }
   }
 
-  function login({ email, password }) {
+  function demoLogin({ email, password }) {
     email = String(email || "").trim().toLowerCase();
     password = String(password || "");
     if (email === "admin@evforecast.edu" && password === "Admin@123") {
@@ -86,33 +126,34 @@
     throw err;
   }
 
-  window.EVForecast = window.EVForecast || {};
-  window.EVForecast.saveSession = saveSession;
-  window.EVForecast.clearSession = clearSession;
-  window.EVForecast.currentUser = currentUser;
-  window.EVForecast.API = window.EVForecast.API || {};
-  window.EVForecast.API.login = (body) => Promise.resolve().then(() => login(body));
-
-  window.EVForecast.API.register = (body) =>
-    Promise.resolve().then(() => {
-      const email = String(body.email || "").trim().toLowerCase();
-      const password = String(body.password || "");
-      const name = String(body.name || "User");
-      if (!email || password.length < 6) {
-        const err = new Error("Use a valid email and password (6+ characters).");
-        err.data = { message: err.message };
-        throw err;
-      }
-      const users = JSON.parse(localStorage.getItem("evforecast_pages_users") || "[]");
-      if (users.some((u) => u.email === email)) {
-        const err = new Error("Account already exists. Please login.");
-        err.data = { message: err.message };
-        throw err;
-      }
-      users.push({ email, password, name });
-      localStorage.setItem("evforecast_pages_users", JSON.stringify(users));
-      return { ok: true };
-    });
+  function applyDemoAuth() {
+    window.EVForecast = window.EVForecast || {};
+    window.EVForecast.saveSession = saveSession;
+    window.EVForecast.clearSession = clearSession;
+    window.EVForecast.currentUser = currentUser;
+    window.EVForecast.API = window.EVForecast.API || {};
+    window.EVForecast.API.login = (body) => Promise.resolve().then(() => demoLogin(body));
+    window.EVForecast.API.register = (body) =>
+      Promise.resolve().then(() => {
+        const email = String(body.email || "").trim().toLowerCase();
+        const password = String(body.password || "");
+        const name = String(body.name || "User");
+        if (!email || password.length < 6) {
+          const err = new Error("Use a valid email and password (6+ characters).");
+          err.data = { message: err.message };
+          throw err;
+        }
+        const users = JSON.parse(localStorage.getItem("evforecast_pages_users") || "[]");
+        if (users.some((u) => u.email === email)) {
+          const err = new Error("Account already exists. Please login.");
+          err.data = { message: err.message };
+          throw err;
+        }
+        users.push({ email, password, name });
+        localStorage.setItem("evforecast_pages_users", JSON.stringify(users));
+        return { ok: true };
+      });
+  }
 
   async function fetchText(rel) {
     const res = await fetch(window.EVPages.asset(rel));
@@ -193,6 +234,12 @@
         lag_3: "EV registrations (3 years ago)",
         rolling_mean_3: "3-year rolling average",
         yoy_growth: "Year-over-year growth rate",
+        charging_stations: "Charging infrastructure availability",
+        gov_policy_index: "Government policy / subsidy indicators",
+        fuel_price: "Fuel prices",
+        battery_cost: "Battery cost",
+        gdp_index: "Economic indicators (GDP, etc.)",
+        ev_adoption_index: "EV adoption index (external)",
         State_enc: "State / region",
         VehicleType_enc: "Vehicle type",
       };
@@ -298,9 +345,22 @@
     }
   };
 
-  // Keep Bootstrap nav auth links on the /EV/ site (override Flask absolute paths).
   if (typeof window.updateNavAuth === "function") {
     window.updateNavAuth = window.EVPages.bindLogout;
   }
   document.addEventListener("DOMContentLoaded", () => window.EVPages.bindLogout());
+
+  window.EVPages.ready = (async () => {
+    if (!isStaticHost()) return false;
+    EVPages.hasBackend = await probeBackend();
+    if (!EVPages.hasBackend) {
+      applyDemoAuth();
+      return false;
+    }
+    window.EVForecast = window.EVForecast || {};
+    window.EVForecast.saveSession = saveSession;
+    window.EVForecast.clearSession = clearSession;
+    window.EVForecast.currentUser = currentUser;
+    return true;
+  })();
 })();

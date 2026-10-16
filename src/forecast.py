@@ -26,6 +26,12 @@ FEATURE_DISPLAY_NAMES = {
     "mom_growth": "Month-over-month growth",
     "Year": "Year",
     "MonthNum": "Month",
+    "charging_stations": "Charging Infrastructure Availability",
+    "gov_policy_index": "Government Policy & Subsidies",
+    "fuel_price": "Fuel Prices (Petrol/Diesel)",
+    "battery_cost": "Battery Pack Cost",
+    "gdp_index": "Economic Indicators (GDP Index)",
+    "ev_adoption_index": "EV Adoption Index (External)",
     "State_enc": "State / Region",
     "VehicleType_enc": "Vehicle Type",
 }
@@ -48,23 +54,54 @@ def _trend_extrapolate(values: List[float], n: int) -> List[float]:
     return out
 
 
-def forecast_registrations(horizon: int = 3, state: str = "ALL", vehicle_type: str = "All") -> Dict:
-    state = (state or "ALL").upper()
-    path = FORE / "national_registrations_future_cnn_lstm.csv"
-    if state == "ALL" and path.exists() and (not vehicle_type or vehicle_type in ("All", "ALL", "")):
-        df = pd.read_csv(path).head(horizon)
-        return {
-            "target": "EV_Registrations",
-            "state": state,
-            "vehicle_type": vehicle_type or "All",
-            "model": "CNN-LSTM",
-            "frequency": "annual",
-            "forecast": [
-                {"year": int(r.Year), "period": str(int(r.Year)), "value": float(r.Forecast_Registrations)}
-                for r in df.itertuples()
-            ],
+def _accuracy_block() -> Dict:
+    path = ROOT / "outputs" / "metrics" / "model_comparison_registrations.csv"
+    out: Dict = {
+        "best_model": "Naive",
+        "approx_accuracy": None,
+        "MAPE": None,
+        "MAE": None,
+        "RMSE": None,
+        "R2": None,
+        "note": "Held-out test years. Approx. accuracy = max(0, 100 − MAPE).",
+    }
+    if not path.exists():
+        return out
+    df = pd.read_csv(path)
+    if df.empty:
+        return out
+    rows = []
+    for _, r in df.iterrows():
+        mape = float(r["MAPE"]) if pd.notna(r.get("MAPE")) else None
+        rows.append(
+            {
+                "model": str(r["Model"]),
+                "MAE": float(r["MAE"]) if pd.notna(r.get("MAE")) else None,
+                "RMSE": float(r["RMSE"]) if pd.notna(r.get("RMSE")) else None,
+                "MAPE": mape,
+                "R2": float(r["R2"]) if pd.notna(r.get("R2")) else None,
+                "approx_accuracy": round(max(0.0, 100.0 - mape), 1) if mape is not None else None,
+            }
+        )
+    best = min(rows, key=lambda x: x["RMSE"] if x["RMSE"] is not None else float("inf"))
+    out.update(
+        {
+            "best_model": best["model"],
+            "approx_accuracy": best.get("approx_accuracy"),
+            "MAPE": best.get("MAPE"),
+            "MAE": best.get("MAE"),
+            "RMSE": best.get("RMSE"),
+            "R2": best.get("R2"),
+            "all_models": rows,
         }
+    )
+    return out
 
+
+def forecast_registrations(horizon: int = 3, state: str = "ALL", vehicle_type: str = "All") -> Dict:
+    from src.state_names import display_name
+
+    state = (state or "ALL").upper()
     regs = pd.read_csv(PROC / "ev_registrations_annual.csv")
     regs["State"] = regs["State"].astype(str).str.upper()
     if state == "ALL":
@@ -75,20 +112,23 @@ def forecast_registrations(horizon: int = 3, state: str = "ALL", vehicle_type: s
             g = g[g["VehicleType"] == vehicle_type]
         g = g.groupby("Year", as_index=False)["Registrations"].sum().sort_values("Year")
     if g.empty:
-        return {"error": f"No history for state={state}"}
+        return {"error": f"No history for {display_name(state)}"}
 
     years = g["Year"].astype(int).tolist()
     vals = g["Registrations"].astype(float).tolist()
     preds = _trend_extrapolate(vals, horizon)
     forecast = [{"year": years[-1] + i + 1, "period": str(years[-1] + i + 1), "value": preds[i]} for i in range(horizon)]
+    acc = _accuracy_block()
     return {
         "target": "EV_Registrations",
         "state": state,
+        "state_name": display_name(state),
         "vehicle_type": vehicle_type or "All",
         "model": "trend_extrapolation",
         "frequency": "annual",
         "forecast": forecast,
         "history": {"dates": [str(y) for y in years], "values": vals},
+        "accuracy": acc,
     }
 
 
@@ -125,9 +165,12 @@ def forecast_monthly(target: str, horizon: int = 6, state: str = "ALL") -> Dict:
     for i, v in enumerate(preds):
         d = last + pd.DateOffset(months=i + 1)
         forecast.append({"period": d.strftime("%Y-%m"), "year": int(d.year), "month": int(d.month), "value": float(v)})
+    from src.state_names import display_name
+
     return {
         "target": label,
         "state": state,
+        "state_name": display_name(state),
         "model": "trend_extrapolation",
         "frequency": "monthly",
         "forecast": forecast,
@@ -135,6 +178,7 @@ def forecast_monthly(target: str, horizon: int = 6, state: str = "ALL") -> Dict:
             "dates": [d.strftime("%Y-%m") for d in dates],
             "values": vals,
         },
+        "accuracy": _accuracy_block(),
     }
 
 

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
 from backend.app import db
 
@@ -12,7 +12,7 @@ class PredictionLog(db.Model):
     model_name = db.Column(db.String(80))
     input_payload = db.Column(db.Text)
     prediction = db.Column(db.Float)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     def to_dict(self):
         return {

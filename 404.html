@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
+  <title>404 · Page Not Found · EVForecast</title>
+  <script>
+    (function () {
+      var path = window.location.pathname;
+      var parts = path.split('/').filter(Boolean);
+      var isGh = window.location.hostname.indexOf('github.io') !== -1;
+      var repoPrefix = isGh && parts.length > 0 ? '/' + parts[0] + '/' : '/';
+      var slug = (isGh && parts.length > 1 ? parts[1] : parts[parts.length - 1] || '').toLowerCase().replace(/\.html$/, '');
+
+      var routes = {
+        '': 'index.html',
+        'login': 'login.html',
+        'register': 'register.html',
+        'home': 'home.html',
+        'dashboard': 'dashboard.html',
+        'admin': 'dashboard.html',
+        'prediction': 'prediction.html',
+        'dataset': 'dataset.html',
+        'about': 'about.html',
+        'comparison': 'comparison.html',
+        'models': 'comparison.html',
+        'contact': 'contact.html',
+        'xai': 'xai.html'
+      };
+
+      if (routes.hasOwnProperty(slug)) {
+        var target = repoPrefix + routes[slug] + window.location.search + window.location.hash;
+        window.location.replace(target);
+      }
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="frontend/static/css/style.css" />
+  <style>
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 50% 20%, #0c1a30 0%, #050b14 100%);
+      color: #f1f5f9;
+      font-family: 'Outfit', sans-serif;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 1.5rem;
+    }
+    .err-card {
+      max-width: 580px;
+      padding: 2.75rem 2.5rem;
+      border-radius: 20px;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 40px rgba(6, 182, 212, 0.15);
+      text-align: center;
+      position: relative;
+    }
+    .err-code {
+      font-size: 6rem;
+      font-weight: 800;
+      line-height: 1;
+      background: linear-gradient(135deg, #38bdf8, #06b6d4, #10b981);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.75rem;
+      letter-spacing: -2px;
+    }
+    .err-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+    .err-desc {
+      color: #94a3b8;
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+    .err-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="err-card">
+    <div class="err-code">404</div>
+    <h1 class="err-title">Page Not Found</h1>
+    <p class="err-desc">The page you are looking for does not exist, was moved, or an invalid link was provided. Use the navigation buttons below to continue.</p>
+    <div class="err-actions">
+      <a href="home.html" class="btn btn-glow">Go to Home</a>
+      <a href="dashboard.html" class="btn btn-ghost">Dashboard</a>
+      <a href="prediction.html" class="btn btn-ghost">Prediction</a>
+      <a href="xai.html" class="btn btn-ghost">Explainability</a>
+      <a href="login.html" class="btn btn-ghost">Login</a>
+    </div>
+  </div>
+</body>
+</html>

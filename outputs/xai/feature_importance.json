@@ -3,35 +3,59 @@
   "ranking": [
     {
       "feature": "rolling_mean_3",
-      "importance": 130481.92810631268
+      "importance": 128664.63266056516
     },
     {
       "feature": "lag_1",
-      "importance": 73171.89220763586
+      "importance": 75890.54061873525
     },
     {
       "feature": "yoy_growth",
-      "importance": 7074.871450695038
+      "importance": 6981.514870283194
     },
     {
       "feature": "lag_2",
-      "importance": 7041.745816619784
+      "importance": 5733.267580679659
     },
     {
-      "feature": "Year",
-      "importance": 2701.8966230563174
-    },
-    {
-      "feature": "VehicleType_enc",
-      "importance": 1785.9452730124658
+      "feature": "gdp_index",
+      "importance": 2503.7545894898954
     },
     {
       "feature": "lag_3",
-      "importance": 1446.1316076609003
+      "importance": 2405.331916299864
+    },
+    {
+      "feature": "VehicleType_enc",
+      "importance": 1720.8073996349235
+    },
+    {
+      "feature": "ev_adoption_index",
+      "importance": 1404.5376525568633
+    },
+    {
+      "feature": "Year",
+      "importance": 1325.7752573173764
+    },
+    {
+      "feature": "gov_policy_index",
+      "importance": 500.4506669926644
+    },
+    {
+      "feature": "battery_cost",
+      "importance": 477.6286342491684
+    },
+    {
+      "feature": "fuel_price",
+      "importance": 374.13288999012866
+    },
+    {
+      "feature": "charging_stations",
+      "importance": 359.86548888079756
     },
     {
       "feature": "State_enc",
-      "importance": 339.93481879782877
+      "importance": 220.43840266295035
     }
   ]
 }

@@ -6,7 +6,7 @@ Register/ev_vehicle_class_distribution.csv,1248.0,4.0,State|VehicleType|VehicleC
 Register/ev_yearwise_registration.csv,1067.0,4.0,State|VehicleType|Year|Registrations,0.0,2011.0,2026.0,Registrations,0.0,
 Register/fuel_type_ev_data.csv,230.0,4.0,State|VehicleType|FuelType|Count,0.0,,,Count,0.0,
 Register/registration_2010-2026.csv,74.0,4.0,data|labels|State|VehicleType,0.0,,,,0.0,
-Register/status_distribution_all_states.xlsx,,,,,,,,,unreadable
+Register/status_distribution_all_states.xlsx,72.0,3.0,State|Vehicle Status|Count,0.0,,,Count,0.0,
 Register/top5_states_all_filters.csv,162.0,3.0,Filter_State|Top_State|EV_Registrations,0.0,,,EV_Registrations,0.0,
 Register/top5_vehicle_makers_all_states.csv,178.0,3.0,State|Vehicle_Maker|EV_Registrations,0.0,,,EV_Registrations,0.0,
 Register/vehicle_status_distribution.csv,,,,,,,,,unreadable
