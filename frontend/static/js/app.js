@@ -10,6 +10,7 @@ const API = {
     try {
       res = await fetch(path, { ...options, headers });
     } catch (netErr) {
+      if (netErr.name === "AbortError") throw netErr;
       const err = new Error("Cannot reach the server. Check that the application is running.");
       err.status = 0;
       err.data = {};
@@ -55,11 +56,11 @@ const API = {
         `&target=${encodeURIComponent(target)}&vehicle_type=${encodeURIComponent(vehicleType)}`
     ),
   xai: () => API.request("/api/xai/insights"),
-  xaiDashboard: (params = {}) => {
+  xaiDashboard: (params = {}, options = {}) => {
     const q = new URLSearchParams(params).toString();
-    return API.request(`/api/xai/dashboard${q ? `?${q}` : ""}`);
+    return API.request(`/api/xai/dashboard${q ? `?${q}` : ""}`, options);
   },
-  xaiRefresh: (params = {}) => API.xaiDashboard({ ...params, refresh: "1" }),
+  xaiRefresh: (params = {}, options = {}) => API.xaiDashboard({ ...params, refresh: "1" }, options),
   adminStats: () => API.request("/api/admin/stats"),
   adminUsers: () => API.request("/api/admin/users"),
   adminPredictions: () => API.request("/api/admin/predictions"),

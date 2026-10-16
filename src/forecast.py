@@ -26,6 +26,12 @@ FEATURE_DISPLAY_NAMES = {
     "mom_growth": "Month-over-month growth",
     "Year": "Year",
     "MonthNum": "Month",
+    "charging_stations": "Charging Infrastructure Availability",
+    "gov_policy_index": "Government Policy & Subsidies",
+    "fuel_price": "Fuel Prices (Petrol/Diesel)",
+    "battery_cost": "Battery Pack Cost",
+    "gdp_index": "Economic Indicators (GDP Index)",
+    "ev_adoption_index": "EV Adoption Index (External)",
     "State_enc": "State / Region",
     "VehicleType_enc": "Vehicle Type",
 }

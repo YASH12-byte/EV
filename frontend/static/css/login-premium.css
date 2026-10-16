@@ -363,18 +363,8 @@
 
 .lp-ev,
 .lp-bus {
-  position: absolute;
-  bottom: 35%;
-  height: 10px;
-  border-radius: 3px;
-  background: linear-gradient(90deg, #2563EB, #06B6D4);
-  box-shadow: 0 0 12px rgba(37, 99, 235, 0.8);
-  animation: lpDrive 8s linear infinite;
+  display: none !important;
 }
-
-.lp-ev-a { width: 28px; left: -10%; animation-duration: 7s; }
-.lp-ev-b { width: 24px; left: -20%; bottom: 55%; animation-duration: 9s; animation-delay: -3s; background: linear-gradient(90deg, #10B981, #06B6D4); }
-.lp-bus { width: 48px; left: -30%; bottom: 42%; animation-duration: 12s; animation-delay: -5s; height: 14px; }
 
 .lp-charger {
   position: absolute;
@@ -565,16 +555,6 @@
 }
 
 .lp-brand-text span { color: #06B6D4; }
-
-.lp-badge {
-  font-size: 0.72rem;
-  color: var(--muted);
-  border: 1px solid rgba(37, 99, 235, 0.35);
-  background: rgba(37, 99, 235, 0.12);
-  padding: 6px 12px;
-  border-radius: 99px;
-  white-space: nowrap;
-}
 
 .lp-layout {
   max-width: 1180px;
@@ -923,7 +903,6 @@
 @media (max-width: 640px) {
   .lp-workspace { padding: 16px 14px 32px; }
   .lp-card { padding: 24px 18px 18px; }
-  .lp-badge { display: none; }
   .lp-kpis { grid-template-columns: 1fr 1fr; }
   .lp-floaters { opacity: 0.35; }
   .lp-cinema-ui { margin-bottom: 4vh; }

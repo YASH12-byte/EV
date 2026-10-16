@@ -155,6 +155,14 @@ def clean_registrations() -> pd.DataFrame:
 
     combined.to_csv(PROC / "ev_registrations_annual.csv", index=False)
     national.to_csv(PROC / "ev_registrations_national_annual.csv", index=False)
+
+    try:
+        from src.enrich_external_factors import enrich_dataset
+        combined = enrich_dataset(PROC / "ev_registrations_annual.csv")
+        enrich_dataset(PROC / "ev_registrations_national_annual.csv")
+    except Exception as exc:
+        log("enrich_external_factors", f"Failed to enrich external factors: {exc}")
+
     return combined
 
 
@@ -273,7 +281,7 @@ def main() -> None:
     }
     (OUT / "cleaning_log.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
     print(f"Processed datasets written to {PROC}")
-    print(f"Cleaning log → {OUT / 'cleaning_log.json'}")
+    print(f"Cleaning log -> {OUT / 'cleaning_log.json'}")
 
 
 if __name__ == "__main__":

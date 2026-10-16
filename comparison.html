@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
   <title>Model Comparison · EVForecast</title>
   <script>
     (function () {
@@ -41,8 +42,14 @@
 <script src="site/chrome.js"></script>
 <script>
 (async () => {
-  const cmp = await EVPagesData.comparison();
-  const names = Object.keys(cmp).filter((k) => cmp[k].RMSE != null);
+  await EVPages.ready;
+  let cmp;
+  try {
+    cmp = EVPages.hasBackend ? await EVForecast.API.comparison() : await EVPagesData.comparison();
+  } catch {
+    cmp = await EVPagesData.comparison();
+  }
+  const names = Object.keys(cmp).filter((k) => cmp[k] && cmp[k].RMSE != null);
   const acc = (m) => Math.min(99.9, Number(m.Accuracy ?? ((m.R2 || 0) * 100)));
   document.querySelector("#cmpTable tbody").innerHTML = names.map((n) => {
     const m = cmp[n];

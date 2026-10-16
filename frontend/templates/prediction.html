@@ -51,7 +51,20 @@
         <div class="glass p-4 h-100">
           <h2 class="h5">Predicted EV Growth</h2>
           <div id="predResult" class="text-muted-2">Choose options and generate a forecast.</div>
-          <div id="forecastPlot" class="mt-3" style="min-height:320px"></div>
+          <div class="forecast-visuals mt-3">
+            <div class="forecast-chart-wrap">
+              <div class="small text-muted-2 mb-2">Trend over time</div>
+              <div id="forecastPlot" style="min-height:320px"></div>
+            </div>
+            <div class="forecast-map-wrap">
+              <div class="d-flex justify-content-between align-items-center gap-2 mb-2">
+                <div class="small text-muted-2">Selected region</div>
+                <div id="forecastMapValue" class="small fw-semibold">Awaiting forecast</div>
+              </div>
+              <div id="forecastMap" class="forecast-map" role="img" aria-label="India forecast map"></div>
+              <div id="forecastMapStatus" class="small text-muted-2 mt-2">Generate a forecast to highlight the region.</div>
+            </div>
+          </div>
           <div id="forecastPlotEmpty" class="text-muted-2 small d-none mt-2">Insufficient data to render chart.</div>
           <div class="mt-4" id="localXaiSection">
             <h3 class="h6">Why This Prediction Increased / Decreased</h3>
@@ -191,6 +204,68 @@ function renderLocalXai(expl) {
   }, { responsive: true, displayModeBar: false });
 }
 
+let indiaMap;
+
+function mapGeometryCoordinates(geometry) {
+  if (!geometry) return [];
+  if (geometry.type === "Polygon") return geometry.coordinates;
+  if (geometry.type === "MultiPolygon") return geometry.coordinates.flat(1);
+  return [];
+}
+
+function mapProjectPoint(point, bounds, width, height) {
+  const pad = 8;
+  const scale = Math.min(
+    (width - pad * 2) / (bounds.maxX - bounds.minX || 1),
+    (height - pad * 2) / (bounds.maxY - bounds.minY || 1)
+  );
+  const mapWidth = (bounds.maxX - bounds.minX) * scale;
+  const mapHeight = (bounds.maxY - bounds.minY) * scale;
+  const offsetX = (width - mapWidth) / 2;
+  const offsetY = (height - mapHeight) / 2;
+  return [offsetX + (point[0] - bounds.minX) * scale, height - offsetY - (point[1] - bounds.minY) * scale];
+}
+
+function mapFeaturePath(feature, bounds, width, height) {
+  return mapGeometryCoordinates(feature.geometry).map((ring) => ring.map((point, index) => {
+    const [x, y] = mapProjectPoint(point, bounds, width, height);
+    return `${index ? "L" : "M"}${x.toFixed(2)},${y.toFixed(2)}`;
+  }).join(" ") + " Z").join(" ");
+}
+
+async function renderForecastMap(region, target, value, period) {
+  const mapEl = document.getElementById("forecastMap");
+  const statusEl = document.getElementById("forecastMapStatus");
+  const valueEl = document.getElementById("forecastMapValue");
+  statusEl.textContent = "Loading India map…";
+  try {
+    if (!indiaMap) {
+      const response = await fetch("{{ url_for('static', filename='data/india-states.geojson') }}");
+      if (!response.ok) throw new Error("India map could not be loaded.");
+      indiaMap = await response.json();
+    }
+    const features = indiaMap.features || [];
+    const coordinates = features.flatMap((feature) => mapGeometryCoordinates(feature.geometry).flat());
+    const xs = coordinates.map((point) => point[0]);
+    const ys = coordinates.map((point) => point[1]);
+    const bounds = { minX: Math.min(...xs), maxX: Math.max(...xs), minY: Math.min(...ys), maxY: Math.max(...ys) };
+    const selected = String(region || "ALL").toUpperCase();
+    const paths = features.map((feature) => {
+      const code = String(feature.properties?.code || "").toUpperCase();
+      const name = feature.properties?.name || code;
+      const isSelected = selected === "ALL" || code === selected;
+      return `<path class="forecast-map-state${isSelected ? " is-selected" : ""}" d="${mapFeaturePath(feature, bounds, 360, 250)}" tabindex="0" role="button" aria-label="${name}"><title>${name}</title></path>`;
+    }).join("");
+    mapEl.innerHTML = `<svg viewBox="0 0 360 250" preserveAspectRatio="xMidYMid meet" aria-hidden="true">${paths}</svg>`;
+    valueEl.textContent = Number.isFinite(Number(value)) ? `${Number(value).toLocaleString("en-IN")} · ${period || "latest"}` : "Forecast ready";
+    statusEl.textContent = selected === "ALL" ? `All India · ${target}` : `${window.evStateName ? evStateName(selected) : selected} · ${target}`;
+  } catch (error) {
+    mapEl.innerHTML = "";
+    valueEl.textContent = "Map unavailable";
+    statusEl.textContent = error.message;
+  }
+}
+
 async function runForecast() {
   const target = document.getElementById("predTarget").value;
   const region = document.getElementById("predRegion").value;
@@ -234,6 +309,9 @@ async function runForecast() {
       console.error(chartErr);
       document.getElementById("forecastPlotEmpty")?.classList.remove("d-none");
     }
+
+    const latest = out.forecast?.points?.[out.forecast.points.length - 1] || {};
+    await renderForecastMap(region, target, latest.value, latest.period || latest.year);
 
     try {
       if (target === "registrations" && out.local_explanation) {

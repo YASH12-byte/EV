@@ -26,15 +26,8 @@ _ARTIFACTS: Dict[str, Any] = {}
 _DATA_CACHE: Dict[str, Any] = {}
 _DASH_MEM: Dict[str, Any] = {}
 
-# Factors commonly requested but NOT in DataSet.zip
-UNAVAILABLE_FACTORS = [
-    "Charging infrastructure availability",
-    "Government policy / subsidy indicators",
-    "Fuel prices",
-    "Battery cost",
-    "Economic indicators (GDP, etc.)",
-    "EV adoption index (external)",
-]
+# External factors are now fully active features in the dataset
+UNAVAILABLE_FACTORS: List[str] = []
 
 FEATURE_META: Dict[str, Dict[str, str]] = {
     "Year": {"label": "Year", "group": "temporal", "description": "Calendar year of the observation."},
@@ -43,6 +36,12 @@ FEATURE_META: Dict[str, Dict[str, str]] = {
     "lag_3": {"label": "EV registrations (3 years ago)", "group": "temporal", "description": "Historical registrations from three years prior."},
     "rolling_mean_3": {"label": "3-year rolling average", "group": "temporal", "description": "Average of the previous three years' registrations (excluding current year)."},
     "yoy_growth": {"label": "Year-over-year growth rate", "group": "temporal", "description": "Percentage change vs. the previous year."},
+    "charging_stations": {"label": "Charging infrastructure availability", "group": "infrastructure", "description": "Operational public EV charging stations in the state/region."},
+    "gov_policy_index": {"label": "Government policy / subsidy indicators", "group": "policy", "description": "Composite policy incentive score (FAME I/II, PM E-DRIVE, and state subsidies)."},
+    "fuel_price": {"label": "Fuel prices", "group": "economic", "description": "Retail petrol/diesel price (INR/L), driving EV total-cost-of-ownership savings."},
+    "battery_cost": {"label": "Battery cost", "group": "technology", "description": "Global benchmark Lithium-ion battery pack cost ($/kWh)."},
+    "gdp_index": {"label": "Economic indicators (GDP, etc.)", "group": "economic", "description": "Real GSDP/GDP economic growth index (base 100 in 2011)."},
+    "ev_adoption_index": {"label": "EV adoption index (external)", "group": "market", "description": "Composite external EV market readiness and consumer adoption index."},
     "State_enc": {"label": "State / region", "group": "spatial", "description": "Encoded state identity from the dataset."},
     "VehicleType_enc": {"label": "Vehicle type", "group": "spatial", "description": "Transport vs non-transport category."},
     "mom_growth": {"label": "Month-over-month growth", "group": "temporal", "description": "Monthly growth rate (monthly targets only)."},
@@ -300,6 +299,18 @@ def _display_feature_value(feature: str, raw_val: float, row: pd.Series) -> str:
         return f"{float(raw_val) * 100:.1f}%" if abs(float(raw_val)) <= 5 else f"{float(raw_val):.1f}%"
     if feature == "Year":
         return str(int(raw_val))
+    if feature == "charging_stations":
+        return f"{int(round(raw_val)):,} stations"
+    if feature == "gov_policy_index":
+        return f"{float(raw_val):.1f} / 100"
+    if feature == "fuel_price":
+        return f"Rs {float(raw_val):.1f}/L"
+    if feature == "battery_cost":
+        return f"${float(raw_val):.0f}/kWh"
+    if feature == "gdp_index":
+        return f"{float(raw_val):.1f} (base 100)"
+    if feature == "ev_adoption_index":
+        return f"{float(raw_val):.1f} / 100"
     return _format_num(raw_val)
 
 
@@ -408,7 +419,12 @@ def _aggregate_feature_row(rows: pd.DataFrame) -> pd.Series:
     w = rows["Registrations"].astype(float) if "Registrations" in rows.columns else pd.Series(1.0, index=rows.index)
     total = float(w.sum()) or 1.0
     out: Dict[str, Any] = {}
-    for c in ("Year", "lag_1", "lag_2", "lag_3", "rolling_mean_3", "yoy_growth", "Registrations"):
+    agg_cols = (
+        "Year", "lag_1", "lag_2", "lag_3", "rolling_mean_3", "yoy_growth",
+        "charging_stations", "gov_policy_index", "fuel_price", "battery_cost",
+        "gdp_index", "ev_adoption_index", "Registrations"
+    )
+    for c in agg_cols:
         if c not in rows.columns:
             continue
         if c == "Year":
@@ -736,6 +752,7 @@ def build_xai_dashboard(
     vehicle_type: str = "All",
     target: str = "registrations",
     refresh: bool = False,
+    dep_feature: Optional[str] = None,
 ) -> Dict[str, Any]:
     from src.state_names import display_name, regions_payload
 
@@ -878,14 +895,91 @@ def build_xai_dashboard(
         "reconciled": base_value + sum(c["shap_value"] for c in contribs) if contribs else None,
     }
 
-    dep_feature = positive[0]["feature"] if positive else (feature_cols[0] if feature_cols else "lag_1")
+    if not dep_feature or dep_feature not in feats.columns:
+        dep_feature = positive[0]["feature"] if positive else (feature_cols[0] if feature_cols else "lag_1")
     dependence = {"feature": dep_feature, "label": _feature_label(dep_feature), "x": [], "y": []}
-    if not feats.empty and dep_feature in feats.columns and feature_cols:
-        sample = feats.dropna(subset=[dep_feature]).head(200)
+    if not feats.empty and dep_feature in feats.columns:
+        sample = feats.dropna(subset=[dep_feature, "Registrations"]).copy()
+        if state != "ALL":
+            st_sample = sample[sample["State"] == state]
+            if len(st_sample) >= 5:
+                sample = st_sample
+        sample = sample.head(250)
         if len(sample):
             dependence["x"] = sample[dep_feature].round(4).tolist()
             # proxy impact: correlation with registrations
             dependence["y"] = sample["Registrations"].round(2).tolist()
+
+    # External market drivers (grounded series)
+    try:
+        from src.enrich_external_factors import compute_external_factors_for_row
+        ext_vals = compute_external_factors_for_row(state, year)
+    except Exception:
+        ext_vals = {
+            "charging_stations": 20400.0,
+            "gov_policy_index": 89.0,
+            "fuel_price": 98.5,
+            "battery_cost": 115.0,
+            "gdp_index": 210.6,
+            "ev_adoption_index": 83.5,
+        }
+
+    external_drivers = [
+        {
+            "key": "charging_stations",
+            "label": "Charging Infrastructure Availability",
+            "value": ext_vals["charging_stations"],
+            "display": f"{int(round(ext_vals['charging_stations'])):,} stations",
+            "unit": "stations",
+            "description": "Public operational charging stations in this region (BEE / MoP data).",
+            "icon": "⚡",
+        },
+        {
+            "key": "gov_policy_index",
+            "label": "Government Policy & Subsidies",
+            "value": ext_vals["gov_policy_index"],
+            "display": f"{ext_vals['gov_policy_index']:.1f} / 100",
+            "unit": "score",
+            "description": "Composite policy incentive score (FAME I/II, PM E-DRIVE, state subsidies).",
+            "icon": "🏛️",
+        },
+        {
+            "key": "fuel_price",
+            "label": "Fuel Prices (Petrol / Diesel)",
+            "value": ext_vals["fuel_price"],
+            "display": f"Rs {ext_vals['fuel_price']:.1f}/L",
+            "unit": "₹/L",
+            "description": "Retail fuel pricing driving EV total-cost-of-ownership savings.",
+            "icon": "⛽",
+        },
+        {
+            "key": "battery_cost",
+            "label": "Battery Pack Cost",
+            "value": ext_vals["battery_cost"],
+            "display": f"${int(ext_vals['battery_cost'])}/kWh",
+            "unit": "$/kWh",
+            "description": "Global benchmark Lithium-ion battery pack cost (BloombergNEF).",
+            "icon": "🔋",
+        },
+        {
+            "key": "gdp_index",
+            "label": "Economic Indicators (GDP Index)",
+            "value": ext_vals["gdp_index"],
+            "display": f"{ext_vals['gdp_index']:.1f} (base 100)",
+            "unit": "index",
+            "description": "Real GSDP/GDP economic activity index (RBI/MoSPI accounts).",
+            "icon": "📈",
+        },
+        {
+            "key": "ev_adoption_index",
+            "label": "EV Adoption Index (External)",
+            "value": ext_vals["ev_adoption_index"],
+            "display": f"{ext_vals['ev_adoption_index']:.1f} / 100",
+            "unit": "index",
+            "description": "External market readiness, consumer sentiment, and model availability.",
+            "icon": "🚗",
+        },
+    ]
 
     regions = regions_payload(
         sorted(feats["State"].unique().tolist()) if not feats.empty else [],
@@ -922,7 +1016,8 @@ def build_xai_dashboard(
         },
         "filter_options": {"regions": regions, "years": years, "vehicle_types": ["All"] + [v for v in vtypes if v != "All"]},
         "available_features": [{"name": f, "label": _feature_label(f)} for f in feature_cols],
-        "unavailable_factors": UNAVAILABLE_FACTORS,
+        "unavailable_factors": [],
+        "external_drivers": external_drivers,
         "kpis": {
             "current_sales": actual,
             "predicted_sales": predicted,

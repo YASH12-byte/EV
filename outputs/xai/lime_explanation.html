@@ -37089,25 +37089,25 @@
 /***/ })
 /******/ ]);
 //# sourceMappingURL=bundle.js.map </script></head><body>
-        <div class="lime top_div" id="top_divAQ5GIVYGWMNB80E"></div>
+        <div class="lime top_div" id="top_divKV2QXAH15AQGPCG"></div>
         
         <script>
-        var top_div = d3.select('#top_divAQ5GIVYGWMNB80E').classed('lime top_div', true);
+        var top_div = d3.select('#top_divKV2QXAH15AQGPCG').classed('lime top_div', true);
         
         
                     var pp_div = top_div.append('div')
                                         .classed('lime predicted_value', true);
                     var pp_svg = pp_div.append('svg').style('width', '100%');
-                    var pp = new lime.PredictedValue(pp_svg, 65.28756622859441, 1.9178605267318953, 171614.4194285714);
+                    var pp = new lime.PredictedValue(pp_svg, 76.84040284934538, 1.9787360314484457, 167094.9098333334);
                     
         var exp_div;
             var exp = new lime.Explanation(["negative", "positive"]);
         
             exp_div = top_div.append('div').classed('lime explanation', true);
-            exp.show([["0.00 < lag_1 <= 0.00", -23559.13573172554], ["yoy_growth > 0.00", 7742.016333996591], ["0.00 < rolling_mean_3 <= 0.00", -2730.5441260660505], ["State_enc <= 0.27", -855.3629904582116], ["0.00 < lag_3 <= 0.00", 675.3634859558586], ["0.00 < lag_2 <= 0.00", 489.7824987340738], ["Year > 0.78", -470.5855500936079], ["VehicleType_enc <= 0.00", 38.1625082089226]], 1, exp_div);
+            exp.show([["0.00 < lag_1 <= 0.00", -24156.02404271041], ["yoy_growth > 0.00", 9187.175878003367], ["battery_cost <= 0.04", 2393.195028910191], ["fuel_price > 0.47", 1627.3882678388184], ["ev_adoption_index > 0.57", 1231.8293476378765], ["0.00 < lag_3 <= 0.00", -1014.6295397263104], ["0.00 < lag_2 <= 0.00", -871.5087797863727], ["gdp_index > 0.76", -475.1652470729725]], 1, exp_div);
             
         var raw_div = top_div.append('div');
-            exp.show_raw_tabular([["lag_1", "0.00", -23559.13573172554], ["yoy_growth", "0.00", 7742.016333996591], ["rolling_mean_3", "0.00", -2730.5441260660505], ["State_enc", "0.00", -855.3629904582116], ["lag_3", "0.00", 675.3634859558586], ["lag_2", "0.00", 489.7824987340738], ["Year", "1.33", -470.5855500936079], ["VehicleType_enc", "0.00", 38.1625082089226]], 1, raw_div);
+            exp.show_raw_tabular([["lag_1", "0.00", -24156.02404271041], ["yoy_growth", "0.00", 9187.175878003367], ["battery_cost", "-0.03", 2393.195028910191], ["fuel_price", "0.75", 1627.3882678388184], ["ev_adoption_index", "1.36", 1231.8293476378765], ["lag_3", "0.00", -1014.6295397263104], ["lag_2", "0.00", -871.5087797863727], ["gdp_index", "1.37", -475.1652470729725]], 1, raw_div);
         
         </script>
         </body></html>

@@ -46,7 +46,7 @@ def list_contacts():
 def update_contact(contact_id: int):
     if not _require_admin():
         return jsonify({"ok": False, "message": "Admin only"}), 403
-    row = ContactMessage.query.get(contact_id)
+    row = db.session.get(ContactMessage, contact_id)
     if not row:
         return jsonify({"ok": False, "message": "Message not found"}), 404
     payload = request.get_json(silent=True) or {}

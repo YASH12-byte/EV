@@ -33,6 +33,7 @@ class XAIService:
         vehicle_type: str = "All",
         target: str = "registrations",
         refresh: bool = False,
+        dep_feature: Optional[str] = None,
     ) -> Dict[str, Any]:
         self._warm()
         from src.xai_engine import build_xai_dashboard
@@ -43,6 +44,7 @@ class XAIService:
             vehicle_type=vehicle_type,
             target=target,
             refresh=refresh,
+            dep_feature=dep_feature,
         )
 
     def artifacts_dir(self) -> Path:

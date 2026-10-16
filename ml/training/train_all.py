@@ -223,7 +223,7 @@ def main(fast: bool = False):
     out = config.MODEL_DIR / "comparison_results.json"
     with open(out, "w", encoding="utf-8") as f:
         json.dump(all_results, f, indent=2)
-    print(f"\nSaved comparison → {out}")
+    print(f"\nSaved comparison -> {out}")
 
     # Persist feature names for API/XAI
     with open(config.MODEL_DIR / "feature_names.json", "w", encoding="utf-8") as f:

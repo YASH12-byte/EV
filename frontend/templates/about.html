@@ -2,28 +2,259 @@
 {% block title %}About · EVForecast{% endblock %}
 {% block content %}
 <section class="section">
-  <div class="container" style="max-width:900px">
-    <h1 class="h2">About the Project</h1>
-    <p class="text-muted-2">Predictive Analytics for Electric Vehicle Market Growth using Hybrid Machine Learning and Time-Series.</p>
-    <div class="glass p-4 mb-3">
+  <div class="container" style="max-width:1020px">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+      <div>
+        <h1 class="h2 mb-1">About the Project</h1>
+        <p class="text-muted-2 mb-0">Predictive Analytics for Electric Vehicle Market Growth using Hybrid Machine Learning and Time-Series.</p>
+      </div>
+      <div class="d-flex flex-wrap gap-2">
+        <a href="#overview" class="btn btn-ghost btn-sm">Overview</a>
+        <a href="#data" class="btn btn-ghost btn-sm">Data Section</a>
+        <a href="#models" class="btn btn-ghost btn-sm">Model Section</a>
+        <a href="#stakeholders" class="btn btn-ghost btn-sm">Stakeholders</a>
+      </div>
+    </div>
+
+    <!-- Overview & Problem Statement -->
+    <div class="glass p-4 mb-3" id="overview">
       <h2 class="h5">Problem Statement</h2>
       <p class="mb-0">Existing EV market forecasting systems mainly rely on traditional statistical models or standalone ML algorithms that fail to capture complex spatial-temporal relationships, nonlinear market behavior, and dynamic policy impacts. This project develops a hybrid forecasting framework that is accurate, interpretable, scalable, and privacy-preserving.</p>
     </div>
-    <div class="glass p-4 mb-3">
+
+    <div class="glass p-4 mb-4" id="objectives">
       <h2 class="h5">Objectives</h2>
       <ol class="mb-0">
-        <li>Hybrid CNN-LSTM-Attention deep forecasting</li>
-        <li>Robust preprocessing, denoising, and feature engineering</li>
-        <li>Explainable AI with SHAP / LIME / attention maps</li>
-        <li>Federated learning for cross-city privacy</li>
-        <li>Physics-informed battery and grid constraints</li>
-        <li>Rigorous comparison vs classical and ML baselines</li>
+        <li>Hybrid CNN-LSTM-Attention deep forecasting for EV registration trends</li>
+        <li>Robust preprocessing, denoising, and multi-factor feature engineering</li>
+        <li>Explainable AI with SHAP, LIME, and attention weight heatmaps</li>
+        <li>Federated learning for cross-city privacy preservation</li>
+        <li>Physics-informed battery and grid capacity constraints</li>
+        <li>Rigorous benchmarking vs classical (ARIMA/SARIMA) and machine learning (RF/XGBoost) baselines</li>
       </ol>
     </div>
-    <div class="glass p-4">
-      <h2 class="h5">Stakeholders</h2>
-      <p class="mb-0">Governments, OEMs, investors, charging providers, and utilities can use the platform for capacity planning, policy evaluation, and investment decisions.</p>
+
+    <!-- DATA SECTION -->
+    <div class="mt-5 pt-2" id="data">
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+        <div>
+          <span class="chip mb-2">Project Data Pipeline</span>
+          <h2 class="h4 mb-1">Data &amp; Dataset Architecture</h2>
+          <p class="text-muted-2 small mb-0">Processed EV registration, transaction, and revenue series powering the forecasting models.</p>
+        </div>
+        <a class="btn btn-ghost btn-sm" href="/dataset">Open Full Dataset Page →</a>
+      </div>
+
+      <!-- Dynamic Dataset KPI Cards -->
+      <div class="row g-3 mb-3" id="dsCards">
+        <div class="col-md-2 col-6"><div class="glass kpi"><div class="label">Rows</div><div class="value" style="font-size:1.15rem">Loading…</div></div></div>
+        <div class="col-md-2 col-6"><div class="glass kpi"><div class="label">Regions</div><div class="value" style="font-size:1.15rem">—</div></div></div>
+        <div class="col-md-2 col-6"><div class="glass kpi"><div class="label">Start Year</div><div class="value" style="font-size:1.15rem">—</div></div></div>
+        <div class="col-md-2 col-6"><div class="glass kpi"><div class="label">End Year</div><div class="value" style="font-size:1.15rem">—</div></div></div>
+        <div class="col-md-2 col-6"><div class="glass kpi"><div class="label">Frequency</div><div class="value" style="font-size:1.15rem">—</div></div></div>
+        <div class="col-md-2 col-6"><div class="glass kpi"><div class="label">Missing</div><div class="value" style="font-size:1.15rem">0</div></div></div>
+      </div>
+
+      <!-- Features and Pipeline Details -->
+      <div class="glass p-4 mb-3">
+        <h3 class="h5">Features &amp; Target Variable</h3>
+        <p class="small text-muted-2 mb-2">Input features engineered across spatial, temporal, and historical lag dimensions:</p>
+        <div id="featList" class="d-flex flex-wrap gap-2 mb-3">
+          <span class="chip">Year</span>
+          <span class="chip">State / UT</span>
+          <span class="chip">Vehicle Type</span>
+          <span class="chip">Lag-1 Registrations</span>
+          <span class="chip">Lag-2 Registrations</span>
+          <span class="chip">Rolling 3M Mean</span>
+          <span class="chip">Rolling Momentum</span>
+          <span class="chip">Incentives / Subsidy Index</span>
+        </div>
+        <hr class="border-secondary opacity-25" />
+        <div class="row g-3">
+          <div class="col-md-6">
+            <p class="mb-1"><strong>Forecast Target:</strong> <code id="dsTarget">Registrations</code></p>
+            <p class="small text-muted-2 mb-0">Predicts future volume of EV sales and adoption per state and vehicle segment.</p>
+          </div>
+          <div class="col-md-6">
+            <p class="mb-1"><strong>Preprocessing &amp; Validation:</strong></p>
+            <p class="small text-muted-2 mb-0">Outlier detection, zero-imputation for new market entrants, chronological 80/20 train-test split (avoiding lookahead leakage), and RobustScaler fitted exclusively on training sets.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODEL SECTION -->
+    <div class="mt-5 pt-2" id="models">
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+        <div>
+          <span class="chip mb-2">Forecasting Engine</span>
+          <h2 class="h4 mb-1">Models &amp; Comparative Architecture</h2>
+          <p class="text-muted-2 small mb-0">Multi-model evaluation comparing classical, ensemble ML, and deep hybrid neural networks.</p>
+        </div>
+        <a class="btn btn-ghost btn-sm" href="/comparison">Open Detailed Models Page →</a>
+      </div>
+
+      <!-- Architecture Breakdown Cards -->
+      <div class="row g-3 mb-4">
+        <div class="col-md-4">
+          <div class="glass p-3 h-100">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="badge bg-primary-subtle text-primary border border-primary-subtle">Proposed</span>
+              <h3 class="h6 mb-0">Hybrid CNN-LSTM-Attention</h3>
+            </div>
+            <p class="small text-muted-2 mb-0">1D-CNN layers extract localized temporal features; Bi-LSTM captures sequential market memory; Attention dynamically focuses on policy inflection points.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="glass p-3 h-100">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="badge bg-secondary-subtle text-light border border-secondary-subtle">Baseline ML</span>
+              <h3 class="h6 mb-0">Random Forest &amp; XGBoost</h3>
+            </div>
+            <p class="small text-muted-2 mb-0">Ensemble decision trees and gradient boosting trained on lagged features, rolling momentum, and categorical spatial encodings.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="glass p-3 h-100">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="badge bg-secondary-subtle text-light border border-secondary-subtle">Statistical</span>
+              <h3 class="h6 mb-0">ARIMA / SARIMA / Prophet</h3>
+            </div>
+            <p class="small text-muted-2 mb-0">Classical univariate and seasonal auto-regressive moving average baselines for linear trend and seasonal decomposition.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Comparison Bar Chart -->
+      <div class="glass p-3 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h3 class="h6 mb-0">Model Accuracy Benchmark (% under 100)</h3>
+          <span class="small text-muted-2">Trained &amp; Validated on Test Split</span>
+        </div>
+        <canvas id="aboutModelChart" height="110"></canvas>
+      </div>
+
+      <!-- Live Benchmark Table -->
+      <div class="glass p-3 table-responsive mb-4">
+        <h3 class="h6 mb-3">Model Performance Metrics</h3>
+        <table class="table align-middle mb-0" id="aboutCmpTable">
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th>Accuracy %</th>
+              <th>MAE</th>
+              <th>RMSE</th>
+              <th>MAPE</th>
+              <th>R²</th>
+              <th>F1 (dir)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="7" class="text-center text-muted-2">Loading model evaluation metrics…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Stakeholders -->
+    <div class="glass p-4 mt-5" id="stakeholders">
+      <h2 class="h5">Stakeholders &amp; Real-World Impact</h2>
+      <p class="mb-0">Policy makers, automotive OEMs, charging infrastructure developers, and electrical utility providers utilize EVForecast for empirical capacity planning, subsidy optimization, battery manufacturing projections, and grid load balancing.</p>
     </div>
   </div>
 </section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+(async () => {
+  // 1. Fetch and populate Dataset Information
+  try {
+    const s = await EVForecast.API.summary();
+    const cards = [
+      ["Rows", Number(s.rows || 0).toLocaleString()],
+      ["Regions", s.regions ?? "—"],
+      ["Start", s.date_start ?? "—"],
+      ["End", s.date_end ?? "—"],
+      ["Frequency", s.sampling_frequency ?? "Annual"],
+      ["Missing", s.missing_values ?? "0"]
+    ];
+    document.getElementById("dsCards").innerHTML = cards.map(([k, v]) => `
+      <div class="col-md-2 col-6">
+        <div class="glass kpi">
+          <div class="label">${k}</div>
+          <div class="value" style="font-size:1.15rem">${v}</div>
+        </div>
+      </div>
+    `).join("");
+
+    if (s.features && s.features.length) {
+      document.getElementById("featList").innerHTML = s.features.map(f => `<span class="chip">${f}</span>`).join("");
+    }
+    if (s.target) {
+      document.getElementById("dsTarget").textContent = s.target;
+    }
+  } catch (err) {
+    console.warn("Dataset summary load error:", err);
+  }
+
+  // 2. Fetch and populate Model Comparison Chart & Table
+  try {
+    const cmp = await EVForecast.API.comparison();
+    const names = Object.keys(cmp).filter(k => cmp[k] && cmp[k].RMSE != null);
+    const acc = (m) => Math.min(99.9, Number(m.Accuracy ?? ((m.R2 || 0) * 100)));
+    const tbody = document.querySelector("#aboutCmpTable tbody");
+
+    if (names.length) {
+      tbody.innerHTML = names.map(n => {
+        const m = cmp[n];
+        return `<tr>
+          <td class="fw-semibold">${n}</td>
+          <td><span class="badge bg-success-subtle text-success border border-success-subtle">${acc(m).toFixed(1)}%</span></td>
+          <td>${m.MAE?.toFixed?.(2) ?? m.MAE}</td>
+          <td>${m.RMSE?.toFixed?.(2) ?? m.RMSE}</td>
+          <td>${m.MAPE?.toFixed?.(2) ?? m.MAPE}</td>
+          <td>${m.R2?.toFixed?.(3) ?? m.R2}</td>
+          <td>${m.F1?.toFixed?.(3) ?? "—"}</td>
+        </tr>`;
+      }).join("");
+
+      new Chart(document.getElementById("aboutModelChart"), {
+        type: "bar",
+        data: {
+          labels: names,
+          datasets: [{
+            label: "Accuracy % (under 100)",
+            data: names.map(n => acc(cmp[n])),
+            borderColor: "#2dd4bf",
+            backgroundColor: "rgba(45, 212, 191, 0.35)",
+            borderWidth: 1.5,
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { labels: { color: "#cfe3ec" } }
+          },
+          scales: {
+            x: {
+              ticks: { color: "#8fa3b0", maxRotation: 45 },
+              grid: { color: "rgba(255,255,255,0.04)" }
+            },
+            y: {
+              min: 0,
+              max: 100,
+              ticks: { color: "#8fa3b0" },
+              grid: { color: "rgba(255,255,255,0.06)" }
+            }
+          }
+        }
+      });
+    }
+  } catch (err) {
+    console.warn("Model comparison load error:", err);
+  }
+})();
+</script>
 {% endblock %}

@@ -2,7 +2,8 @@
   "use strict";
 
   if (window.EVForecast?.currentUser?.()) {
-    location.replace(window.EVPages ? window.EVPages.href("/home") : "/home");
+    const home = window.EVPages ? window.EVPages.href("/home") : "home.html";
+    location.replace(home);
     return;
   }
 

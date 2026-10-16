@@ -67,8 +67,11 @@ class MLService:
             df["date"] = pd.to_datetime(df["Year"].astype(str) + "-01-01")
             df["region"] = df["State"].astype(str)
             df["ev_sales"] = df["Registrations"].astype(float)
-            # No charging stations in real zip — expose NaN-safe zero for old UI fields
-            df["charging_stations"] = 0.0
+            df["charging_stations"] = (
+                df["charging_stations"].astype(float)
+                if "charging_stations" in df.columns
+                else 0.0
+            )
             return df
 
         raw = config.DATA_RAW / "ev_market_data.csv"

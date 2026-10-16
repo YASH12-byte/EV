@@ -1,0 +1,75 @@
+{
+  "base": 32029.06521431544,
+  "contributions": [
+    {
+      "feature": "Year",
+      "label": "Year",
+      "value": 211.36199707752834
+    },
+    {
+      "feature": "lag_1",
+      "label": "Lag 1",
+      "value": -18353.860800808252
+    },
+    {
+      "feature": "lag_2",
+      "label": "Lag 2",
+      "value": -263.3737245801957
+    },
+    {
+      "feature": "lag_3",
+      "label": "Lag 3",
+      "value": -423.05556396600605
+    },
+    {
+      "feature": "rolling_mean_3",
+      "label": "Rolling Mean 3",
+      "value": -15178.53124866566
+    },
+    {
+      "feature": "yoy_growth",
+      "label": "Yoy Growth",
+      "value": 1305.3605932707783
+    },
+    {
+      "feature": "charging_stations",
+      "label": "Charging Stations",
+      "value": 20.17669521971817
+    },
+    {
+      "feature": "gov_policy_index",
+      "label": "Gov Policy Index",
+      "value": -21.109798035935246
+    },
+    {
+      "feature": "fuel_price",
+      "label": "Fuel Price",
+      "value": -35.28126763616799
+    },
+    {
+      "feature": "battery_cost",
+      "label": "Battery Cost",
+      "value": -48.95222293803367
+    },
+    {
+      "feature": "gdp_index",
+      "label": "Gdp Index",
+      "value": 387.5179835127729
+    },
+    {
+      "feature": "ev_adoption_index",
+      "label": "Ev Adoption Index",
+      "value": 253.64162461473808
+    },
+    {
+      "feature": "State_enc",
+      "label": "State Enc",
+      "value": 3.764768591408876
+    },
+    {
+      "feature": "VehicleType_enc",
+      "label": "Vehicletype Enc",
+      "value": 190.11615287714105
+    }
+  ]
+}

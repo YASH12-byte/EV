@@ -141,6 +141,7 @@ def xai_dashboard():
     year = request.args.get("year")
     vehicle_type = request.args.get("vehicle_type", "All")
     target = request.args.get("target", "registrations")
+    dep_feature = request.args.get("dep_feature")
     refresh = request.args.get("refresh", "0") in ("1", "true", "yes")
     try:
         data = get_xai_service().dashboard(
@@ -149,6 +150,7 @@ def xai_dashboard():
             vehicle_type=vehicle_type,
             target=target,
             refresh=refresh,
+            dep_feature=dep_feature,
         )
         return jsonify(data)
     except Exception as exc:
@@ -162,6 +164,7 @@ def xai_refresh():
     year = request.args.get("year")
     vehicle_type = request.args.get("vehicle_type", "All")
     target = request.args.get("target", "registrations")
+    dep_feature = request.args.get("dep_feature")
     try:
         data = get_xai_service().dashboard(
             state=state,
@@ -169,6 +172,7 @@ def xai_refresh():
             vehicle_type=vehicle_type,
             target=target,
             refresh=True,
+            dep_feature=dep_feature,
         )
         return jsonify(data)
     except Exception as exc:
